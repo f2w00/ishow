@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../../../../workbench/element-ui/css/index.css"/>
+    <link rel="stylesheet" href="./css/addServerView.css"/>
+</head>
+
+<body>
+<div id="app">
+    <div class="iframeBox">
+        <!-- <div class="configName">
+            Configuration Name:
+            <input
+                class="configInput"
+                type="text"
+                v-model="configurationName"
+                :placeholder="configurationName"
+                style="color: #606266"
+            />
+        </div> -->
+        <el-tabs type="border-card">
+            <el-tab-pane label="advanced">
+                <div class="advancedSubView">
+                    <div class="serInformation setBox">
+                        <el-divider content-position="left">Server Infornation</el-divider>
+                        <div style="padding: 0 15px">
+                            <div class="pointBox">
+                                <div class="item-input-suffix">
+                                    Endpoint Url
+                                    <el-input
+                                            v-model="endpointUrl"
+                                            :disabled="false"
+                                            style="margin-left: 33px"
+                                            spellcheck="false"
+                                    >
+                                    </el-input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="securitySet setBox">
+                        <el-divider content-position="left">Security Settings</el-divider>
+                        <div style="padding: 0 15px">
+                            <div class="policyBox">
+                                <span class="contentName">Security Policy </span>
+                                <el-select
+                                        v-model="securityPolicy"
+                                        @change="selectChangedPolicy"
+                                        placeholder="None"
+                                        style="margin-left: 22px"
+                                >
+                                    <el-option
+                                            v-for="item in securityPolicyList"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value"
+                                            :disabled="item.disabled"
+                                    >
+                                    </el-option>
+                                </el-select>
+                            </div>
+                            <div class="modeBox">
+                                <span class="contentName longContent">Message Security Mode</span>
+                                <el-select v-model="securityMode" placeholder="None" style="margin-left: 18px">
+                                    <el-option
+                                            v-for="item in securityModeList"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value"
+                                            :disabled="item.disabled"
+                                    >
+                                    </el-option>
+                                </el-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="authenticationSet setBox">
+                        <el-divider content-position="left">Authentication Settings</el-divider>
+                        <div style="padding: 0 15px">
+                            <div class="anonymousBox">
+                                <div class="radioDefined">
+                                    <div class="radioBox">
+                                        <input
+                                                type="radio"
+                                                v-model="advanceVerification"
+                                                @click="handleauthenticationSet"
+                                                label="1"
+                                                value="1"
+                                        />
+                                    </div>
+                                    <div class="radioContent">Anonymous</div>
+                                </div>
+                            </div>
+                            <div class="accountBox">
+                                <div class="radioDefined">
+                                    <div class="radioBox" style="line-height: 72px">
+                                        <input
+                                                type="radio"
+                                                v-model="advanceVerification"
+                                                @click="handleauthenticationSet"
+                                                label="2"
+                                                value="2"
+                                        />
+                                    </div>
+                                    <div class="radioContent">
+                                        <div class="radioContentTop">
+                                            <div class="item-input-suffix">
+                                                Username
+                                                <el-input
+                                                        v-model="advanceAuthentUsername"
+                                                        :disabled="accountFlag"
+                                                        style="margin-left: 18px"
+                                                >
+                                                </el-input>
+                                                <el-checkbox v-model="advanceAuthentStorechecked"
+                                                >Store
+                                                </el-checkbox
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="radioContentBottom">
+                                            <div class="item-input-suffix">
+                                                Password
+                                                <el-input
+                                                        v-model="advanceAuthentPassword"
+                                                        :disabled="accountFlag"
+                                                        style="margin-left: 22px"
+                                                >
+                                                </el-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="certificateBox">
+                                <div class="radioDefined">
+                                    <div class="radioBox" style="line-height: 72px">
+                                        <input
+                                                type="radio"
+                                                v-model="advanceVerification"
+                                                @click="handleauthenticationSet"
+                                                label="3"
+                                                value="3"
+                                        />
+                                    </div>
+                                    <div class="radioContent">
+                                        <div class="radioContentTop">
+                                            <div class="item-input-suffix">
+                                                Certificate
+                                                <el-input
+                                                        v-model="advanceAuthentCertificate"
+                                                        :disabled="certificateFlag"
+                                                        style="margin-left: 16px"
+                                                >
+                                                </el-input>
+                                                <button class="moreBtn">
+                                                    <i class="el-icon-more"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="radioContentBottom">
+                                            <div class="item-input-suffix">
+                                                Private Key
+                                                <el-input
+                                                        v-model="advanceAuthentKey"
+                                                        :disabled="certificateFlag"
+                                                        style="margin-left: 10px"
+                                                >
+                                                </el-input>
+                                                <button class="moreBtn">
+                                                    <i class="el-icon-more"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sessionSet setBox">
+                        <el-divider content-position="left">Session Settings</el-divider>
+                        <div style="padding: 0 15px">
+                            <div class="sessionName">
+                                <div class="item-input-suffix">
+                                    Session Name
+                                    <el-input v-model="sessionName" :disabled="false" style="margin-left: 20px">
+                                    </el-input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </el-tab-pane>
+        </el-tabs>
+        <div slot="footer" class="dialog-footer">
+            <el-checkbox v-model="isAutoConnect">Connect Automatically</el-checkbox>
+            <el-button @click="handleCancle">Cancle</el-button>
+            <el-button type="primary" @click="handleConnectServer">OK</el-button>
+        </div>
+    </div>
+    <el-dialog class="record_dialog" title="记录保存" :visible.sync="dialogVisible" width="70%">
+        <li class="record_item" v-for="(item,index) in recordList" :key="index" @click="handleRestore">
+            {{item}}-----{{index}}
+        </li>
+        <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="dialogVisible = false">关 闭</el-button>
+                </span>
+    </el-dialog>
+</div>
+</body>
+<script src="../../../../workbench/vue/vue.js"></script>
+<script src="../../../../workbench/element-ui/index.js"></script>
+<script type="module">
+    import clientApi from './api/clientApi.js'
+    import sessionApi from './api/sessionApi.js'
+    import subscriptApi from './api/subscriptApi.js'
+
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                configurationName: '',
+                isAutoConnect: false,
+                addserverVisible: false,
+                advanceVerification: '1',
+                endpointUrl: '',
+                securityPolicy: 'None',
+                securityMode: '0',
+                accountFlag: true,
+                certificateFlag: true,
+                advanceAuthentStorechecked: false,
+                advanceAuthentUsername: '',
+                advanceAuthentPassword: '',
+                advanceAuthentCertificate: '',
+                advanceAuthentKey: '',
+                sessionName: '',
+                securityPolicyList: [
+                    {
+                        value: 'None',
+                        label: 'None',
+                    },
+                    {
+                        value: 'Basic128Rsa15',
+                        label: 'Basic128Rsa15',
+                    },
+                    {
+                        value: 'Basic256',
+                        label: 'Basic256',
+                    },
+                    {
+                        value: 'Basic256sha256',
+                        label: 'Basic256sha256',
+                    },
+                    {
+                        value: 'Aes128sha256RsaOaep',
+                        label: 'Aes128sha256RsaOaep',
+                    },
+                    {
+                        value: 'Aes256sha256RsaPss',
+                        label: 'Aes256sha256RsaPss',
+                    },
+                ],
+                securityModeList: [
+                    {
+                        value: '0',
+                        label: 'None',
+                    },
+                    {
+                        value: '1',
+                        label: 'Sign',
+                        disabled: true,
+                    },
+                    {
+                        value: '2',
+                        label: 'Sign & Encrypt',
+                        disabled: true,
+                    },
+                ],
+                serverList: [
+                    {serverName: 'SimulationServer@DESKTOP-REOKHRI'},
+                    {serverName: 'SimulationServer@REOKHRI-DESKTOP'},
+                ],
+                dialogVisible: false,
+                recordList: ['default'],
+            }
+        },
+        computed: {},
+        methods: {
+            async clientInit(securityMode, securityPolicy) {
+                const param = {
+                    applicationName: 'NodeOPCUA-Client',
+                    connectionStrategy: {
+                        initialDelay: 1000,
+                        maxRetry: 3,
+                    },
+                    securityMode: 1,
+                    keepSessionAlive: true,
+                    securityPolicy: 'http://opcfoundation.org/UA/SecurityPolicy#None',
+                    endpointMustExist: false,
+                }
+                param.securityMode = securityMode
+                param.securityPolicy = securityPolicy
+                console.log(param, 'client参数')
+                return await clientApi.clientInit(param)
+            },
+            async clientConnect() {
+                const param = {endpointUrl: ''}
+                param.endpointUrl = this.endpointUrl
+                return await clientApi.clientConnect(param)
+            },
+            async sessionInit(obj) {
+                let param = {
+                    type: 1,
+                    userName: 'uaclient',
+                    password: 'uaclient',
+                }
+                if (obj !== {}) {
+                    param = obj
+                }
+                console.log(param, 'session参数')
+                return await sessionApi.sessionInit(param)
+            },
+            clearEndpointUrl() {
+                this.endpointUrl = ''
+            },
+            selectChangedPolicy(value) {
+                let mode1 = [
+                    {
+                        value: '0',
+                        label: 'None',
+                    },
+                    {
+                        value: '1',
+                        label: 'Sign',
+                        disabled: true,
+                    },
+                    {
+                        value: '2',
+                        label: 'Sign & Encrypt',
+                        disabled: true,
+                    },
+                ]
+                let mode2 = [
+                    {
+                        value: '0',
+                        label: 'None',
+                        disabled: true,
+                    },
+                    {
+                        value: '1',
+                        label: 'Sign',
+                    },
+                    {
+                        value: '2',
+                        label: 'Sign & Encrypt',
+                    },
+                ]
+                switch (value) {
+                    case 'None':
+                        this.securityModeList = mode1
+                        this.securityMode = '0'
+                        break
+                    case 'Basic128Rsa15':
+                        this.securityModeList = mode2
+                        this.securityMode = '2'
+                        break
+                    case 'Basic256':
+                        this.securityModeList = mode2
+                        this.securityMode = '2'
+                        break
+                    case 'Basic256sha256':
+                        this.securityModeList = mode2
+                        this.securityMode = '2'
+                        break
+                    case 'Aes128sha256RsaOaep':
+                        this.securityModeList = mode2
+                        this.securityMode = '2'
+                        break
+                    case 'Aes256sha256RsaPss':
+                        this.securityModeList = mode2
+                        this.securityMode = '2'
+                        break
+                }
+            },
+            handleCancle() {
+                window.parent.ishow.windowEvent.emit(`ishow:dialog.cancle`)
+            },
+            handleauthenticationSet(e) {
+                const _this = this
+                switch (Number(e.target.defaultValue)) {
+                    case 1:
+                        _this.accountFlag = true
+                        _this.certificateFlag = true
+                        break
+                    case 2:
+                        _this.accountFlag = false
+                        _this.certificateFlag = true
+                        break
+                    case 3:
+                        _this.accountFlag = true
+                        _this.certificateFlag = false
+                        break
+                    default:
+                        break
+                }
+            },
+            async handleConnectServer() {
+                // window.parent.ishow.windowEvent.emit(`opcua:session.init`, 200)
+                let securityMode = Number(this.securityMode) + 1
+                let securityPolicy = 'http://opcfoundation.org/UA/SecurityPolicy#' + this.securityPolicy
+                let sessionInitObj = {}
+                switch (Number(this.advanceVerification)) {
+                    case 1:
+                        sessionInitObj = {
+                            type: 0,
+                        }
+                        break
+                    case 2:
+                        sessionInitObj = {
+                            type: 1,
+                            userName: this.advanceAuthentUsername,
+                            password: this.advanceAuthentPassword,
+                        }
+                        break
+                    case 3:
+                        sessionInitObj = {
+                            type: 2,
+                            certificateData: this.advanceAuthentCertificate,
+                            privateKey: this.advanceAuthentKey,
+                        }
+                        break
+                    default:
+                        break
+                }
+                if (this.isAutoConnect) {
+                    let res = await this.clientInit(securityMode, securityPolicy)
+                    console.log(res)
+                    if (res.code === 200) {
+                        let res1 = await this.clientConnect()
+                        let res2 = await this.sessionInit(sessionInitObj)
+                        console.log(res1, res2)
+                        if (res2.code === 200) {
+                            window.parent.ishow.windowEvent.emit(`opcua:session.init`, res2.code)
+                        }
+                    }
+                } else {
+                    let res1 = await this.clientInit()
+                    if (res1.code === 200) {
+                        await this.clientConnect()
+                    }
+                }
+                this.clearEndpointUrl()
+                window.parent.ishow.windowEvent.emit(`ishow:dialog.cancle`)
+            },
+            handleParentheight() {
+                parent.document.querySelector('#dialogIframe').style.height = 0
+                parent.document.querySelector('#dialogIframe').style.height = document.body.scrollHeight + 'px'
+            },
+            async handleRestore(e) {
+                let res = await clientApi.restore({recordName: e.target.innerText})
+                if (res.code === 200 && res.data !== undefined) {
+                    let requestList = res.data
+                    for (let api of requestList.keys()) {
+                        console.log(i)
+                        switch (api) {
+                            case 'client:init':
+                                await clientApi.clientInit(requestList[api])
+                                break
+                            case 'client:connect':
+                                await clientApi.clientConnect(requestList[api])
+                                break
+                            case 'client:endpoints':
+                                await clientApi.clientEndpoint(requestList[api])
+                                break
+                            case 'session:init':
+                                let res = await sessionApi.sessionInit(requestList[api])
+                                if (res.code === 200) {
+                                    window.parent.ishow.windowEvent.emit(`opcua:session.init`, res.code)
+                                }
+                                break
+                            case 'session:browse.root':
+                                await sessionApi.sessionBrowseroot(requestList[api])
+                                break
+                            case 'session:read':
+                                await sessionApi.sessionRead(requestList[api])
+                                break
+                            case 'session:browse':
+                                await sessionApi.sessionBrowse(requestList[api])
+                                break
+                            case 'subscript:init':
+                                await subscriptApi.subscriptInit(requestList[api])
+                                break
+                            case 'subscript:modify':
+                                await subscriptApi.subscriptModify(requestList[api])
+                                break
+                            case 'subscript:item.group':
+                                await subscriptApi.subscriptGroup(requestList[api])
+                                break
+                            case 'subscript:item.single':
+                                await subscriptApi.subscriptSingle(requestList[api])
+                                break
+                            case 'subscript:item.delete':
+                                await subscriptApi.subscriptDelete(requestList[api])
+                                break
+                            default:
+                                break
+                        }
+                    }
+                }
+                this.dialogVisible = false
+            },
+
+            pollingClientInit() {
+                let flag = false
+                const _this = this
+                const intervalId = setInterval(async function () {
+                    if (flag) {
+                        clearInterval(intervalId)
+                    }
+                    let res = await _this.clientInit()
+                    console.log(res)
+                    if (res.code === 200) {
+                        flag = true
+                    }
+                }, 2000)
+            },
+            recordListener() {
+                let _this = this
+                window.parent.ishow.windowEvent.on('opcua:server.open', async () => {
+                    _this.dialogVisible = true
+                    let records = await clientApi.record_names()
+                    this.recordList = records ? records.data : ['default']
+                    // _this.pollingClientInit()
+                })
+            },
+        },
+        watch: {},
+        mounted() {
+            this.handleParentheight()
+            this.recordListener()
+        },
+        created() {
+        },
+    })
+</script>
+</html>
+<style scoped>
+    ::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: #eaeaeb;
+        -webkit-border-radius: 2em;
+        -moz-border-radius: 2em;
+        border-radius: 2em;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: rgba(144, 147, 153, 0.5);
+        background-clip: padding-box;
+        -webkit-border-radius: 2em;
+        -moz-border-radius: 2em;
+        border-radius: 2em;
+        transition: background-color 0.3s;
+        cursor: pointer;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(144, 147, 153, 0.3);
+    }
+</style>

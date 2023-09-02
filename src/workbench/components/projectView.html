@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="../element-ui/css/index.css"/>
+    <link rel="stylesheet" href="../css/components/projectView.css"/>
+    <link rel="stylesheet" href="../css/common.css"/>
+</head>
+
+<body>
+<div id="app">
+    <div style="width: 100%; height: 100%">
+        <el-tree :props="subviewItemProjectProps" :load="loadProjectNode" lazy @node-click="handleNodeClick">
+                    <span class="custom-tree-node" slot-scope="{node,data}">
+                        <span>
+                            <img class="iconTree" v-if="data.isDir" src="../assets/icon/Object.svg"/>
+                            {{data.name}}
+                        </span>
+                    </span>
+        </el-tree>
+    </div>
+</div>
+</body>
+<script src="../vue/vue.js"></script>
+<script src="../element-ui/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                subviewItemProjectProps: {
+                    children: 'children',
+                    label: 'name',
+                },
+            }
+        },
+        computed: {},
+        methods: {
+            async loadProjectNode(node, resolve) {
+                let path = window.parent.ishow.sharedData.get('currentWorkspace')
+                if (node.level === 0) {
+                    window.parent.ishow
+                        .file('open', path)
+                        .then((res1) => {
+                            return resolve(res1)
+                        })
+                        .catch((err1) => {
+                            console.log(err1)
+                            return resolve([])
+                        })
+                } else {
+                    if (node.data.isDir) {
+                        const _this = this
+                        path = path + '\\' + getPath(node)
+                        window.parent.ishow
+                            .file('open', path)
+                            .then((res1) => {
+                                if (res1.length > 0) {
+                                    node.expanded = true // 展开节点
+                                    node.loaded = true // 标识：已加载
+                                    return resolve(res1)
+                                }
+                                node.loaded = true // 标识：已加载
+                                return resolve([])
+                            })
+                            .catch((err1) => {
+                                console.log(err1)
+                                node.loaded = true // 标识：已加载
+                                return resolve([])
+                            })
+                    } else {
+                        node.loaded = true // 标识：已加载
+                        return resolve([])
+                    }
+                }
+            },
+            handleNodeClick(data, node, el) {
+                console.log('node+', node)
+                // console.log(el.expanded)
+                // el.expanded = !el.expanded
+            },
+        },
+        mounted() {
+            // console.log(
+            //     window.parent.ishow.store('get', 'ishowMenuConfig'))
+        },
+        created() {
+        },
+    })
+</script>
+<script>
+    function getPath(node) {
+        let res = ''
+        if (node.data === undefined) {
+            return res
+        } else {
+            res = '\\' + node.data.name
+            res = getPath(node.parent) + res
+        }
+        return res
+    }
+</script>
+</html>
