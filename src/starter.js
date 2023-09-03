@@ -95,6 +95,7 @@ function generateUserDataPath() {
 
 function generateConfigs(dataPath, join, existsSync, mkdirSync) {
     const { ClientStore } = require('../src/platform/base/store/store.js')
+    const { sharedData } = require('../src/platform/base/store/store_private.js')
     new ClientStore({ client: false, cwd: dataPath + '/store' })
     const detectPlugins = () => {
         const { readdirSync } = require('fs')
@@ -130,14 +131,13 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
         name: 'workspace',
     })
     ClientStore.create({ name: 'share' })
-    console.log('share')
-    ClientStore.set('share', 'ishowActivate', {
+    sharedData.set('ishowActivate', {
         leftTabActivate: 'space',
         rightTabActivate: '',
         bottomTabActivate: 'log',
         mainTabsActivate: 'welcome',
     })
-    ClientStore.set('share', 'ishowMenuConfig', [
+    sharedData.set('ishowMenuConfig', [
         {
             label: '日志',
             tips: 'Log',
@@ -185,7 +185,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             ],
         },
     ])
-    ClientStore.set('share', 'workbenchConfig', {
+    sharedData.set('workbenchConfig', {
         rightSide: {
             display: false,
         },
@@ -196,7 +196,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             display: false,
         },
     })
-    ClientStore.set('share', 'pluginInstalled', [
+    sharedData.set('pluginInstalled', [
         {
             title: 'opcua',
             content: '提供opcua相关功能',
@@ -210,7 +210,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             author: 'wangqi2002',
         },
     ])
-    ClientStore.set('share', 'subviewLeftTabsData', [
+    sharedData.set('subviewLeftTabsData', [
         {
             title: 'mainMenu',
             name: 'mainMenu',
@@ -316,6 +316,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             ],
         },
     ])
+
     ClientStore.set('workspace', 'recentManagers', [])
     ClientStore.set('workspace', 'projectExtend', pluginsInfo.infos.projectExtend)
     let defaultPath = join(__dirname, '../default')

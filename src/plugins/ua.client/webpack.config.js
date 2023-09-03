@@ -10,7 +10,7 @@ module.exports = {
     },
     externals: [
         ({ context, request }, callback) => {
-            if (/^ishow$/.test(request) || /plotly/.test(request)) {
+            if (/^ishow$/.test(request)) {
                 return callback(null, `commonjs ${request}`)
             }
             callback()

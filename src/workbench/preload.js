@@ -1,7 +1,7 @@
-const {ipcRenderer} = require('electron')
-const {rendererEvents} = require('../platform/ipc/events/ipc.events')
-const {EventEmitter} = require('events')
-const {sharedData} = require('../platform/base/store/store')
+const { ipcRenderer } = require('electron')
+const { rendererEvents } = require('../platform/ipc/events/ipc.events')
+const { EventEmitter } = require('events')
+const { sharedData } = require('../platform/base/store/store_private')
 
 function exposeInMain() {
     const mainFunctions = {

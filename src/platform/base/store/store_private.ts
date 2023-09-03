@@ -79,4 +79,4 @@ export class StoreProcessor {
     }
 }
 
-export const sharedData = new StoreProcessor({ name: 'share' })
+export let sharedData = new StoreProcessor({ name: 'share' })
