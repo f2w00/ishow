@@ -1,10 +1,10 @@
-import {FindServersOnNetworkRequestOptions, MessageSecurityMode, OPCUAClient, OPCUAClientOptions} from 'node-opcua'
-import {UaErrors, UaSources, UaWarns} from '../../common/ua.enums'
-import {SessionService} from './session.service'
-import {Config} from '../../config/config.default'
-import {EndpointParam} from '../models/params.model'
+import { FindServersOnNetworkRequestOptions, MessageSecurityMode, OPCUAClient, OPCUAClientOptions } from 'node-opcua'
+import { UaErrors, UaSources, UaWarns } from '../../common/ua.enums'
+import { SessionService } from './session.service'
+import { Config } from '../../config/config.default'
+import { EndpointParam } from '../models/params.model'
 
-const {ClientError, ClientWarn} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
+const { ClientError, ClientWarn } = require('ishow')
 
 export module ClientService {
     export let client!: OPCUAClient

@@ -1,11 +1,11 @@
-import {existsSync} from 'fs'
+import { existsSync } from 'fs'
 import EventEmitter from 'events'
-import {ClientStore, RunningRecord} from '../../platform/base/store/store.js'
-import {ExtensionActivator} from './activator.js'
-import {ipcClient} from '../../platform/ipc/handlers/ipc.handler.js'
-import {renderEvents} from '../../platform/ipc/events/ipc.events.js'
+import { ClientStore, RunningRecord } from '../../platform/base/store/store.js'
+import { ExtensionActivator } from './activator.js'
+import { ipcClient } from '../../platform/ipc/handlers/ipc.handler.js'
+import { renderEvents } from '../../platform/ipc/events/ipc.events.js'
 
-const {plugins, platform} = require('../../platform/base/paths')
+const { plugins, platform } = require('../../platform/base/paths')
 
 type extensionStorage = string
 type extensionActivateEvent = string
@@ -65,7 +65,7 @@ export class ExtensionManager extends EventEmitter implements IExtensionManager 
 
     initBind() {
         ipcClient.handleRender(renderEvents.extensionEvents.getInfo, (_) => {
-            return {enabledExtensions: this.enabledExtensions, onStart: this.onStart}
+            return { enabledExtensions: this.enabledExtensions, onStart: this.onStart }
         })
     }
 
@@ -138,8 +138,6 @@ export class GlobalExtensionManager {
     constructor() {
         ClientStore.create({
             name: storeNames.extension,
-            fileExtension: 'json',
-            clearInvalidConfig: false,
         })
         this.startUp()
     }
@@ -165,7 +163,7 @@ export class GlobalExtensionManager {
             (code: string, filename: string) => {
                 return code.replace(/(require\([',"])(ishow)/g, '$1' + apiPath + '/ishow')
             },
-            {exts: ['.js'], matcher: matcher}
+            { exts: ['.js'], matcher: matcher }
         )
     }
 

@@ -1,9 +1,10 @@
-import {IProject, ProjectManagerFactory} from '../../platform/base/project/project'
-import {ClientStore, RunningRecord, sharedData} from '../../platform/base/store/store.js'
-import {ipcClient} from '../../platform/ipc/handlers/ipc.handler.js'
-import {FileUtils} from '../../platform/base/utils/utils.js'
-import {LocalEvents, renderEvents} from '../../platform/ipc/events/ipc.events'
-import {appDataPath} from '../../platform/base/paths'
+import { IProject, ProjectManagerFactory } from '../../platform/base/project/project'
+import { ClientStore, RunningRecord } from '../../platform/base/store/store.js'
+import { sharedData } from '../../platform/base/store/store_private'
+import { ipcClient } from '../../platform/ipc/handlers/ipc.handler.js'
+import { FileUtils } from '../../platform/base/utils/utils.js'
+import { LocalEvents, renderEvents } from '../../platform/ipc/events/ipc.events'
+import { appDataPath } from '../../platform/base/paths'
 
 enum storeNames {
     workspaceManager = 'recentManagers',
@@ -96,8 +97,7 @@ export class WorkspaceManager implements IWorkspaceManager {
         return this.loadProject(this.workspace.storagePath + `\\${projectName}` + `\\.${projectType}`)
     }
 
-    deleteProject() {
-    }
+    deleteProject() {}
 
     loadProject(fileName: string) {
         GlobalWorkspaceManager.projectExtend.forEach((projectType: string) => {
@@ -126,8 +126,6 @@ export class GlobalWorkspaceManager {
         GlobalWorkspaceManager.projectExtend = []
         ClientStore.create({
             name: storeNames.moduleStoreName,
-            fileExtension: 'json',
-            clearInvalidConfig: false,
         })
         this.initBind()
         GlobalWorkspaceManager.loadWorkspace()
@@ -220,8 +218,7 @@ export class GlobalWorkspaceManager {
         return GlobalWorkspaceManager.currentManager.workspace
     }
 
-    static changeWorkspace() {
-    }
+    static changeWorkspace() {}
 
     static updateStore() {
         ClientStore.set(storeNames.moduleStoreName, 'recentManagers', [...GlobalWorkspaceManager.recent.values()])

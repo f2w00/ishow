@@ -1,11 +1,11 @@
-import {ClientService} from '../services/client.service'
-import {ResponseModel} from '../models/response.model'
-import {Next, ParameterizedContext} from 'koa'
-import {IRouterParamContext} from 'koa-router'
-import {RecordUtil} from '../utils/util'
+import { ClientService } from '../services/client.service'
+import { ResponseModel } from '../models/response.model'
+import { Next, ParameterizedContext } from 'koa'
+import { IRouterParamContext } from 'koa-router'
+import { RecordUtil } from '../utils/util'
 import 'koa-body/lib/index'
 
-const {StorePrivate, sharedData} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
+const { StorePrivate, sharedData } = require('ishow')
 
 export module ClientController {
     export async function init(ctx: ParameterizedContext<any, IRouterParamContext<any, {}>, any>, next: Next) {

@@ -12,16 +12,16 @@ import {
     UserTokenType,
     WriteValueOptions,
 } from 'node-opcua'
-import {UaErrors, UaSources, UaWarns} from '../../common/ua.enums'
-import {ClientService} from './client.service'
-import {is} from 'typia'
-import {HistoryValueParam} from '../models/params.model'
+import { UaErrors, UaSources, UaWarns } from '../../common/ua.enums'
+import { ClientService } from './client.service'
+import { is } from 'typia'
+import { HistoryValueParam } from '../models/params.model'
 
-const {ClientError, ClientWarn} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
+const { ClientError, ClientWarn } = require('ishow')
 
 export module SessionService {
     export let session!: ClientSession
-    export let userIdentity: UserIdentityInfo = {type: UserTokenType.Anonymous}
+    export let userIdentity: UserIdentityInfo = { type: UserTokenType.Anonymous }
 
     export async function createSession(userInfo?: UserIdentityInfo) {
         try {
@@ -137,7 +137,7 @@ export module SessionService {
 
     export async function readHistoryValue(param: HistoryValueParam) {
         try {
-            let {nodeToRead, start, end, options} = param
+            let { nodeToRead, start, end, options } = param
             if (options) return await session.readHistoryValue(nodeToRead, start, end, options)
             return await session.readHistoryValue(nodeToRead, start, end)
         } catch (e: any) {

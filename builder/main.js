@@ -1,9 +1,9 @@
-const {config} = require('dotenv')
+const { config } = require('dotenv')
 config()
 require('v8-compile-cache')
 
 async function electronStart() {
-    const {app, Menu, protocol} = require('electron')
+    const { app, Menu, protocol } = require('electron')
     app.setPath('appData', generateUserDataPath())
     Menu.setApplicationMenu(null)
     app.commandLine.appendArgument('--no-sandbox') //electron bug with gpu_error
@@ -26,7 +26,7 @@ async function electronStart() {
 electronStart()
 
 async function clientStart() {
-    const {Client} = await require('../src/client/client.js')
+    const { Client } = await require('../src/client/client.js')
     new Client()
 }
 
@@ -54,16 +54,16 @@ function authenticate() {
  * @returns
  */
 function generateUserDataPath() {
-    const {existsSync, readFileSync} = require('fs')
+    const { existsSync, readFileSync } = require('fs')
     let dataPath = process.env['ishow_APPDATA']
     let cacheDir = process.env['V8_COMPILE_CACHE_CACHE_DIR']
 
     if (existsSync(dataPath) && existsSync(cacheDir)) {
         return dataPath
     } else {
-        const {writeFileSync, readFile, mkdirSync} = require('fs')
+        const { writeFileSync, readFile, mkdirSync } = require('fs')
         if (!cacheDir || !dataPath || !existsSync(cacheDir) || !existsSync(dataPath)) {
-            const {join} = require('path')
+            const { join } = require('path')
             dataPath = join(__dirname, '../client.data')
             let envPath = join(__dirname, '../.env')
             if (!existsSync(envPath)) {
@@ -94,10 +94,10 @@ function generateUserDataPath() {
 }
 
 function generateConfigs(dataPath, join, existsSync, mkdirSync) {
-    const {ClientStore} = require('../src/platform/base/store/store.js')
-    new ClientStore({client: false, cwd: dataPath + '/store'})
+    const { ClientStore } = require('../src/platform/base/store/store.js')
+    new ClientStore({ client: false, cwd: dataPath + '/store' })
     const detectPlugins = () => {
-        const {readdirSync} = require('fs')
+        const { readdirSync } = require('fs')
         let pluginPath = join(__dirname, './plugins')
         let paths = readdirSync(pluginPath)
         let plugins = []
@@ -106,7 +106,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
         paths.forEach((value, index) => {
             let actualPath = pluginPath + '/' + value + '/package.json'
             if (existsSync(actualPath)) {
-                let {uniPlugin} = require(actualPath)
+                let { uniPlugin } = require(actualPath)
                 uniPlugin ? plugins.push(uniPlugin) : null
                 if ('projectExtend' in uniPlugin) {
                     uniPlugin.projectExtend.forEach((value) => {
@@ -116,13 +116,11 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
                 }
             }
         })
-        return {plugins: {list: plugins, onStart: onStart}, infos: {projectExtend: Array.from(extend.values())}}
+        return { plugins: { list: plugins, onStart: onStart }, infos: { projectExtend: Array.from(extend.values()) } }
     }
     let pluginsInfo = detectPlugins()
     ClientStore.create({
         name: 'extensions',
-        fileExtension: 'json',
-        clearInvalidConfig: false,
     })
     ClientStore.set('extensions', 'globalExtensionManager', {
         onStart: pluginsInfo.plugins.onStart,
@@ -130,10 +128,8 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
     })
     ClientStore.create({
         name: 'workspace',
-        fileExtension: 'json',
-        clearInvalidConfig: false,
     })
-    ClientStore.create({name: 'share', fileExtension: 'json', clearInvalidConfig: false})
+    ClientStore.create({ name: 'share' })
     ClientStore.set('share', 'ishowActivate', {
         leftTabActivate: 'space',
         rightTabActivate: '',
@@ -336,4 +332,4 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
     })
 }
 
-//todo 写入配置文件,验证激活码(页面?)
+//todo 写入配置文件,验证激活码(页面?),子进程中使用electron需要使用spwan而不是fork

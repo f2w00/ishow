@@ -1,7 +1,7 @@
-import {CreateSelfSignCertificateParam1} from 'node-opcua-pki'
+import { CreateSelfSignCertificateParam1 } from 'node-opcua-pki'
 import EventEmitter from 'events'
 
-const {StorePrivate} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
+const { StorePrivate } = require('ishow')
 
 export module DbUtils {
     /**
@@ -73,20 +73,20 @@ export class CommunicateUtil {
     static emitToClient(event: string, args?: any[]) {
         process.send
             ? process.send({
-                purpose: 'sendToClient',
-                event: event,
-                args: args,
-            })
+                  purpose: 'sendToClient',
+                  event: event,
+                  args: args,
+              })
             : null
     }
 
     static addListenerToClient(event: string, handler: (...args: any[]) => void) {
         process.send
             ? process.send({
-                purpose: 'addListenerToClient',
-                event: event,
-                handler: handler,
-            })
+                  purpose: 'addListenerToClient',
+                  event: event,
+                  handler: handler,
+              })
             : null
     }
 
@@ -114,7 +114,7 @@ export class RecordUtil {
     }
 
     static recordParams(module: string, param: any) {
-        RecordUtil.paramsToRecord.set(module, {...param})
+        RecordUtil.paramsToRecord.set(module, { ...param })
     }
 
     static getRecords() {

@@ -1,28 +1,20 @@
-import Store from 'electron-store'
-import {ipcClient} from '../../ipc/handlers/ipc.handler'
-import {appDataPath} from '../paths'
-import {LocalEvents, renderEvents} from '../../ipc/events/ipc.events'
-
-export type storeOptions = {
-    name: string
-    fileExtension: string
-    clearInvalidConfig: boolean
-}
+// import Store from 'electron-store'
+import { ipcClient } from '../../ipc/handlers/ipc.handler'
+import { appDataPath } from '../paths'
+import { LocalEvents, renderEvents } from '../../ipc/events/ipc.events'
+import { StoreProcessor, storeOptions } from './store_private'
 
 export class ClientStore {
-    static stores: Map<string, Store> = new Map<string, Store>()
+    static stores: Map<string, StoreProcessor> = new Map<string, StoreProcessor>()
     static cwd: string
-    static renderStore: Store
+    static renderStore: StoreProcessor
 
     constructor(options?: { client?: boolean; cwd?: string }) {
         ClientStore.cwd = options?.cwd ? options.cwd : appDataPath + '/store'
         if (options?.client) {
             if (!ClientStore.renderStore) {
-                ClientStore.renderStore = new Store({
+                ClientStore.renderStore = new StoreProcessor({
                     name: 'render',
-                    fileExtension: 'json',
-                    clearInvalidConfig: false,
-                    cwd: ClientStore.cwd,
                 })
             }
             this.initBind()
@@ -51,26 +43,26 @@ export class ClientStore {
     static del(storeName: string, key: string) {
         let store = ClientStore.stores.get(storeName)
         if (store) {
-            store.delete(key)
+            store.del(key)
             return true
         } else {
             return false
         }
     }
 
-    static has(storeName: string, key: string): boolean {
-        let store = ClientStore.stores.get(storeName)
-        if (store) {
-            return store.has(key)
-        } else {
-            return false
-        }
-    }
+    // static has(storeName: string, key: string): boolean {
+    //     let store = ClientStore.stores.get(storeName)
+    //     if (store) {
+    //         return store.has(key)
+    //     } else {
+    //         return false
+    //     }
+    // }
 
     static create(options: storeOptions) {
         let result = ClientStore.stores.get(options.name)
         if (!result) {
-            let store = new Store({...options, cwd: ClientStore.cwd})
+            let store = new StoreProcessor({ ...options })
             ClientStore.stores.set(options.name, store)
             return store
         } else {
@@ -80,20 +72,22 @@ export class ClientStore {
 
     private initBind() {
         ipcClient.handleRender(renderEvents.storeEvents.store, (event, purpose: string, key: string, value?: any) => {
-            let result = undefined
+            let result: any = undefined
             switch (purpose) {
-                case 'set': {
-                    ClientStore.renderStore.set(key, value)
-                    result = true
-                }
+                case 'set':
+                    {
+                        ClientStore.renderStore.set(key, value)
+                        result = true
+                    }
                     break
                 case 'get':
                     result = ClientStore.renderStore.get(key)
                     break
-                case 'del': {
-                    ClientStore.renderStore.delete(key)
-                    result = true
-                }
+                case 'del':
+                    {
+                        ClientStore.renderStore.del(key)
+                        result = true
+                    }
                     break
                 default:
                     break
@@ -103,31 +97,31 @@ export class ClientStore {
     }
 }
 
-export class StorePrivate {
-    static store: Store
+// export class StorePrivate {
+//     static store: Store
 
-    constructor(options: storeOptions) {
-        StorePrivate.store = new Store({...options, cwd: appDataPath + '/store'})
-    }
+//     constructor(options: storeOptions) {
+//         StorePrivate.store = new Store({...options, cwd: appDataPath + '/store'})
+//     }
 
-    static set(key: string, content: any): boolean {
-        StorePrivate.store.set(key, content)
-        return true
-    }
+//     static set(key: string, content: any): boolean {
+//         StorePrivate.store.set(key, content)
+//         return true
+//     }
 
-    static get(key: string): any {
-        return StorePrivate.store.get(key)
-    }
+//     static get(key: string): any {
+//         return StorePrivate.store.get(key)
+//     }
 
-    static del(key: string) {
-        StorePrivate.store.delete(key)
-        return true
-    }
+//     static del(key: string) {
+//         StorePrivate.store.delete(key)
+//         return true
+//     }
 
-    static has(key: string): boolean {
-        return StorePrivate.store.has(key)
-    }
-}
+//     static has(key: string): boolean {
+//         return StorePrivate.store.has(key)
+//     }
+// }
 
 export class RunningRecord {
     static moduleNum = 5
@@ -150,10 +144,3 @@ export class RunningRecord {
         }
     }
 }
-
-export const sharedData = new Store({
-    name: 'share',
-    clearInvalidConfig: false,
-    fileExtension: 'json',
-    cwd: appDataPath + '/store',
-})

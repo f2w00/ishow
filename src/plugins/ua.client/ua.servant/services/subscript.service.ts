@@ -5,14 +5,14 @@ import {
     ModifySubscriptionOptions,
     TimestampsToReturn,
 } from 'node-opcua'
-import {SessionService} from './session.service'
-import {UaErrors, UaSources, UaWarns} from '../../common/ua.enums'
-import {UaMessage} from '../models/message.model'
-import {ItemAndName, NodeID, SubscriptGroupParam, SubscriptSingleParam} from '../models/params.model'
-import {Config} from '../../config/config.default'
-import {CommunicateUtil, RecordUtil} from '../utils/util'
+import { SessionService } from './session.service'
+import { UaErrors, UaSources, UaWarns } from '../../common/ua.enums'
+import { UaMessage } from '../models/message.model'
+import { ItemAndName, NodeID, SubscriptGroupParam, SubscriptSingleParam } from '../models/params.model'
+import { Config } from '../../config/config.default'
+import { CommunicateUtil, RecordUtil } from '../utils/util'
 
-const {ClientError, ClientWarn} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
+const { ClientError, ClientWarn } = require('ishow')
 
 export module SubscriptService {
     export let subscription!: ClientSubscription
@@ -51,7 +51,7 @@ export module SubscriptService {
                 .on('err', (err) => {
                     throw new ClientError(UaSources.subscriptService, UaErrors.errorMonitoringItem, err)
                 })
-            monitoredItems.set(itemId, {monitoredItem: monitoredItem, displayName: displayName})
+            monitoredItems.set(itemId, { monitoredItem: monitoredItem, displayName: displayName })
         } catch (e: any) {
             throw new ClientError(UaSources.subscriptService, UaErrors.errorBinding, e.message, e.stack)
         }
@@ -85,7 +85,7 @@ export module SubscriptService {
      */
     export function addMonitoredItems(param: SubscriptGroupParam) {
         try {
-            param.parameters = param.parameters || {samplingInterval: 100, discardOldest: true, queueSize: 10}
+            param.parameters = param.parameters || { samplingInterval: 100, discardOldest: true, queueSize: 10 }
             param.timeStampToReturn = param.timeStampToReturn || TimestampsToReturn.Both
             if (subscription) {
                 for (let i = 0; i < param.itemsToMonitor.length; i++) {
@@ -111,7 +111,7 @@ export module SubscriptService {
      */
     export function addMonitoredItem(param: SubscriptSingleParam) {
         try {
-            param.parameters = param.parameters || {samplingInterval: 100, discardOldest: true, queueSize: 10}
+            param.parameters = param.parameters || { samplingInterval: 100, discardOldest: true, queueSize: 10 }
             param.timeStampToReturn = param.timeStampToReturn || TimestampsToReturn.Both
             let monitoredItem = ClientMonitoredItem.create(
                 subscription,
@@ -159,6 +159,6 @@ export module SubscriptService {
                 displayName: value.displayName,
             })
         })
-        results.length > 0 ? RecordUtil.recordParams('subscript:items', {items: results}) : null
+        results.length > 0 ? RecordUtil.recordParams('subscript:items', { items: results }) : null
     }
 }

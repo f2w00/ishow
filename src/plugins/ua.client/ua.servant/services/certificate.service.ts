@@ -1,11 +1,11 @@
-import {OPCUACertificateManager} from 'node-opcua'
-import {CreateSelfSignCertificateParam1} from 'node-opcua-pki'
-import {Certificate} from 'node-opcua-crypto'
-import {UaErrors, UaSources} from '../../common/ua.enums'
+import { OPCUACertificateManager } from 'node-opcua'
+import { CreateSelfSignCertificateParam1 } from 'node-opcua-pki'
+import { Certificate } from 'node-opcua-crypto'
+import { UaErrors, UaSources } from '../../common/ua.enums'
 
-const {ClientError} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
-const {appDataPath} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
-const {StorePrivate} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
+const { ClientError } = require('ishow')
+const { appDataPath } = require('ishow')
+const { StorePrivate } = require('ishow')
 
 export module CertificateService {
     export let certificate = new OPCUACertificateManager({
@@ -43,7 +43,7 @@ export module CertificateService {
         try {
             params.startDate = new Date(params.startDate)
             params.outputFile = appDataPath + '/cert/' + params.outputFile
-            await certificate.createSelfSignedCertificate({...params})
+            await certificate.createSelfSignedCertificate({ ...params })
             StorePrivate.set('pkiReady', true)
         } catch (e: any) {
             throw new ClientError(UaSources.certService, UaErrors.errorCreatCert, e.message, e.stack)

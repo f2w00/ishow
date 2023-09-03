@@ -1,0 +1,17 @@
+{
+    "uniPlugin": {
+        "version": "1",
+        "storage": "\\easy-report\\package.json",
+        "main": "\\easy-report\\extension.js",
+        "worker": null,
+        "render": {},
+        "engine": "兼容客户端版本",
+        "identifier": {
+            "id": "easy-report",
+            "uuid": null
+        },
+        "onEvents": [],
+        "projectExtend": [],
+        "defaultStart": false
+    }
+}

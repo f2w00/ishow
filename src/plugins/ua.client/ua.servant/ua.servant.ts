@@ -1,16 +1,16 @@
 import Koa from 'koa'
-import {koaBody} from 'koa-body'
-import {Config} from '../config/config.default'
-import {ClientRouter} from './routers/client.router'
-import {SessionRouter} from './routers/session.router'
-import {SubscriptRouter} from './routers/subscript.router'
-import {CertificateRouter} from './routers/certificate.router'
-import {DbRouter} from './routers/db.router'
-import {ErrorMiddleware} from './middlewares/error.middleware'
-import {CommunicateUtil, RecordUtil} from './utils/util'
-import {parallel} from 'async'
+import { koaBody } from 'koa-body'
+import { Config } from '../config/config.default'
+import { ClientRouter } from './routers/client.router'
+import { SessionRouter } from './routers/session.router'
+import { SubscriptRouter } from './routers/subscript.router'
+import { CertificateRouter } from './routers/certificate.router'
+import { DbRouter } from './routers/db.router'
+import { ErrorMiddleware } from './middlewares/error.middleware'
+import { CommunicateUtil, RecordUtil } from './utils/util'
+import { parallel } from 'async'
 
-const {StorePrivate} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
+const { StorePrivate } = require('ishow')
 
 export module Server {
     export async function activateServer() {

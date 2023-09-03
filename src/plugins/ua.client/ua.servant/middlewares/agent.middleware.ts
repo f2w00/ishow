@@ -1,5 +1,5 @@
-import {Next, ParameterizedContext} from 'koa'
-import {IRouterParamContext} from 'koa-router'
+import { Next, ParameterizedContext } from 'koa'
+import { IRouterParamContext } from 'koa-router'
 import {
     BrowseDescriptionLike,
     ClientSubscriptionOptions,
@@ -11,8 +11,8 @@ import {
     WriteValueOptions,
 } from 'node-opcua'
 import 'koa-body/lib/index'
-import {is} from 'typia'
-import {TableCreateModes, UaErrors, UaInfos, UaSources} from '../../common/ua.enums'
+import { is } from 'typia'
+import { TableCreateModes, UaErrors, UaInfos, UaSources } from '../../common/ua.enums'
 import {
     EndpointParam,
     HistoryValueParam,
@@ -22,12 +22,12 @@ import {
     SubscriptGroupParam,
     SubscriptSingleParam,
 } from '../models/params.model'
-import {CreateSelfSignCertificateParam1} from 'node-opcua-pki'
-import {Certificate} from 'node-opcua-crypto'
-import {CertUtils, DbUtils, RecordUtil} from '../utils/util'
+import { CreateSelfSignCertificateParam1 } from 'node-opcua-pki'
+import { Certificate } from 'node-opcua-crypto'
+import { CertUtils, DbUtils, RecordUtil } from '../utils/util'
 
-const {LogPrivate} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
-const {appDataPath} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
+const { LogPrivate } = require('ishow')
+const { appDataPath } = require('ishow')
 
 type Source = string | undefined
 type Warn = string
@@ -86,7 +86,7 @@ export module AgentMiddleware {
                 maxLogSize: 20000, //文件最大存储空间，当文件内容超过文件存储空间会自动生成一个文件test.log.1的序列自增长的文件
             },
         },
-        categories: {default: {appenders: ['uaclient'], level: 'info'}},
+        categories: { default: { appenders: ['uaclient'], level: 'info' } },
     })
 
     export async function clientValidator(
@@ -98,7 +98,7 @@ export module AgentMiddleware {
                 ctx.request.body
                 if (is<OPCUAClientOptions | undefined>(ctx.request.body)) {
                     RecordUtil.recordParams('client:init', ctx.request.body)
-                    Log.info(new ClientInfo(UaSources.clientService, UaInfos.clientCreated, {...ctx.request.body}))
+                    Log.info(new ClientInfo(UaSources.clientService, UaInfos.clientCreated, { ...ctx.request.body }))
                     // CommunicateUtil.emitToClient('Log.info', [
                     //     new ClientInfo(UaSources.clientService, UaInfos.clientCreated, { ...ctx.request.body }),
                     // ])
@@ -112,7 +112,7 @@ export module AgentMiddleware {
                 if (is<{ endpointUrl: string }>(ctx.request.body)) {
                     RecordUtil.recordParams('client:connect', ctx.request.body)
                     Log.info(
-                        new ClientInfo(UaSources.clientService, UaInfos.connectionCreated, {...ctx.request.body})
+                        new ClientInfo(UaSources.clientService, UaInfos.connectionCreated, { ...ctx.request.body })
                     )
                     // CommunicateUtil.emitToClient('Log.info', [
                     //     new ClientInfo(UaSources.clientService, UaInfos.connectionCreated, { ...ctx.request.body }),
@@ -126,7 +126,7 @@ export module AgentMiddleware {
             case '/client/endpoints': {
                 if (is<EndpointParam | undefined>(ctx.request.body)) {
                     Log.info(
-                        new ClientInfo(UaSources.clientService, UaInfos.connectionCreated, {...ctx.request.body})
+                        new ClientInfo(UaSources.clientService, UaInfos.connectionCreated, { ...ctx.request.body })
                     )
                     // CommunicateUtil.emitToClient('Log.info', [
                     //     new ClientInfo(UaSources.clientService, UaInfos.connectionCreated, { ...ctx.request.body }),
@@ -219,7 +219,7 @@ export module AgentMiddleware {
             }
             case '/session/id': {
                 if (is<{ path: string }>(ctx.query)) {
-                    Log.info(new ClientInfo(UaSources.sessionService, UaInfos.getIdByName, {...ctx.request.body}))
+                    Log.info(new ClientInfo(UaSources.sessionService, UaInfos.getIdByName, { ...ctx.request.body }))
                     // CommunicateUtil.emitToClient('Log.info', [
                     //     new ClientInfo(UaSources.sessionService, UaInfos.getIdByName, { ...ctx.request.body }),
                     // ])
@@ -287,7 +287,7 @@ export module AgentMiddleware {
             case '/subscript/modify': {
                 if (is<ModifySubscriptionOptions>(ctx.request.body)) {
                     Log.info(
-                        new ClientInfo(UaSources.subscriptService, UaInfos.modifySubscription, {...ctx.request.body})
+                        new ClientInfo(UaSources.subscriptService, UaInfos.modifySubscription, { ...ctx.request.body })
                     )
                     // CommunicateUtil.emitToClient('Log.info', [
                     //     new ClientInfo(UaSources.subscriptService, UaInfos.modifySubscription, { ...ctx.request.body }),
@@ -302,7 +302,7 @@ export module AgentMiddleware {
             case '/subscript/item/group': {
                 if (is<SubscriptGroupParam>(ctx.request.body)) {
                     Log.info(
-                        new ClientInfo(UaSources.subscriptService, UaInfos.monitoredItemInit, {...ctx.request.body})
+                        new ClientInfo(UaSources.subscriptService, UaInfos.monitoredItemInit, { ...ctx.request.body })
                     )
                     // CommunicateUtil.emitToClient('Log.info', [
                     //     new ClientInfo(UaSources.subscriptService, UaInfos.monitoredItemInit, { ...ctx.request.body }),
@@ -433,7 +433,7 @@ export module AgentMiddleware {
                                     UaSources.paramValidator,
                                     UaErrors.unFormatDbName,
                                     'It cannot start with a number. The name can only contain: ' +
-                                    'Chinese characters, numbers, lowercase letters, underscores, and the length is within 2-15 characters'
+                                        'Chinese characters, numbers, lowercase letters, underscores, and the length is within 2-15 characters'
                                 )
                             }
                         }
@@ -445,7 +445,7 @@ export module AgentMiddleware {
                                         UaSources.paramValidator,
                                         UaErrors.unFormatDbName,
                                         'It cannot start with a number. The name can only contain: ' +
-                                        'Chinese characters, numbers, lowercase letters, underscores, and the length is within 2-15 characters'
+                                            'Chinese characters, numbers, lowercase letters, underscores, and the length is within 2-15 characters'
                                     )
                                 }
                             }

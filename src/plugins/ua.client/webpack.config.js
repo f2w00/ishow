@@ -3,14 +3,14 @@ const path = require('path')
 module.exports = {
     mode: 'production',
     entry: path.join(__dirname, './ua.servant/ua.servant.js'),
-    resolve: {alias: {hexoid: require.resolve('hexoid')}},
+    resolve: { alias: { hexoid: require.resolve('hexoid') } },
     output: {
         path: __dirname,
         filename: 'uaclient.js',
     },
     externals: [
-        ({context, request}, callback) => {
-            if (/^ishow$/.test(request) || /^electron$/.test(request)) {
+        ({ context, request }, callback) => {
+            if (/^ishow$/.test(request) || /plotly/.test(request)) {
                 return callback(null, `commonjs ${request}`)
             }
             callback()

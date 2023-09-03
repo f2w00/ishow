@@ -1,12 +1,12 @@
-const {Persistence} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
-const {sharedData} = require('D:\\works\\idea_projects\\uniclient\\src\\platform\\ishow.ts')
-import {TableCreateModes, UaErrors, UaSources} from '../../common/ua.enums'
-import {Config} from '../../config/config.default'
-import {CommunicateUtil, DbUtils} from '../utils/util'
-import {IDbData, IFieldNames} from '../models/params.model'
-import {UaMessage} from '../models/message.model'
-import {ClientError} from '../middlewares/agent.middleware'
-import {DataFrame, Series, concat, toJSON} from 'danfojs-node'
+const { Persistence } = require('ishow')
+const { sharedData } = require('ishow')
+import { TableCreateModes, UaErrors, UaSources } from '../../common/ua.enums'
+import { Config } from '../../config/config.default'
+import { CommunicateUtil, DbUtils } from '../utils/util'
+import { IDbData, IFieldNames } from '../models/params.model'
+import { UaMessage } from '../models/message.model'
+import { ClientError } from '../middlewares/agent.middleware'
+import { DataFrame, Series, concat, toJSON } from 'danfojs-node'
 
 export module DbService {
     export let defaultTableName: string = Config.defaultTable
@@ -73,9 +73,9 @@ export module DbService {
             })
             DbService.createTable(defaultTableName, fieldSet)
             // // 注意这里需要创建一个pipe然后再进行注册
-            CommunicateUtil.emitToClient('Broker.create', [{name: Config.defaultPipeName}])
+            CommunicateUtil.emitToClient('Broker.create', [{ name: Config.defaultPipeName }])
             CommunicateUtil.emitToClient('pipe:' + Config.defaultPipeName + '.registerIpc', [
-                {module: 'extensionProcess:uaclient'},
+                { module: 'extensionProcess:uaclient' },
             ])
             CommunicateUtil.events.on('pipe:' + Config.defaultPipeName + '.pushed', (data: UaMessage) => {
                 storeTemp(data)
@@ -156,7 +156,7 @@ export module DbService {
             let projectPath = sharedData.get('projectInfo')
             persist = new Persistence(
                 attribute,
-                {dialect: 'sqlite', storage: projectPath + '/database/data.db', logging: false},
+                { dialect: 'sqlite', storage: projectPath + '/database/data.db', logging: false },
                 table
             )
         } catch (e: any) {
@@ -166,17 +166,17 @@ export module DbService {
 
     function updateFrame() {
         DbService.dbTemp.forEach((value, key) => {
-            let tempFrame = new DataFrame([{...value, sourceTimestamp: key}])
+            let tempFrame = new DataFrame([{ ...value, sourceTimestamp: key }])
             DbService.dbTempFrame =
                 DbService.dbTempFrame.index.length > 0
                     ? (concat({
-                        dfList: [DbService.dbTempFrame, tempFrame],
-                        axis: 0,
-                    }) as DataFrame)
+                          dfList: [DbService.dbTempFrame, tempFrame],
+                          axis: 0,
+                      }) as DataFrame)
                     : tempFrame
         })
-        DbService.dbTempFrame.setIndex({column: 'sourceTimestamp', inplace: true})
-        DbService.dbTempFrame.sortIndex({inplace: true})
+        DbService.dbTempFrame.setIndex({ column: 'sourceTimestamp', inplace: true })
+        DbService.dbTempFrame.sortIndex({ inplace: true })
         DbService.dbTemp.clear()
     }
 
@@ -184,7 +184,7 @@ export module DbService {
         DbService.dbTempFrame.fillNa('null')
         let data = toJSON(DbService.dbTempFrame)
         persist.insertMany(data)
-        DbService.dbTempFrame.drop({index: DbService.dbTempFrame.index, inplace: true})
+        DbService.dbTempFrame.drop({ index: DbService.dbTempFrame.index, inplace: true })
     }
 }
 

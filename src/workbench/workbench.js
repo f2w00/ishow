@@ -1,39 +1,17 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) {
-        return value instanceof P ? value : new P(function (resolve) {
-            resolve(value);
-        });
-    }
-
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) {
-            try {
-                step(generator.next(value));
-            } catch (e) {
-                reject(e);
-            }
-        }
-
-        function rejected(value) {
-            try {
-                step(generator["throw"](value));
-            } catch (e) {
-                reject(e);
-            }
-        }
-
-        function step(result) {
-            result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-        }
-
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : {"default": mod};
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", {value: true});
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.Workbench = void 0;
 const electron_1 = require("electron");
 const events_1 = require("events");
@@ -41,7 +19,6 @@ const ipc_events_js_1 = require("../platform/ipc/events/ipc.events.js");
 const ipc_handler_js_1 = require("../platform/ipc/handlers/ipc.handler.js");
 const electron_window_state_1 = __importDefault(require("electron-window-state"));
 const store_js_1 = require("../platform/base/store/store.js");
-
 class Workbench extends events_1.EventEmitter {
     constructor(preload, homeViewPath, icon, width, height) {
         super();
@@ -60,7 +37,6 @@ class Workbench extends events_1.EventEmitter {
         });
         this.existViews = new Map();
     }
-
     createMainWindow(options) {
         return __awaiter(this, void 0, void 0, function* () {
             this.mainWindow = new electron_1.BrowserWindow({
@@ -87,7 +63,6 @@ class Workbench extends events_1.EventEmitter {
             this.winState.manage(this.mainWindow);
         });
     }
-
     initBind(mainWindow) {
         ipc_handler_js_1.ipcClient.onRender(ipc_events_js_1.renderEvents.benchEvents.minimize, () => {
             mainWindow.minimize();
@@ -100,7 +75,6 @@ class Workbench extends events_1.EventEmitter {
             store_js_1.ClientStore.set('config', configName, config);
         });
     }
-
     createWindow(viewUrl, isWebView) {
         return __awaiter(this, void 0, void 0, function* () {
             const window = new electron_1.BrowserWindow({
@@ -109,8 +83,7 @@ class Workbench extends events_1.EventEmitter {
             isWebView ? yield window.loadFile(viewUrl) : yield window.loadURL(viewUrl);
         });
     }
-
-    createView(viewId, viewUrl, rectangle = {x: 0, y: 0, width: 300, height: 300}, isWebView = false) {
+    createView(viewId, viewUrl, rectangle = { x: 0, y: 0, width: 300, height: 300 }, isWebView = false) {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.existViews.has(viewId)) {
                 return false;
@@ -141,13 +114,10 @@ class Workbench extends events_1.EventEmitter {
             return true;
         });
     }
-
     getMainWindow() {
         return this.mainWindow;
     }
-
     beforeClose() {
     }
 }
-
 exports.Workbench = Workbench;
