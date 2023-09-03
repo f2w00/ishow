@@ -1,7 +1,8 @@
 import { CreateSelfSignCertificateParam1 } from 'node-opcua-pki'
 import EventEmitter from 'events'
+// import { SubscriptService } from '../services/subscript.service'
 
-const { StorePrivate } = require('ishow')
+const { StorePrivate } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
 
 export module DbUtils {
     /**
@@ -68,6 +69,11 @@ export class CommunicateUtil {
 
     constructor() {
         CommunicateUtil.addListenerToProcess()
+        const { commonEvent } = require('../../config/event.bus')
+        commonEvent.on('main:uaclient.close', () => {
+            console.log('close uaclient')
+            RecordUtil.recordToJson()
+        })
     }
 
     static emitToClient(event: string, args?: any[]) {

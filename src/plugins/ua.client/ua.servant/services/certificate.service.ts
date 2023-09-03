@@ -3,9 +3,9 @@ import { CreateSelfSignCertificateParam1 } from 'node-opcua-pki'
 import { Certificate } from 'node-opcua-crypto'
 import { UaErrors, UaSources } from '../../common/ua.enums'
 
-const { ClientError } = require('ishow')
-const { appDataPath } = require('ishow')
-const { StorePrivate } = require('ishow')
+const { ClientError } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
+const { appDataPath } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
+const { StorePrivate } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
 
 export module CertificateService {
     export let certificate = new OPCUACertificateManager({

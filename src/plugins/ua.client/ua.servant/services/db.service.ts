@@ -1,5 +1,5 @@
-const { Persistence } = require('ishow')
-const { sharedData } = require('ishow')
+const { Persistence } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
+const { sharedData } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
 import { TableCreateModes, UaErrors, UaSources } from '../../common/ua.enums'
 import { Config } from '../../config/config.default'
 import { CommunicateUtil, DbUtils } from '../utils/util'

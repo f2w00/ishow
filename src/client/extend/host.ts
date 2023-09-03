@@ -1,5 +1,5 @@
-import {IExtension} from './extend.js'
-import {platform, plugins} from '../../platform/base/paths'
+import { IExtension } from './extend.js'
+import { platform, plugins } from '../../platform/base/paths'
 
 /**
  * @description activate是插件激活时执行的函数,
@@ -15,7 +15,7 @@ class WorkerActivator {
 
     static async activate(iExtension: IExtension) {
         try {
-            let {extension} = await require(plugins + iExtension.main)
+            let { extension } = await require(plugins + iExtension.main)
             let instance: IExtensionInstance = extension
             instance.activate()
             WorkerActivator.beforeExtensionClose = instance.beforeClose
@@ -38,7 +38,7 @@ class WorkerActivator {
             (code: string, filename: string) => {
                 return code.replace(/(require\([',"])(ishow)/g, '$1' + apiPath + '/ishow')
             },
-            {exts: ['.js'], matcher: matcher}
+            { exts: ['.js'], matcher: matcher }
         )
     }
 
@@ -52,10 +52,11 @@ process.on('message', (param: { event: string; message?: IExtension }) => {
         case 'extension:activate':
             if (param.message) WorkerActivator.activate(param.message)
             break
-        case 'extension:close': {
-            WorkerActivator.beforeClose()
-            process.exit(0)
-        }
+        case 'extension:close':
+            {
+                WorkerActivator.beforeClose()
+                process.exit(0)
+            }
             break
         default:
             break

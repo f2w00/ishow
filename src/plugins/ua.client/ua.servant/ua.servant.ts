@@ -10,7 +10,7 @@ import { ErrorMiddleware } from './middlewares/error.middleware'
 import { CommunicateUtil, RecordUtil } from './utils/util'
 import { parallel } from 'async'
 
-const { StorePrivate } = require('ishow')
+const { StorePrivate } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
 
 export module Server {
     export async function activateServer() {

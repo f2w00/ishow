@@ -5,7 +5,7 @@ import { IRouterParamContext } from 'koa-router'
 import { RecordUtil } from '../utils/util'
 import 'koa-body/lib/index'
 
-const { StorePrivate, sharedData } = require('ishow')
+const { StorePrivate, sharedData } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
 
 export module ClientController {
     export async function init(ctx: ParameterizedContext<any, IRouterParamContext<any, {}>, any>, next: Next) {

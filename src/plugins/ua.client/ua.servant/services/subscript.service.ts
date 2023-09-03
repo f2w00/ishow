@@ -11,8 +11,9 @@ import { UaMessage } from '../models/message.model'
 import { ItemAndName, NodeID, SubscriptGroupParam, SubscriptSingleParam } from '../models/params.model'
 import { Config } from '../../config/config.default'
 import { CommunicateUtil, RecordUtil } from '../utils/util'
+import { commonEvent } from '../../config/event.bus'
 
-const { ClientError, ClientWarn } = require('ishow')
+const { ClientError, ClientWarn } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
 
 export module SubscriptService {
     export let subscription!: ClientSubscription
@@ -59,6 +60,9 @@ export module SubscriptService {
 
     export function createSubscription(subOptions: ClientSubscriptionOptions = subscriptionOption) {
         try {
+            commonEvent.on('main:uaclient.close', () => {
+                SubscriptService.record()
+            })
             subscription = ClientSubscription.create(SessionService.session, subOptions)
         } catch (e: any) {
             throw new ClientError(UaSources.subscriptService, UaErrors.errorCreatingSub, e.message, e.stack)

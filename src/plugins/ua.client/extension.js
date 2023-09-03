@@ -1,18 +1,9 @@
 module.exports = {
     extension: {
-        activate: () => {
-            //做一些注册之类的事情
-            console.log('activate')
-        },
+        activate: () => {},
         beforeClose: () => {
-            const {SubscriptService} = require('./ua.servant/services/subscript.service')
-            const {RecordUtil} = require('./ua.servant/utils/util')
-            const {Config} = require('./config/config.default')
-            //不同进程
-            SubscriptService.record()
-            Config.beforeClose()
-            RecordUtil.recordToJson()
-            console.log('closed')
+            const { commonEvent } = require('./config/event.bus')
+            commonEvent.emit('main:uaclient.close')
         },
     },
 }

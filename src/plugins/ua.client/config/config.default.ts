@@ -1,5 +1,5 @@
-import {MessageSecurityMode, SecurityPolicy} from 'node-opcua'
-import {DbUtils} from '../ua.servant/utils/util.js'
+import { MessageSecurityMode, SecurityPolicy } from 'node-opcua'
+import { DbUtils } from '../ua.servant/utils/util.js'
 import path from 'path'
 
 export module Config {
@@ -83,12 +83,11 @@ export module Config {
                     maxLogSize: 50000, //文件最大存储空间，当文件内容超过文件存储空间会自动生成一个文件test.log.1的序列自增长的文件
                 },
             },
-            categories: {default: {appenders: ['uaclient'], level: 'info'}},
+            categories: { default: { appenders: ['uaclient'], level: 'info' } },
         }
     }
 
     export let defaultPipeName = 'uaclient'
 
-    export function beforeClose() {
-    }
+    export function beforeClose() {}
 }

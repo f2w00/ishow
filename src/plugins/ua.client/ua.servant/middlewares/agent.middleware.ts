@@ -26,8 +26,8 @@ import { CreateSelfSignCertificateParam1 } from 'node-opcua-pki'
 import { Certificate } from 'node-opcua-crypto'
 import { CertUtils, DbUtils, RecordUtil } from '../utils/util'
 
-const { LogPrivate } = require('ishow')
-const { appDataPath } = require('ishow')
+const { LogPrivate } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
+const { appDataPath } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
 
 type Source = string | undefined
 type Warn = string
