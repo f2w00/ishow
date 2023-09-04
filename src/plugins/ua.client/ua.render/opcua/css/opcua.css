@@ -233,29 +233,33 @@ body {
     min-width: 60px;
 }
 
-.dbBox .card .fieldArea .fieldItem {
-    height: 35px;
-    line-height: 35px;
-}
-
-.dbBox .card .fieldArea .fieldItem .fieldItemName {
-    width: 100px;
-    padding-left: 7px;
+.dbBox .card .fieldArea {
+    width: 80%;
+    max-height: 220px;
+    margin: 0 auto;
     font-size: 12px;
-    vertical-align: middle;
-    display: inline-block;
+    text-align: left;
 }
 
-.dbBox .card .fieldArea .fieldItem .el-input {
-    display: inline-block;
-    width: calc(100% - 120px);
-}
-
-.dbBox .card .fieldArea .fieldItem .el-input__inner {
-    width: calc(100% - 10px);
+.dbBox .card .fieldArea .fieldAreaName {
     height: 25px;
     line-height: 25px;
-    margin: 5px;
+    font-size: 14px;
+}
+
+.dbBox .card .fieldArea .fieldItemArea {
+    max-height: 190px;
+    margin-bottom: 5px;
+    overflow-y: auto;
+}
+
+.dbBox .card .fieldArea .fieldItem {
+    height: 25px;
+    line-height: 25px;
+    margin-top: 5px;
+    padding-left: 10px;
+    border-radius: 5px;
+    background-color: #ffffff;
 }
 
 .dbBox .card .dbBtn {

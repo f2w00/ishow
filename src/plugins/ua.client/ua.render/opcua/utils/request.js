@@ -22,7 +22,6 @@ const request = axios.create({
 request.interceptors.request.use(
     (config) => {
         // 对config进行处理
-        console.log(config)
         return config
     },
     (error) => {
@@ -152,4 +151,4 @@ function deleteJson(url, params = {}) {
 }
 
 // 导出实例
-export {request, post, get, put, deleteJson}
+export { request, post, get, put, deleteJson }

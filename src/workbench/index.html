@@ -1,216 +1,152 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="element-ui/css/index.css"/>
-    <link rel="stylesheet" href="css/index/index.css"/>
-    <link rel="stylesheet" href="css/index/indexTopbar.css"/>
-    <link rel="stylesheet" href="css/index/indexSubview.css"/>
-    <link rel="stylesheet" href="css/index/indexMainview.css"/>
-    <link rel="stylesheet" href="css/index/indexLogview.css"/>
-    <link rel="stylesheet" href="css/dialog/dialog.css"/>
-    <link rel="stylesheet" href="css/dialog/menuWrapper.css"/>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="element-ui/css/index.css" />
+    <link rel="stylesheet" href="css/index/index.css" />
+    <link rel="stylesheet" href="css/index/indexTopbar.css" />
+    <link rel="stylesheet" href="css/index/indexSubview.css" />
+    <link rel="stylesheet" href="css/index/indexMainview.css" />
+    <link rel="stylesheet" href="css/index/indexLogview.css" />
+    <link rel="stylesheet" href="css/dialog/dialog.css" />
+    <link rel="stylesheet" href="css/dialog/menuWrapper.css" />
 </head>
 
 <body>
-<div id="app">
-    <div class="container">
-        <div class="main-container">
-            <div class="operationBox">
-                <i class="el-icon-minus minimize-btn" @click="handleMin"></i>
-                <i class="el-icon-copy-document max-unmax-btn" @click="handleMax"></i>
-                <i class="el-icon-close close-btn" @click="handleClose"></i>
-            </div>
-            <div class="subview subviewLeft">
-                <div class="resizeShow">
-                    <!-- 可能会影响拖动 -->
-                    <div class="resize horizontal"></div>
+    <div id="app">
+        <div class="container">
+            <div class="main-container">
+                <div class="operationBox">
+                    <i class="el-icon-minus minimize-btn" @click="handleMin"></i>
+                    <i class="el-icon-copy-document max-unmax-btn" @click="handleMax"></i>
+                    <i class="el-icon-close close-btn" @click="handleClose"></i>
                 </div>
-                <div class="line"></div>
-                <div class="subview-content subviewLeft-content">
-                    <el-tabs
-                            :value="ishowActivate.leftTabActivate"
-                            tab-position="left"
-                            @tab-click="handleTableft"
-                    >
-                        <el-tab-pane
-                                v-for="(item, index) in subviewLeftTabs"
-                                :id="item.name"
-                                :name="item.name"
-                                :disabled="item.disabled"
-                        >
-                                    <span slot="label">
-                                        <img class="icon" :src="item.iconSrc"/>
-                                    </span>
-                            <div class="grid-box">
-                                <!-- TODO titleBox高度会被顶的变小 -->
-                                <div class="titleBox">{{item.content}}</div>
-                                <iframe :src="item.viewPath" class="left-iframe"></iframe>
-                            </div>
-                        </el-tab-pane>
-                    </el-tabs>
-                </div>
-                <div class="subviewLeft-bottom">
-                    <img class="icon" src="./assets/icon/log-management.svg" @click="handleTabbottom"/>
-                </div>
-            </div>
-            <main class="main content-box" id="main-content-box">
-                <div id="decisonBox" class="mainviewTop">
-                    <el-tabs
-                            v-model="ishowActivate.mainTabsActivate"
-                            type="border-card"
-                            closable
-                            @tab-remove="removeTab"
-                    >
-                        <el-tab-pane
-                                v-for="(item, index) in mainTabs"
-                                :key="item.name"
-                                :label="item.title"
-                                :name="item.name"
-                                :class="item.name+'Tabpane'"
-                                :id="item.name"
-                        >
-                            <iframe
-                                    :class="item.name+'Iframe'"
-                                    :src="item.src"
-                                    :id="'iframe:'+item.name"
-                            ></iframe>
-                        </el-tab-pane>
-                    </el-tabs>
-                </div>
-                <footer class="main-bottom" id="main-bottom">
-                    <div class="resize mian-vertical"></div>
+                <div class="subview subviewLeft">
+                    <div class="resizeShow">
+                        <!-- 可能会影响拖动 -->
+                        <div class="resize horizontal"></div>
+                    </div>
                     <div class="line"></div>
-                    <div class="logview">
-                        <el-tabs :value="ishowActivate.bottomTabActivate">
-                            <el-tab-pane label="日志" name="log">
-                                <el-table
-                                        class="logTable"
-                                        :data="logTableData"
-                                        :row-class-name="tableRowClassName"
-                                        height="100%"
-                                        stripe
-                                        style="width: 100%"
-                                        border
-                                >
-                                    <el-table-column prop="timeStamp" label="Timestamp" width="150">
-                                    </el-table-column>
-                                    <el-table-column prop="source" label="Source" width="100">
-                                    </el-table-column>
-                                    <el-table-column prop="information" label="Information"></el-table-column>
-                                    <el-table-column prop="error" label="Error"></el-table-column>
-                                    <el-table-column prop="warn" label="Warn"></el-table-column>
-                                </el-table>
+                    <div class="subview-content subviewLeft-content">
+                        <el-tabs :value="ishowActivate.leftTabActivate" tab-position="left" @tab-click="handleTableft">
+                            <el-tab-pane v-for="(item, index) in subviewLeftTabs" :id="item.name" :name="item.name"
+                                :disabled="item.disabled">
+                                <span slot="label">
+                                    <img class="icon" :src="item.iconSrc" />
+                                </span>
+                                <div class="grid-box">
+                                    <!-- TODO titleBox高度会被顶的变小 -->
+                                    <div class="titleBox">{{item.content}}</div>
+                                    <iframe :src="item.viewPath" class="left-iframe"></iframe>
+                                </div>
                             </el-tab-pane>
                         </el-tabs>
                     </div>
-                    <div class="operationBox minimize-log">
-                        <i class="el-icon-minus" @click="handleTabbottom"></i>
+                    <div class="subviewLeft-bottom">
+                        <img class="icon" src="./assets/icon/log-management.svg" @click="handleTabbottom" />
                     </div>
-                </footer>
-            </main>
-            <div class="subview subviewRight">
-                <div class="resizeShow">
-                    <div class="resize horizontal"></div>
                 </div>
-                <div class="line"></div>
-                <div class="subview-content subviewRight-content">
-                    <el-tabs
-                            :value="ishowActivate.rightTabActivate"
-                            tab-position="right"
-                            @tab-click="handleTabright"
-                    >
-                        <el-tab-pane v-for="(item, index) in subviewRightTabs" label="" :name="item.name">
-                                    <span slot="label">
-                                        <img class="icon" :src="item.iconSrc"/>
-                                    </span>
-                            <div class="grid-box">
-                                <div class="titleBox">{{item.content}}</div>
-                                <iframe
-                                        :src="item.src"
-                                        :id="'iframe:'+item.name"
-                                        :class="item.name+'Right right-iframe'"
-                                        frameborder="none"
-                                ></iframe>
-                            </div>
-                        </el-tab-pane>
-                    </el-tabs>
-                </div>
-            </div>
-            <!-- TODO 右侧边栏顶部图层 -->
-            <!-- <span class="rightBarTopmark"></span> -->
-        </div>
-        <el-dialog
-                class="addDialog"
-                :visible.sync="dialogVisible"
-                top="50px"
-                :close-on-click-modal="false"
-                @close="handleCancledialog"
-        >
-            <iframe
-                    name="dialogIframe"
-                    id="dialogIframe"
-                    :src="iframeUrl"
-                    framebordering="0"
-                    scrolling="no"
-                    style="width: 100%"
-            ></iframe>
-        </el-dialog>
-        <div class="menu_dialog" v-if="ishowMenuConfig.showMenu">
-            <div class="__menu__wrapper" ref="MenuWrapper">
-                <template v-for="(item, index) in ishowMenuConfig.menuList">
-                    <div
-                            class="__menu__item"
-                            v-if="!item.hidden && !item.line"
-                            :key="index"
-                            :class="{ disabled: item.disabled }"
-                            @mousedown.stop="handleMenuItemClick(item)"
-                            @mouseenter="handleMenuMouseEnter($event, item)"
-                    >
-                                <span class="__menu__item-icon" v-if="ishowMenuConfig.hasIcon">
-                                    <i
-                                            v-if="ishowMenuConfig.IconType === 'font-icon'"
-                                            v-show="item.icon"
-                                            :class="item.icon"
-                                    ></i>
-                                </span>
-                        <span class="__menu__item-label">{{ item.label }}</span>
-                        <span class="__menu__item-tips">{{ item.tips || '' }}</span>
-                        <span
-                                class="__menu__item-arrow"
-                                v-if="hasSubMenu"
-                                :class="{ show: hasSubMenu && item.children }"
-                                :style="{ width: ishowMenuConfig.menuItemCss['arrowSize'], height: ishowMenuConfig.menuItemCss['arrowSize'] }"
-                        >
-                                    <span class="__menu__item-arrow-after" v-show="hasSubMenu && item.children"></span>
-                                </span>
-                        <div
-                                class="__menu__sub__wrapper"
-                                :style="{ top: `${ishowMenuConfig.subTop}px`, left: `${ishowMenuConfig.subLeft}px` }"
-                                v-show="ishowMenuConfig.hoverFlag"
-                                v-if="item.children && item.children.length > 0"
-                        >
-                            <template v-for="(subItem, subIndex) in item.children">
-                                <div
-                                        class="__menu__sub__item"
-                                        :key="subIndex"
-                                        v-if="!subItem.hidden && !subItem.line"
-                                        :class="{ disabled: subItem.disabled }"
-                                        @mousedown.stop="handleSubMenuItemClick(subItem)"
-                                >
-                                    <span class="__menu__sub__item-label">{{ subItem.label }}</span>
-                                    <span class="__menu__sub__item-tips">{{ subItem.tips || '' }}</span>
-                                </div>
-                                <div class="__menu__line" v-if="subItem.line" :key="subIndex"></div>
-                            </template>
+                <main class="main content-box" id="main-content-box">
+                    <div id="decisonBox" class="mainviewTop">
+                        <el-tabs v-model="ishowActivate.mainTabsActivate" type="border-card" closable
+                            @tab-remove="removeTab">
+                            <el-tab-pane v-for="(item, index) in mainTabs" :key="item.name" :label="item.title"
+                                :name="item.name" :class="item.name+'Tabpane'" :id="item.name">
+                                <iframe :class="item.name+'Iframe'" :src="item.src" :id="'iframe:'+item.name"></iframe>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </div>
+                    <footer class="main-bottom" id="main-bottom">
+                        <div class="resize mian-vertical"></div>
+                        <div class="line"></div>
+                        <div class="logview">
+                            <el-tabs :value="ishowActivate.bottomTabActivate">
+                                <el-tab-pane label="日志" name="log">
+                                    <el-table class="logTable" :data="logTableData" :row-class-name="tableRowClassName"
+                                        height="100%" stripe style="width: 100%" border>
+                                        <el-table-column prop="timeStamp" label="Timestamp" width="150">
+                                        </el-table-column>
+                                        <el-table-column prop="source" label="Source" width="100">
+                                        </el-table-column>
+                                        <el-table-column prop="information" label="Information"></el-table-column>
+                                        <el-table-column prop="error" label="Error"></el-table-column>
+                                        <el-table-column prop="warn" label="Warn"></el-table-column>
+                                    </el-table>
+                                </el-tab-pane>
+                            </el-tabs>
                         </div>
+                        <div class="operationBox minimize-log">
+                            <i class="el-icon-minus" @click="handleTabbottom"></i>
+                        </div>
+                    </footer>
+                </main>
+                <div class="subview subviewRight">
+                    <div class="resizeShow">
+                        <div class="resize horizontal"></div>
                     </div>
-                    <div class="__menu__line" v-if="item.line" :key="index"></div>
-                </template>
+                    <div class="line"></div>
+                    <div class="subview-content subviewRight-content">
+                        <el-tabs :value="ishowActivate.rightTabActivate" tab-position="right"
+                            @tab-click="handleTabright">
+                            <el-tab-pane v-for="(item, index) in subviewRightTabs" label="" :name="item.name">
+                                <span slot="label">
+                                    <img class="icon" :src="item.iconSrc" />
+                                </span>
+                                <div class="grid-box">
+                                    <div class="titleBox">{{item.content}}</div>
+                                    <iframe :src="item.src" :id="'iframe:'+item.name"
+                                        :class="item.name+'Right right-iframe'" frameborder="none"></iframe>
+                                </div>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </div>
+                </div>
+                <!-- TODO 右侧边栏顶部图层 -->
+                <!-- <span class="rightBarTopmark"></span> -->
+            </div>
+            <el-dialog class="addDialog" :visible.sync="dialogVisible" top="50px" :close-on-click-modal="false"
+                @close="handleCancledialog">
+                <iframe name="dialogIframe" id="dialogIframe" :src="iframeUrl" framebordering="0" scrolling="no"
+                    style="width: 100%"></iframe>
+            </el-dialog>
+            <div class="menu_dialog" v-if="ishowMenuConfig.showMenu">
+                <div class="__menu__wrapper" ref="MenuWrapper">
+                    <template v-for="(item, index) in ishowMenuConfig.menuList">
+                        <div class="__menu__item" v-if="!item.hidden && !item.line" :key="index"
+                            :class="{ disabled: item.disabled }" @mousedown.stop="handleMenuItemClick(item)"
+                            @mouseenter="handleMenuMouseEnter($event, item)">
+                            <span class="__menu__item-icon" v-if="ishowMenuConfig.hasIcon">
+                                <i v-if="ishowMenuConfig.IconType === 'font-icon'" v-show="item.icon"
+                                    :class="item.icon"></i>
+                            </span>
+                            <span class="__menu__item-label">{{ item.label }}</span>
+                            <span class="__menu__item-tips">{{ item.tips || '' }}</span>
+                            <span class="__menu__item-arrow" v-if="hasSubMenu"
+                                :class="{ show: hasSubMenu && item.children }"
+                                :style="{ width: ishowMenuConfig.menuItemCss['arrowSize'], height: ishowMenuConfig.menuItemCss['arrowSize'] }">
+                                <span class="__menu__item-arrow-after" v-show="hasSubMenu && item.children"></span>
+                            </span>
+                            <div class="__menu__sub__wrapper"
+                                :style="{ top: `${ishowMenuConfig.subTop}px`, left: `${ishowMenuConfig.subLeft}px` }"
+                                v-show="ishowMenuConfig.hoverFlag" v-if="item.children && item.children.length > 0">
+                                <template v-for="(subItem, subIndex) in item.children">
+                                    <div class="__menu__sub__item" :key="subIndex"
+                                        v-if="!subItem.hidden && !subItem.line" :class="{ disabled: subItem.disabled }"
+                                        @mousedown.stop="handleSubMenuItemClick(subItem)">
+                                        <span class="__menu__sub__item-label">{{ subItem.label }}</span>
+                                        <span class="__menu__sub__item-tips">{{ subItem.tips || '' }}</span>
+                                    </div>
+                                    <div class="__menu__line" v-if="subItem.line" :key="subIndex"></div>
+                                </template>
+                            </div>
+                        </div>
+                        <div class="__menu__line" v-if="item.line" :key="index"></div>
+                    </template>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 <script src="vue/vue.js"></script>
 <script src="element-ui/index.js"></script>
@@ -364,7 +300,7 @@
                     // resizeItem.style.display = "none"
                 }
             },
-            tableRowClassName({row, rowIndex}) {
+            tableRowClassName({ row, rowIndex }) {
                 console.log(row)
                 if ('warn' in row || row.information.includes('warn')) {
                     return 'warning-row'
@@ -428,19 +364,16 @@
             },
             async logErrorListener() {
                 window.ishow.onRender('main:log.error', (_, result) => {
-                    console.log(result)
                     this.logTableData.push(result)
                 })
             },
             async logWarnListener() {
                 window.ishow.onRender('main:log.warn', (_, result) => {
-                    console.log(result)
                     this.logTableData.push(result)
                 })
             },
             async logInfoListener() {
                 window.ishow.onRender('main:log.info', (_, result) => {
-                    console.log(result)
                     this.logTableData.push(result)
                 })
             },
@@ -586,7 +519,7 @@
                     const h = this.$createElement
                     this.$notify({
                         title: message.title,
-                        message: h('i', {style: 'color: teal'}, message.message),
+                        message: h('i', { style: 'color: teal' }, message.message),
                         duration: 2500,
                     })
                 })
@@ -626,4 +559,5 @@
         },
     })
 </script>
+
 </html>

@@ -1,32 +1,23 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="../../../../workbench/element-ui/css/index.css"/>
-    <link rel="stylesheet" href="./css/dataView.css"/>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../../../../workbench/element-ui/css/index.css" />
+    <link rel="stylesheet" href="./css/dataView.css" />
 </head>
 
 <body>
-<div id="app" class="dataviewApp">
-    <el-table
-            ref="multipleTable"
-            :data="dataviewData"
-            height="100%"
-            empty-text=" "
-            style="width: 100%; -webkit-border-vertical-spacing: 10px"
-            row-key="nodeId"
-            border
-            stripe
-            default-expand-all
-            :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-            :header-cell-style="{color:'#a52a2a'}"
-    >
-        <!-- @selection-change="handleSelectionChange" -->
-        <!-- <el-table-column type="selection" width="30">
+    <div id="app" class="dataviewApp">
+        <el-table ref="multipleTable" :data="dataviewData" height="100%" empty-text=" "
+            style="width: 100%; -webkit-border-vertical-spacing: 10px" row-key="nodeId" border stripe default-expand-all
+            :tree-props="{children: 'children', hasChildren: 'hasChildren'}" :header-cell-style="{color:'#a52a2a'}">
+            <!-- @selection-change="handleSelectionChange" -->
+            <!-- <el-table-column type="selection" width="30">
     </el-table-column> -->
-        <el-table-column type="index" label="#" width="30"></el-table-column>
-        <el-table-column prop="server" label="Server" :width="widthList.server ? widthList.server : 'auto'">
-            <!-- <template slot-scope="scope">
+            <el-table-column type="index" label="#" width="30"></el-table-column>
+            <el-table-column prop="server" label="Server" :width="widthList.server ? widthList.server : 'auto'">
+                <!-- <template slot-scope="scope">
             <el-tooltip class="item" effect="light" popper-class="tableTooltip">
                 <div slot="content">
                     <div class="tipBox">{{scope.row.server}}</div>
@@ -34,9 +25,9 @@
                 <div class="oneLine">{{scope.row.server}}</div>
             </el-tooltip>
         </template> -->
-        </el-table-column>
-        <el-table-column prop="nodeId" label="NodeId" :width="widthList.nodeId ? widthList.nodeId : 'auto'">
-            <!-- <template slot-scope="scope">
+            </el-table-column>
+            <el-table-column prop="nodeId" label="NodeId" :width="widthList.nodeId ? widthList.nodeId : 'auto'">
+                <!-- <template slot-scope="scope">
             <el-tooltip class="item" effect="light" popper-class="tableTooltip">
                 <div slot="content">
                     <div class="tipBox">{{scope.row.nodeId}}</div>
@@ -44,13 +35,10 @@
                 <div class="oneLine">{{scope.row.nodeId}}</div>
             </el-tooltip>
         </template> -->
-        </el-table-column>
-        <el-table-column
-                prop="displayName"
-                label="DisplayName"
-                :width="widthList.displayName ? widthList.displayName : 'auto'"
-        >
-            <!-- <template slot-scope="scope">
+            </el-table-column>
+            <el-table-column prop="displayName" label="DisplayName"
+                :width="widthList.displayName ? widthList.displayName : 'auto'">
+                <!-- <template slot-scope="scope">
             <el-tooltip class="item" effect="light" popper-class="tableTooltip">
                 <div slot="content">
                     <div class="tipBox">{{scope.row.displayName}}</div>
@@ -58,9 +46,9 @@
                 <div class="oneLine">{{scope.row.displayName}}</div>
             </el-tooltip>
         </template> -->
-        </el-table-column>
-        <el-table-column prop="value" label="Value" :width="widthList.value ? widthList.value : 'auto'">
-            <!-- <template slot-scope="scope">
+            </el-table-column>
+            <el-table-column prop="value" label="Value" :width="widthList.value ? widthList.value : 'auto'">
+                <!-- <template slot-scope="scope">
             <el-tooltip class="item" effect="light" popper-class="tableTooltip">
                 <div slot="content">
                     <div class="tipBox">{{scope.row.value}}</div>
@@ -68,13 +56,9 @@
                 <div class="oneLine">{{scope.row.value}}</div>
             </el-tooltip>
         </template> -->
-        </el-table-column>
-        <el-table-column
-                prop="dataType"
-                label="DataType"
-                :width="widthList.dataType ? widthList.dataType : 'auto'"
-        >
-            <!-- <template slot-scope="scope">
+            </el-table-column>
+            <el-table-column prop="dataType" label="DataType" :width="widthList.dataType ? widthList.dataType : 'auto'">
+                <!-- <template slot-scope="scope">
             <el-tooltip class="item" effect="light" popper-class="tableTooltip">
                 <div slot="content">
                     <div class="tipBox">{{scope.row.dataType}}</div>
@@ -82,13 +66,10 @@
                 <div class="oneLine">{{scope.row.dataType}}</div>
             </el-tooltip>
         </template> -->
-        </el-table-column>
-        <el-table-column
-                prop="sourceTimestamp"
-                label="SourceTimestamp"
-                :width="widthList.sourceTimestamp ? widthList.sourceTimestamp : 'auto'"
-        >
-            <!-- <template slot-scope="scope">
+            </el-table-column>
+            <el-table-column prop="sourceTimestamp" label="SourceTimestamp"
+                :width="widthList.sourceTimestamp ? widthList.sourceTimestamp : 'auto'">
+                <!-- <template slot-scope="scope">
             <el-tooltip class="item" effect="light" popper-class="tableTooltip">
                 <div slot="content">
                     <div class="tipBox">{{scope.row.sourceTimestamp}}</div>
@@ -96,13 +77,10 @@
                 <div class="oneLine">{{scope.row.sourceTimestamp}}</div>
             </el-tooltip>
         </template> -->
-        </el-table-column>
-        <el-table-column
-                prop="statusCode"
-                label="StatusCode"
-                :width="widthList.statusCode ? widthList.statusCode : 'auto'"
-        >
-            <!-- <template slot-scope="scope">
+            </el-table-column>
+            <el-table-column prop="statusCode" label="StatusCode"
+                :width="widthList.statusCode ? widthList.statusCode : 'auto'">
+                <!-- <template slot-scope="scope">
             <el-tooltip class="item" effect="light" popper-class="tableTooltip">
                 <div slot="content">
                     <div class="tipBox">{{scope.row.statusCode}}</div>
@@ -110,12 +88,12 @@
                 <div class="oneLine">{{scope.row.statusCode}}</div>
             </el-tooltip>
         </template> -->
-        </el-table-column>
-        <!-- <template slot="header" slot-scope="scope">
+            </el-table-column>
+            <!-- <template slot="header" slot-scope="scope">
         <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
     </template> -->
-    </el-table>
-</div>
+        </el-table>
+    </div>
 </body>
 <script src="../../../../workbench/vue/vue.js"></script>
 <script src="../../../../workbench/element-ui/index.js"></script>
@@ -151,13 +129,13 @@
                 return await subscriptApi.subscriptInit(param)
             },
             async sessionBrowse(node) {
-                const param = {node: null, browseNext: false}
+                const param = { node: null, browseNext: false }
                 param.node = node
                 return await sessionApi.sessionBrowse(param)
             },
             async subscriptSingle(nodeId, displayName) {
                 const param = {
-                    itemToMonitor: {nodeId: null},
+                    itemToMonitor: { nodeId: null },
                     displayName: null,
                 }
                 param.itemToMonitor.nodeId = nodeId
@@ -172,7 +150,7 @@
                 }
                 list.forEach((item) => {
                     item = JSON.parse(item)
-                    param.itemsToMonitor.push({nodeId: item.nodeId})
+                    param.itemsToMonitor.push({ nodeId: item.nodeId })
                     param.displayNames.push(item.displayName)
                 })
                 // console.log(param)
@@ -181,7 +159,7 @@
             async getSessionGroup(node, count) {
                 let cnt = count++
                 if (cnt < 3) {
-                    const param = {node: null, browseNext: false}
+                    const param = { node: null, browseNext: false }
                     param.node = node
                     let res = await sessionApi.sessionBrowse(param)
                     let result = []
@@ -227,6 +205,18 @@
                         // this.handleflexColumnWidth(result)
                         this.handleColumnWidth(result)
                     }
+                })
+            },
+            nodeIdListener() {
+                const _this = this
+                window.parent.ishow.windowEvent.on(`opcua:get.nodeId`, () => {
+                    let nidList = []
+                    for (let i = 0; i < _this.dataviewData.length; i++) {
+                        if (!nidList.includes(_this.dataviewData[i].nodeId)) {
+                            nidList.push(_this.dataviewData[i].nodeId)
+                        }
+                    }
+                    window.parent.ishow.windowEvent.emit(`opcua:set.nodeId`, nidList)
                 })
             },
             triggerSubscript() {
@@ -304,6 +294,7 @@
             targetView(window, '.dataviewApp')
             this.triggerSubscript()
             this.dataListener()
+            this.nodeIdListener()
         },
         created() {
         },
@@ -371,4 +362,5 @@
     }
 </script>
 <style></style>
+
 </html>
