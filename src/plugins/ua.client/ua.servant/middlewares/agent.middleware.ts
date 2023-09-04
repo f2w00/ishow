@@ -399,7 +399,7 @@ export module AgentMiddleware {
              * @description 此处绑定了pipe的事件,并且当
              */
             case '/db/init': {
-                if (is<{ createMode: TableCreateModes; tableName?: string; fields?: IFieldNames }>(ctx.request.body)) {
+                if (is<{ createMode: TableCreateModes; tags?: [string]; tableName?: string }>(ctx.request.body)) {
                     DbUtils.validateDbName(ctx.request.body['tableName'])
                     RecordUtil.recordParams('db:init', ctx.request.body)
                     await next()
