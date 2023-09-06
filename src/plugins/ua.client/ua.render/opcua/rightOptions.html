@@ -46,33 +46,21 @@
             return {
                 attributeTableData: [],
                 tableNameValue: '',
-                fieldList: [
-                    { label: 'server', value: 'serverF' },
-                    { label: 'nodeId', value: 'nodeIdF' },
-                    { label: 'displayName', value: 'displayNameF' },
-                    { label: 'statusCode', value: 'statusCodeF' },
-                    { label: 'sourceTimestamp', value: 'sourceTimestampF' },
-                    { label: 'serverTimestamp', value: 'serverTimestampF' },
-                    { label: 'value', value: 'valueF' },
-                    { label: 'dataType', value: 'dataTypeF' },
-                ],
-                fieldsItemList: [],
-                isDisabled: true,
+                fieldsItemList: []
             }
         },
         computed: {},
         methods: {
             handleInitDb() {
-                console.log({
-                    createMode: Number(this.modeValue),
+                let obj = {
+                    createMode: 0,
                     tableName: this.tableNameValue ? this.tableNameValue : null,
                     fields: this.fieldsItemList ? this.fieldsItemList : null,
-                })
-                let res = dbApi.init({
-                    createMode: Number(this.modeValue),
-                    tableName: this.tableNameValue ? this.tableNameValue : null,
-                    fields: this.fieldsItemList ? this.fieldsItemList : null,
-                })
+                }
+                if (this.tableNameValue !== null && this.tableNameValue !== undefined && this.tableNameValue !== '') {
+                    obj.createMode = 2
+                }
+                let res = dbApi.init(obj)
                 console.log(res)
             },
             dataListener() {
