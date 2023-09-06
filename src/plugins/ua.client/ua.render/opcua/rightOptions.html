@@ -54,8 +54,8 @@
             handleInitDb() {
                 let obj = {
                     createMode: 0,
+                    tags: this.fieldsItemList ? this.fieldsItemList : null,
                     tableName: this.tableNameValue ? this.tableNameValue : null,
-                    fields: this.fieldsItemList ? this.fieldsItemList : null,
                 }
                 if (this.tableNameValue !== null && this.tableNameValue !== undefined && this.tableNameValue !== '') {
                     obj.createMode = 2

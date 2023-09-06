@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-    </head>
 
-    <body>
-        <div>hello world!!!</div>
-        <script>
-            window.onload = function () {
-                window.parent.ishow.windowEvent.on('leftBar:created.easy-report', (data) => {
-                    data.forEach((info) => {
-                        console.log(info)
-                        window.parent.ishow.windowEvent.emit(`mainTab:create`, info)
-                        window.parent.ishow.windowEvent.emit(`leftBar:close`, info.name)
-                    })
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div></div>
+    <script>
+        window.onload = function () {
+            window.parent.ishow.windowEvent.on('leftBar:created.easy-report', (data) => {
+                data.forEach((info) => {
+                    console.log(info)
+                    window.parent.ishow.windowEvent.emit(`mainTab:create`, info)
+                    window.parent.ishow.windowEvent.emit(`leftBar:close`, info.name)
                 })
-            }
-        </script>
-    </body>
+            })
+        }
+    </script>
+</body>
+
 </html>
 <style>
     html,
