@@ -55,7 +55,7 @@ function authenticate() {
  */
 function generateUserDataPath() {
     const { existsSync, readFileSync } = require('fs')
-    let dataPath = process.env['ishow_APPDATA']
+    let dataPath = process.env['ISHOW_APPDATA']
     let cacheDir = process.env['V8_COMPILE_CACHE_CACHE_DIR']
 
     if (existsSync(dataPath) && existsSync(cacheDir)) {
@@ -95,6 +95,7 @@ function generateUserDataPath() {
 
 function generateConfigs(dataPath, join, existsSync, mkdirSync) {
     const { ClientStore } = require('../src/platform/base/store/store.js')
+    const { sharedData } = require('../src/platform/base/store/store_private.js')
     new ClientStore({ client: false, cwd: dataPath + '/store' })
     const detectPlugins = () => {
         const { readdirSync } = require('fs')
@@ -130,13 +131,13 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
         name: 'workspace',
     })
     ClientStore.create({ name: 'share' })
-    ClientStore.set('share', 'ishowActivate', {
+    sharedData.set('ishowActivate', {
         leftTabActivate: 'space',
         rightTabActivate: '',
         bottomTabActivate: 'log',
         mainTabsActivate: 'welcome',
     })
-    ClientStore.set('share', 'ishowMenuConfig', [
+    sharedData.set('ishowMenuConfig', [
         {
             label: '日志',
             tips: 'Log',
@@ -184,7 +185,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             ],
         },
     ])
-    ClientStore.set('share', 'workbenchConfig', {
+    sharedData.set('workbenchConfig', {
         rightSide: {
             display: false,
         },
@@ -195,7 +196,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             display: false,
         },
     })
-    ClientStore.set('share', 'pluginInstalled', [
+    sharedData.set('pluginInstalled', [
         {
             title: 'opcua',
             content: '提供opcua相关功能',
@@ -209,7 +210,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             author: 'wangqi2002',
         },
     ])
-    ClientStore.set('share', 'subviewLeftTabsData', [
+    sharedData.set('subviewLeftTabsData', [
         {
             title: 'mainMenu',
             name: 'mainMenu',

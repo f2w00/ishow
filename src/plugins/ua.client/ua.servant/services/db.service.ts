@@ -62,7 +62,6 @@ export module DbService {
                 type: 'DataTypes.STRING',
                 allowNull: false,
                 field: 'sourceTimestamp',
-                primaryKey: true,
             }
             tags.forEach((value) => {
                 fieldSet[value] = {
@@ -86,15 +85,19 @@ export module DbService {
     }
 
     function storeTemp(data: IDbData) {
-        let nowTime = new Date(data.sourceTimestamp).toISOString()
-        let dbData = dbTemp.get(nowTime)
-        if (dbData) {
-            dbData[data.nodeId] = data.value
-        } else {
-            let tempString = `{"${data.nodeId}":"${data.value}"}`
-            dbTemp.set(nowTime, JSON.parse(tempString))
-        }
-        if (dbTemp.size > 200) {
+        let messages = []
+        messages = data instanceof Array ? data : (messages = [data])
+        messages.forEach((message) => {
+            let nowTime = new Date(message.sourceTimestamp).toISOString()
+            let dbData = DbService.dbTemp.get(nowTime)
+            if (dbData) {
+                dbData[message.nodeId] = message.value
+            } else {
+                let tempString = `{"${message.nodeId}":"${message.value}"}`
+                DbService.dbTemp.set(nowTime, JSON.parse(tempString))
+            }
+        })
+        if (DbService.dbTemp.size > 200) {
             updateFrame()
             frame2Db()
         }
@@ -181,7 +184,7 @@ export module DbService {
     }
 
     function frame2Db() {
-        DbService.dbTempFrame.fillNa('null')
+        DbService.dbTempFrame.fillNa('null', { inplace: true })
         let data = toJSON(DbService.dbTempFrame)
         persist.insertMany(data)
         DbService.dbTempFrame.drop({ index: DbService.dbTempFrame.index, inplace: true })
