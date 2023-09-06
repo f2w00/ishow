@@ -205,24 +205,22 @@
                         // this.handleflexColumnWidth(result)
                         this.handleColumnWidth(result)
                     }
+                    this.nodeIdListener()
                 })
             },
             nodeIdListener() {
-                const _this = this
-                window.parent.ishow.windowEvent.on(`opcua:get.nodeId`, () => {
-                    let nidList = []
-                    for (let i = 0; i < _this.dataviewData.length; i++) {
-                        if (!nidList.includes(_this.dataviewData[i].nodeId)) {
-                            nidList.push(_this.dataviewData[i].nodeId)
-                        }
+                let nidList = []
+                for (let i = 0; i < this.dataviewData.length; i++) {
+                    if (!nidList.includes(this.dataviewData[i].nodeId)) {
+                        nidList.push(this.dataviewData[i].nodeId)
                     }
-                    window.parent.ishow.windowEvent.emit(`opcua:set.nodeId`, nidList)
-                })
+                }
+                window.parent.ishow.windowEvent.emit(`opcua:set.nodeId`, nidList)
             },
             triggerSubscript() {
                 window.parent.ishow.windowEvent.on(`opcua:subscript.dragback`, async (e) => {
                     let data = e.detail.data
-                    // console.log(data)
+                    console.log(data)
                     let res = await this.subscriptInit()
                     if (res.code === 200) {
                         if (data.nodeClass === 'Variable') {
@@ -294,7 +292,6 @@
             targetView(window, '.dataviewApp')
             this.triggerSubscript()
             this.dataListener()
-            this.nodeIdListener()
         },
         created() {
         },

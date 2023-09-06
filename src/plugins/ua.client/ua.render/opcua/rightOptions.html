@@ -19,12 +19,8 @@
         <div class="subviewItemoptions dbBox">
             <div class="subviewItembtn right" @click="handleCloseDb">DataBase</div>
             <div class="card" style="display: block">
-                <el-select class="tableMode" v-model="modeValue" placeholder="请选择模式" @change="handleTableMode">
-                    <el-option v-for="item in tablemodeList" :key="item.value" :label="item.label"
-                        :value="item.value" />
-                </el-select>
-                <el-input v-model="tableNameValue" placeholder="请输入表名" :disabled="isDisabled"></el-input>
-                <div class="fieldArea" v-show="!isDisabled">
+                <el-input v-model="tableNameValue" placeholder="请输入表名"></el-input>
+                <div class="fieldArea">
                     <div class="fieldAreaName">
                         NodeId:
                     </div>
@@ -49,17 +45,6 @@
         data: function () {
             return {
                 attributeTableData: [],
-                tablemodeList: [
-                    { label: 'default', value: '0' },
-                    { label: 'customField', value: '1' },
-                    { label: 'customTableName', value: '2' },
-                    { label: 'customBoth', value: '3' },
-                    { label: 'createPerYear', value: '4' },
-                    { label: 'createPerMonth', value: '5' },
-                    { label: 'createPerWeek', value: '6' },
-                    { label: 'createPerDay', value: '7' },
-                ],
-                modeValue: '',
                 tableNameValue: '',
                 fieldList: [
                     { label: 'server', value: 'serverF' },
@@ -77,26 +62,6 @@
         },
         computed: {},
         methods: {
-            handleTableMode() {
-                switch (Number(this.modeValue)) {
-                    case 1:
-                    case 2:
-                    case 3:
-                        this.isDisabled = false
-                        window.parent.ishow.windowEvent.emit(`opcua:get.nodeId`)
-                        break
-                    case 0:
-                    case 4:
-                    case 5:
-                    case 6:
-                    case 7:
-                        this.isDisabled = true
-                        break
-                    default:
-                        this.isDisabled = false
-                        break
-                }
-            },
             handleInitDb() {
                 console.log({
                     createMode: Number(this.modeValue),
