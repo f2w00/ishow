@@ -26,7 +26,7 @@ async function electronStart() {
 electronStart()
 
 async function clientStart() {
-    const { Client } = await require('../src/client/client.js')
+    const { Client } = await require('./client/client.js')
     new Client()
 }
 
@@ -94,8 +94,8 @@ function generateUserDataPath() {
 }
 
 function generateConfigs(dataPath, join, existsSync, mkdirSync) {
-    const { ClientStore } = require('../src/platform/base/store/store.js')
-    const { sharedData } = require('../src/platform/base/store/store_private.js')
+    const { ClientStore } = require('./platform/base/store/store.js')
+    const { sharedData } = require('./platform/base/store/store_private.js')
     new ClientStore({ client: false, cwd: dataPath + '/store' })
     const detectPlugins = () => {
         const { readdirSync } = require('fs')
@@ -164,7 +164,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
                 {
                     label: '服务',
                     tips: 'Server',
-                    fn: 'function fn(that){ console.log("Server", "addServerView fn"); that.handleAddserver({ viewPath: \'../../src/plugins/ua.client/ua.render/opcua/addServerView.html\' }) }',
+                    fn: 'function fn(that){ console.log("Server", "addServerView fn"); that.handleAddserver({ viewPath: \'.././plugins/ua.client/ua.render/opcua/addServerView.html\' }) }',
                 },
                 {
                     label: '打开',
@@ -200,13 +200,13 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
         {
             title: 'opcua',
             content: '提供opcua相关功能',
-            iconUrl: '../../../src/plugins/ua.client/ua.render/opcua/assets/PluginIcon.svg',
+            iconUrl: '../.././plugins/ua.client/ua.render/opcua/assets/PluginIcon.svg',
             author: 'f2w00',
         },
         {
             title: 'esay-report',
             content: '快速生成样式多变的报表',
-            iconUrl: '../../../src/plugins/easy-report/assets/PluginIcon.svg',
+            iconUrl: '../.././plugins/easy-report/assets/PluginIcon.svg',
             author: 'wangqi2002',
         },
     ])
@@ -267,8 +267,8 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             title: 'opcua',
             name: 'opcua',
             content: 'opcua',
-            iconSrc: '../../src/plugins/ua.client/ua.render/opcua/assets/project.svg',
-            viewPath: '../../src/plugins/ua.client/ua.render/opcua/leftOptions.html',
+            iconSrc: '.././plugins/ua.client/ua.render/opcua/assets/project.svg',
+            viewPath: '.././plugins/ua.client/ua.render/opcua/leftOptions.html',
             clickSendToWindow: [],
             clickCreateTab: [
                 {
@@ -279,7 +279,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
                             name: 'dataView',
                             content: 'dataView',
                             position: 'main',
-                            src: '../../src/plugins/ua.client/ua.render/opcua/dataView.html',
+                            src: '.././plugins/ua.client/ua.render/opcua/dataView.html',
                         },
                         {
                             title: 'rightOptions',
@@ -287,7 +287,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
                             content: '',
                             iconSrc: './assets/icon/attribute-management.svg',
                             position: 'right',
-                            src: '../../src/plugins/ua.client/ua.render/opcua/rightOptions.html',
+                            src: '.././plugins/ua.client/ua.render/opcua/rightOptions.html',
                         },
                     ],
                 },
@@ -297,8 +297,8 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             title: 'easy-report',
             name: 'easy-report',
             content: 'easy-report',
-            iconSrc: '../../src/plugins/easy-report/assets/report.svg',
-            viewPath: '../../src/plugins/easy-report/index.html',
+            iconSrc: '.././plugins/easy-report/assets/report.svg',
+            viewPath: '.././plugins/easy-report/index.html',
             clickSendToWindow: [],
             clickCreateTab: [
                 {
@@ -309,7 +309,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
                             name: 'easy-report',
                             content: 'easy-report',
                             position: 'main',
-                            src: '../../src/plugins/easy-report/dist/index.html',
+                            src: '.././plugins/easy-report/dist/index.html',
                         },
                     ],
                 },

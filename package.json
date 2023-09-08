@@ -3,26 +3,27 @@
     "productName": "ishow",
     "version": "0.0.1",
     "description": "This client solve problems with plugins for you",
-    "main": "src/starter.js",
+    "main": "production/starter.js",
     "type": "commonjs",
     "scripts": {
-        "dev": "nodemon -e js,html,cjs,css --exec electron . --delay 2",
+        "dev": "nodemon -e js,html,cjs,css --exec electron src/starter.js --delay 2",
+        "product": "nodemon -e js,html,cjs,css --exec electron production/starter.js --delay 2",
         "compile": "nodemon -e ts --exec npx tsc",
         "encrypt": "electron ./builder/encrypt.js",
         "rebuild": "electron-rebuild",
-        "build": "node builder/build.js"
+        "build": "node builder/build.js",
+        "create-product": "node builder/product.js"
     },
     "keywords": [
         "electron",
         "plugin"
     ],
     "author": {
-        "name": "f2w00",
+        "name": "hhj&wq",
         "email": "109409603+f2w00@users.noreply.github.com"
     },
     "license": "MIT",
     "dependencies": {
-        "@types/lowdb": "^1.0.12",
         "async": "^3.2.4",
         "axios": "^1.4.0",
         "bytenode": "^1.4.1",
@@ -56,6 +57,7 @@
         "electron-compile": "^6.4.4",
         "electron-rebuild": "^3.2.9",
         "electron-squirrel-startup": "^1.0.0",
+        "fs-extra": "^11.1.1",
         "nodemon": "^2.0.22",
         "ts-node": "^10.9.1",
         "ttypescript": "^1.5.15",
