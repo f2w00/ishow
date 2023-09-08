@@ -1,19 +1,21 @@
-const { Persistence } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
-const { sharedData } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
+const { Persistence } = require('ishow')
+const { sharedData } = require('ishow')
 import { TableCreateModes, UaErrors, UaSources } from '../../common/ua.enums'
 import { Config } from '../../config/config.default'
 import { CommunicateUtil, DbUtils } from '../utils/util'
-import { IDbData, IFieldNames } from '../models/params.model'
+import { DbHead, IDbData, IFieldNames } from '../models/params.model'
 import { UaMessage } from '../models/message.model'
 import { ClientError } from '../middlewares/agent.middleware'
-import { DataFrame, Series, concat, toJSON } from 'danfojs-node'
+// import { DataFrame, Series, concat, toJSON } from 'danfojs-node'
 
 export module DbService {
     export let defaultTableName: string = Config.defaultTable
     export let defaultAttributes: any = Config.defaultAttributes
     export let persist!: any
     export let dbTemp: Map<string, any> = new Map()
-    export let dbTempFrame: DataFrame = new DataFrame()
+    export let tags: DbHead[] = []
+    export let mapCount = 0
+    // export let dbTempFrame: DataFrame = new DataFrame()
 
     /**
      * @description 用于初始化database,如果表名不存在则创建一个新表
@@ -21,7 +23,7 @@ export module DbService {
      * @param tableName
      * @param fields
      */
-    export async function init(createMode: TableCreateModes, tags: string[], tableName?: string, fields?: IFieldNames) {
+    export async function init(createMode: TableCreateModes, tags: DbHead[], tableName?: string, fields?: IFieldNames) {
         try {
             switch (createMode) {
                 case TableCreateModes.default:
@@ -64,14 +66,15 @@ export module DbService {
                 field: 'sourceTimestamp',
             }
             tags.forEach((value) => {
-                fieldSet[value] = {
+                fieldSet[(value.nodeid + '##' + value.displayName).toLowerCase()] = {
                     type: 'DataTypes.STRING',
                     allowNull: true,
-                    field: value,
+                    field: (value.nodeid + '##' + value.displayName).toLowerCase(),
                 }
             })
+            DbService.tags = tags
             DbService.createTable(defaultTableName, fieldSet)
-            // // 注意这里需要创建一个pipe然后再进行注册
+            // 注意这里需要创建一个pipe然后再进行注册
             CommunicateUtil.emitToClient('Broker.create', [{ name: Config.defaultPipeName }])
             CommunicateUtil.emitToClient('pipe:' + Config.defaultPipeName + '.registerIpc', [
                 { module: 'extensionProcess:uaclient' },
@@ -84,22 +87,25 @@ export module DbService {
         }
     }
 
-    function storeTemp(data: IDbData) {
+    export function storeTemp(data: any) {
         let messages = []
         messages = data instanceof Array ? data : (messages = [data])
-        messages.forEach((message) => {
+        messages.forEach((message: IDbData) => {
             let nowTime = new Date(message.sourceTimestamp).toISOString()
             let dbData = DbService.dbTemp.get(nowTime)
             if (dbData) {
-                dbData[message.nodeId] = message.value
+                dbData[(message.nodeId + '##' + message.displayName).toLowerCase()] = message.value
             } else {
-                let tempString = `{"${message.nodeId}":"${message.value}"}`
+                let tempString = `{"${(message.nodeId + '##' + message.displayName).toLowerCase()}":"${message.value}"}`
                 DbService.dbTemp.set(nowTime, JSON.parse(tempString))
             }
         })
-        if (DbService.dbTemp.size > 200) {
+        DbService.mapCount = 0
+        DbService.dbTemp.forEach((value) => {
+            Object.keys(value).length == DbService.tags.length ? DbService.mapCount++ : undefined
+        })
+        if (DbService.mapCount > 20) {
             updateFrame()
-            frame2Db()
         }
     }
 
@@ -118,7 +124,6 @@ export module DbService {
                 dbTemp.set(nowTime, JSON.parse(tempString))
             }
             updateFrame()
-            frame2Db()
         } catch (e: any) {
             throw new ClientError(UaSources.dbService, UaErrors.errorInsert, e.message, e.stack)
         }
@@ -141,7 +146,6 @@ export module DbService {
                 }
             })
             updateFrame()
-            frame2Db()
         } catch (e: any) {
             throw new ClientError(UaSources.dbService, UaErrors.errorInsert, e.message, e.stack)
         }
@@ -168,67 +172,70 @@ export module DbService {
     }
 
     function updateFrame() {
-        DbService.dbTemp.forEach((value, key) => {
-            let tempFrame = new DataFrame([{ ...value, sourceTimestamp: key }])
-            DbService.dbTempFrame =
-                DbService.dbTempFrame.index.length > 0
-                    ? (concat({
-                          dfList: [DbService.dbTempFrame, tempFrame],
-                          axis: 0,
-                      }) as DataFrame)
-                    : tempFrame
+        let tempArray = Array.from(DbService.dbTemp).sort()
+        let result: any = []
+        // let pointer = 0
+        // let mode = true
+        // for (let i = 0; i < tempArray.length; i++) {
+        //     let tempLen = Object.keys(tempArray[i][1]).length
+        //     if (tempLen != DbService.tags.length) {
+        //         pointer = i
+        //     }
+        //     if (tempLen == DbService.tags.length || i == tempArray.length - 1) {
+        //         if (Object.keys(tempArray[pointer][1]).length != DbService.tags.length) {
+        //             while (pointer <= i) {
+        //                 DbService.tags.forEach((value) => {
+        //                     if (!tempArray[pointer][1][value.nodeid]) {
+        //                         tempArray[pointer][1][value.nodeid] = mode
+        //                             ? tempArray[i][1][value.nodeid]
+        //                             : tempArray[pointer - 1][1][value.nodeid]
+        //                     }
+        //                 })
+        //                 pointer++
+        //             }
+        //         }
+        //         mode = false
+        //     }
+        // }
+        tempArray.forEach((value) => {
+            if (Object.keys(value[1]).length == DbService.tags.length) {
+                result.push({ sourceTimestamp: value[0], ...value[1] })
+            }
         })
-        DbService.dbTempFrame.setIndex({ column: 'sourceTimestamp', inplace: true })
-        DbService.dbTempFrame.sortIndex({ inplace: true })
         DbService.dbTemp.clear()
-    }
-
-    function frame2Db() {
-        DbService.dbTempFrame.fillNa('null', { inplace: true })
-        let data = toJSON(DbService.dbTempFrame)
-        persist.insertMany(data)
-        DbService.dbTempFrame.drop({ index: DbService.dbTempFrame.index, inplace: true })
+        persist.insertMany(result)
     }
 }
-
-// DbService.init(0, ['yes', 'ye'])
-// setTimeout(() => {
-//     DbService.insertMany([
-//         {
-//             nodeId: 'yes',
-//             value: 'ok',
-//             sourceTimestamp: '2023/12/29',
-//             server: 'string',
-//             displayName: 'string',
-//             dataType: 'string',
-//             statusCode: 'string',
-//         },
-//         {
-//             nodeId: 'ye',
-//             value: 'ok',
-//             sourceTimestamp: '2023/12/29',
-//             server: 'string',
-//             displayName: 'string',
-//             dataType: 'string',
-//             statusCode: 'string',
-//         },
-//         {
-//             nodeId: 'yes',
-//             value: 'ok',
-//             sourceTimestamp: '2023/12/30',
-//             server: 'string',
-//             displayName: 'string',
-//             dataType: 'string',
-//             statusCode: 'string',
-//         },
-//         {
-//             nodeId: 'ye',
-//             value: 'ok',
-//             sourceTimestamp: '2023/12/30',
-//             server: 'string',
-//             displayName: 'string',
-//             dataType: 'string',
-//             statusCode: 'string',
-//         },
-//     ])
-// }, 2000)
+// DbService.tags = [
+//     { displayName: 'nice', nodeid: 'yes' },
+//     { displayName: 'nice', nodeid: 'ye' },
+// ]
+// DbService.storeTemp([
+//     {
+//         nodeId: 'yes',
+//         value: 'ok',
+//         sourceTimestamp: '2023/12/29',
+//         server: 'string',
+//         displayName: 'string',
+//         dataType: 'string',
+//         statusCode: 'string',
+//     },
+//     {
+//         nodeId: 'ye',
+//         value: 'o',
+//         sourceTimestamp: '2023/12/29',
+//         server: 'string',
+//         displayName: 'string',
+//         dataType: 'string',
+//         statusCode: 'string',
+//     },
+//     {
+//         nodeId: 'yes',
+//         value: '2',
+//         sourceTimestamp: '2023/12/30',
+//         server: 'string',
+//         displayName: 'string',
+//         dataType: 'string',
+//         statusCode: 'string',
+//     },
+// ])

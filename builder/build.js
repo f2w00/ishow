@@ -1,6 +1,6 @@
 const config = {
     productName: 'ishow', // 应用程序名称
-    appId: 'ishow.github', // 应用程序唯一标识
+    appId: 'ishow.everything', // 应用程序唯一标识
     publish: false, // 是否发布到 GitHub 上
     asar: false, // 是否将应用程序打包为asar文件
     files: ['src', 'node_modules'], // 将要打包的文件或目录

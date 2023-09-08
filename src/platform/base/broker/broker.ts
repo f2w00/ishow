@@ -1,5 +1,5 @@
-import {ipcClient} from '../../ipc/handlers/ipc.handler'
-import {RunningRecord} from '../store/store'
+import { ipcClient } from '../../ipc/handlers/ipc.handler'
+import { RunningRecord } from '../store/store'
 
 type pipeId = string
 
@@ -33,10 +33,6 @@ export class MessagePipe {
         let data = this.content.get(id)
         if (data) {
             data.push(message)
-            ipcClient.emitClient('sendToIpc', this.ipcToNotice, {
-                event: 'pipe:' + this.pipeId + '.pushed',
-                message: data,
-            })
             // if (data.length >= this.maxLength) {
             //     // this.emit('full', data)
             //     ipcClient.emitToRender('pipe:' + this.pipeId + '.pushed', data)
@@ -45,6 +41,10 @@ export class MessagePipe {
         } else {
             this.content.set(message.nodeId, [message])
         }
+        ipcClient.emitClient('sendToIpc', this.ipcToNotice, {
+            event: 'pipe:' + this.pipeId + '.pushed',
+            message: data,
+        })
         // this.emit('pushed', message)
         ipcClient.emitToRender('pipe:' + this.pipeId + '.pushed', message)
         // ipcClient.emitLocal('pipe:' + this.pipeId + '.pushed', message)

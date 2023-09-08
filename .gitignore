@@ -102,6 +102,7 @@ src/plugins/ua.client/ua.servant/**/*.js
 !src/plugins/ua.client/webpack.config.js
 src/plugins/ua.client/common/*.js
 src/plugins/ua.client/config/*.js
+production/
 !src/plugins/ua.client/extension.js
 !src/plugins/easy-report
 !src/workbench/**/*.js

@@ -2,7 +2,7 @@ import { CreateSelfSignCertificateParam1 } from 'node-opcua-pki'
 import EventEmitter from 'events'
 // import { SubscriptService } from '../services/subscript.service'
 
-const { StorePrivate } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
+const { StorePrivate } = require('ishow')
 
 export module DbUtils {
     /**
@@ -16,7 +16,7 @@ export module DbUtils {
         let dayN = date.getDate()
         let day = dayN.toString()
         if (dayN < 10) day = '0' + day
-        return `date_${date.getFullYear()}_${month}_${day}`
+        return `d_${date.getFullYear()}_${month}_${day}`
     }
 
     export function formatDateYM(date: Date) {
@@ -26,18 +26,18 @@ export module DbUtils {
         let dayN = date.getDate().valueOf()
         let day = dayN.toString()
         if (dayN < 10) day = '0' + day
-        return `month_${date.getFullYear()}_${month}`
+        return `m_${date.getFullYear()}_${month}`
     }
 
     export function formatDateYMW(date: Date) {
         let day = date.getDay()
         let d = date.getDate()
-        return `week_${date.getFullYear()}_${date.getMonth() + 1}_${Math.ceil((d + 6 - day) / 7)}`
+        return `w_${date.getFullYear()}_${date.getMonth() + 1}_${Math.ceil((d + 6 - day) / 7)}`
     }
 
     export function formatDateY(date: Date) {
         let year = date.getFullYear()
-        return `year_${year}`
+        return `y_${year}`
     }
 
     export function validateDbName(name: any) {
@@ -69,7 +69,7 @@ export class CommunicateUtil {
 
     constructor() {
         CommunicateUtil.addListenerToProcess()
-        const { commonEvent } = require('../../config/event.bus')
+        const { commonEvent } = require('../../event.bus')
         commonEvent.on('main:uaclient.close', () => {
             console.log('close uaclient')
             RecordUtil.recordToJson()

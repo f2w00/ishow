@@ -3,9 +3,9 @@
  */
 export enum TableCreateModes {
     default = 0,
-    customField = 1,
+    // customField = 1,
     customTableName = 2,
-    customBoth = 3,
+    // customBoth = 3,
     createPerYear = 4,
     createPerMonth = 5,
     createPerWeek = 6,

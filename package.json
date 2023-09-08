@@ -7,12 +7,10 @@
     "type": "commonjs",
     "scripts": {
         "dev": "nodemon -e js,html,cjs,css --exec electron . --delay 2",
-        "lint": "echo \"No linting configured\"",
         "compile": "nodemon -e ts --exec npx tsc",
-        "show": "electron .",
         "encrypt": "electron ./builder/encrypt.js",
         "rebuild": "electron-rebuild",
-        "electron-v": "electron -v"
+        "build": "node builder/build.js"
     },
     "keywords": [
         "electron",
