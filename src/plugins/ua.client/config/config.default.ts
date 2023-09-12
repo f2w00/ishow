@@ -67,10 +67,10 @@ export module Config {
 
     export let defaultSubscript = {
         requestedLifetimeCount: 2400,
-        requestedPublishingInterval: 500,
+        requestedPublishingInterval: 1000,
         requestedMaxKeepAliveCount: 10,
         publishingEnabled: true,
-        maxNotificationsPerPublish: 100,
+        maxNotificationsPerPublish: 20,
         priority: 0,
     }
 

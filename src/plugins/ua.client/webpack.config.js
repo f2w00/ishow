@@ -13,6 +13,9 @@ module.exports = {
             if (/^ishow$/.test(request)) {
                 return callback(null, `commonjs ${request}`)
             }
+            if (/event.bus/.test(request)) {
+                return callback(null, `commonjs ${request.slice(4)}`)
+            }
             callback()
         },
     ],

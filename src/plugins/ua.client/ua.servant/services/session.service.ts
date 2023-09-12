@@ -17,7 +17,7 @@ import { ClientService } from './client.service'
 import { is } from 'typia'
 import { HistoryValueParam } from '../models/params.model'
 
-const { ClientError, ClientWarn } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
+const { ClientError, ClientWarn } = require('ishow')
 
 export module SessionService {
     export let session!: ClientSession

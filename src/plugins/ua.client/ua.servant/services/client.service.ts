@@ -4,7 +4,7 @@ import { SessionService } from './session.service'
 import { Config } from '../../config/config.default'
 import { EndpointParam } from '../models/params.model'
 
-const { ClientError, ClientWarn } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
+const { ClientError, ClientWarn } = require('ishow')
 
 export module ClientService {
     export let client!: OPCUAClient

@@ -2,7 +2,7 @@ module.exports = {
     extension: {
         activate: () => {},
         beforeClose: () => {
-            const { commonEvent } = require('./config/event.bus')
+            const { commonEvent } = require('./event.bus')
             commonEvent.emit('main:uaclient.close')
         },
     },

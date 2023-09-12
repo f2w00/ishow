@@ -14,6 +14,7 @@ import 'koa-body/lib/index'
 import { is } from 'typia'
 import { TableCreateModes, UaErrors, UaInfos, UaSources } from '../../common/ua.enums'
 import {
+    DbHead,
     EndpointParam,
     HistoryValueParam,
     IDbData,
@@ -26,8 +27,8 @@ import { CreateSelfSignCertificateParam1 } from 'node-opcua-pki'
 import { Certificate } from 'node-opcua-crypto'
 import { CertUtils, DbUtils, RecordUtil } from '../utils/util'
 
-const { LogPrivate } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
-const { appDataPath } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
+const { LogPrivate } = require('ishow')
+const { appDataPath } = require('ishow')
 
 type Source = string | undefined
 type Warn = string
@@ -399,7 +400,7 @@ export module AgentMiddleware {
              * @description 此处绑定了pipe的事件,并且当
              */
             case '/db/init': {
-                if (is<{ createMode: TableCreateModes; tags?: [string]; tableName?: string }>(ctx.request.body)) {
+                if (is<{ createMode: TableCreateModes; tags?: DbHead[]; tableName?: string }>(ctx.request.body)) {
                     DbUtils.validateDbName(ctx.request.body['tableName'])
                     RecordUtil.recordParams('db:init', ctx.request.body)
                     await next()

@@ -11,9 +11,9 @@ import { UaMessage } from '../models/message.model'
 import { ItemAndName, NodeID, SubscriptGroupParam, SubscriptSingleParam } from '../models/params.model'
 import { Config } from '../../config/config.default'
 import { CommunicateUtil, RecordUtil } from '../utils/util'
-import { commonEvent } from '../../config/event.bus'
+import { commonEvent } from '../../event.bus'
 
-const { ClientError, ClientWarn } = require('D:\\works\\idea_projects\\ishow\\src\\platform\\ishow.js')
+const { ClientError, ClientWarn } = require('ishow')
 
 export module SubscriptService {
     export let subscription!: ClientSubscription

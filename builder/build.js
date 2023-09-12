@@ -1,9 +1,9 @@
 const config = {
     productName: 'ishow', // 应用程序名称
-    appId: 'ishow.github', // 应用程序唯一标识
+    appId: 'ishow.everything', // 应用程序唯一标识
     publish: false, // 是否发布到 GitHub 上
     asar: false, // 是否将应用程序打包为asar文件
-    files: ['src', 'node_modules'], // 将要打包的文件或目录
+    files: ['production', 'node_modules'], // 将要打包的文件或目录
     directories: {
         output: 'release', // 打包输出目录
         buildResources: 'builder', // 构建资源目录
@@ -28,10 +28,11 @@ const config = {
         createStartMenuShortcut: false, // 是否在开始菜单上创建快捷方式
         guid: 'ishow', // 安装程序的 GUID
         shortcutName: 'ishow', // 创建快捷方式的名称
-        artifactName: 'ishow.${ext}', // 生成安装文件时的文件名
+        artifactName: 'ishow-win32-${version}-installer.${ext}', // 生成安装文件时的文件名
         allowToChangeInstallationDirectory: true,
         installerIcon: 'icons/icon.ico',
         uninstallerIcon: 'icons/icon.ico',
+        menuCategory: 'ishow',
     },
 }
 
