@@ -272,7 +272,6 @@
                 if (obj != {}) {
                     param = obj
                 }
-                console.log(param, 'session参数')
                 return await sessionApi.sessionInit(param)
             },
             clearEndpointUrl() {
@@ -360,55 +359,57 @@
                 }
             },
             async handleConnectServer() {
-                window.parent.ishow.windowEvent.emit('main:notice.all', {
-                    type: 'success',
-                    message: 'client connection',
-                })
-                // let securityMode = Number(this.securityMode) + 1
-                // let securityPolicy = 'http://opcfoundation.org/UA/SecurityPolicy#' + this.securityPolicy
-                // let sessionInitObj = {}
-                // switch (Number(this.advanceVerification)) {
-                //     case 1:
-                //         sessionInitObj = {
-                //             type: 0,
-                //         }
-                //         break
-                //     case 2:
-                //         sessionInitObj = {
-                //             type: 1,
-                //             userName: this.advanceAuthentUsername,
-                //             password: this.advanceAuthentPassword,
-                //         }
-                //         break
-                //     case 3:
-                //         sessionInitObj = {
-                //             type: 2,
-                //             certificateData: this.advanceAuthentCertificate,
-                //             privateKey: this.advanceAuthentKey,
-                //         }
-                //         break
-                //     default:
-                //         break
-                // }
-                // if (this.isAutoConnect) {
-                //     let res = await this.clientInit(securityMode, securityPolicy)
-                //     console.log(res)
-                //     if (res.code === 200) {
-                //         let res1 = await this.clientConnect()
-                //         let res2 = await this.sessionInit(sessionInitObj)
-                //         console.log(res1, res2)
-                //         if (res2.code === 200) {
-                //             window.parent.ishow.windowEvent.emit(`opcua:session.init`, res2.code)
-                //         }
-                //     }
-                // } else {
-                //     let res1 = await this.clientInit()
-                //     if (res1.code === 200) {
-                //         await this.clientConnect()
-                //     }
-                // }
-                // this.clearEndpointUrl()
-                // window.parent.ishow.windowEvent.emit(`ishow:dialog.cancle`)
+                let securityMode = Number(this.securityMode) + 1
+                let securityPolicy = 'http://opcfoundation.org/UA/SecurityPolicy#' + this.securityPolicy
+                let sessionInitObj = {}
+                switch (Number(this.advanceVerification)) {
+                    case 1:
+                        sessionInitObj = {
+                            type: 0,
+                        }
+                        break
+                    case 2:
+                        sessionInitObj = {
+                            type: 1,
+                            userName: this.advanceAuthentUsername,
+                            password: this.advanceAuthentPassword,
+                        }
+                        break
+                    case 3:
+                        sessionInitObj = {
+                            type: 2,
+                            certificateData: this.advanceAuthentCertificate,
+                            privateKey: this.advanceAuthentKey,
+                        }
+                        break
+                    default:
+                        break
+                }
+                if (this.isAutoConnect) {
+                    let res = await this.clientInit(securityMode, securityPolicy)
+                    if (res.code === 200) {
+                        let res1 = await this.clientConnect()
+                        let res2 = await this.sessionInit(sessionInitObj)
+                        if (res2.code === 200) {
+                            window.parent.ishow.windowEvent.emit(`opcua:session.init`, res2.code)
+                            window.parent.ishow.windowEvent.emit('main:notice.all', {
+                                type: 'success',
+                                message: 'client connection',
+                            })
+                        }
+                    }
+                } else {
+                    let res1 = await this.clientInit()
+                    if (res1.code === 200) {
+                        await this.clientConnect()
+                        window.parent.ishow.windowEvent.emit('main:notice.all', {
+                            type: 'success',
+                            message: 'client connection',
+                        })
+                    }
+                }
+                this.clearEndpointUrl()
+                window.parent.ishow.windowEvent.emit(`ishow:dialog.cancle`)
             },
             handleParentheight() {
                 parent.document.querySelector('#dialogIframe').style.height = 0

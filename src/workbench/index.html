@@ -301,7 +301,6 @@
                 }
             },
             tableRowClassName({ row, rowIndex }) {
-                console.log(row)
                 if ('warn' in row || row.information.includes('warn')) {
                     return 'warning-row'
                 } else if ('error' in row || row.information.includes('error')) {
@@ -526,7 +525,6 @@
             },
             onNoticeFromAll() {
                 window.ishow.windowEvent.on('main:notice.all', (e) => {
-                    console.log(e)
                     const h = this.$createElement
                     this.$notify({
                         title: e.type,
