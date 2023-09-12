@@ -524,6 +524,18 @@
                     })
                 })
             },
+            onNoticeFromAll() {
+                window.ishow.windowEvent.on('main:notice.all', (e) => {
+                    console.log(e)
+                    const h = this.$createElement
+                    this.$notify({
+                        title: e.type,
+                        message: e.message,
+                        type: e.type,
+                        duration: 2500,
+                    })
+                })
+            },
         },
         mounted() {
             // this.attributeObserver()
@@ -536,6 +548,7 @@
             this.benchInit()
             this.tabInit()
             this.onNoticeFromMain()
+            this.onNoticeFromAll()
         },
         created() {
             // -----------存

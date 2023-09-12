@@ -201,10 +201,10 @@ function menuMouseEnter(that, $event, item) {
         const subEl = el.querySelector('.__menu__sub__wrapper')
         console.log(el)
         console.log($event, subEl)
-        const {offsetWidth} = el
-        const {offsetWidth: subOffsetWidth, offsetHeight: subOffsetHeight} = subEl
-        const {innerWidth: windowWidth, innerHeight: windowHeight} = window
-        const {top, left} = el.getBoundingClientRect()
+        const { offsetWidth } = el
+        const { offsetWidth: subOffsetWidth, offsetHeight: subOffsetHeight } = subEl
+        const { innerWidth: windowWidth, innerHeight: windowHeight } = window
+        const { top, left } = el.getBoundingClientRect()
         if (left + offsetWidth + subOffsetWidth > windowWidth - 5) {
             that.ishowMenuConfig.subLeft = left - subOffsetWidth + 5
         } else {

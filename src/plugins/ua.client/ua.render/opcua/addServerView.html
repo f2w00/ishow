@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="../../../../workbench/element-ui/css/index.css"/>
-    <link rel="stylesheet" href="./css/addServerView.css"/>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../../../../workbench/element-ui/css/index.css" />
+    <link rel="stylesheet" href="./css/addServerView.css" />
 </head>
 
 <body>
-<div id="app">
-    <div class="iframeBox">
-        <!-- <div class="configName">
+    <div id="app">
+        <div class="iframeBox">
+            <!-- <div class="configName">
             Configuration Name:
             <input
                 class="configInput"
@@ -19,195 +20,148 @@
                 style="color: #606266"
             />
         </div> -->
-        <el-tabs type="border-card">
-            <el-tab-pane label="advanced">
-                <div class="advancedSubView">
-                    <div class="serInformation setBox">
-                        <el-divider content-position="left">Server Infornation</el-divider>
-                        <div style="padding: 0 15px">
-                            <div class="pointBox">
-                                <div class="item-input-suffix">
-                                    Endpoint Url
-                                    <el-input
-                                            v-model="endpointUrl"
-                                            :disabled="false"
-                                            style="margin-left: 33px"
-                                            spellcheck="false"
-                                    >
-                                    </el-input>
+            <el-tabs type="border-card">
+                <el-tab-pane label="advanced">
+                    <div class="advancedSubView">
+                        <div class="serInformation setBox">
+                            <el-divider content-position="left">Server Infornation</el-divider>
+                            <div style="padding: 0 15px">
+                                <div class="pointBox">
+                                    <div class="item-input-suffix">
+                                        Endpoint Url
+                                        <el-input v-model="endpointUrl" :disabled="false" style="margin-left: 33px"
+                                            spellcheck="false">
+                                        </el-input>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="securitySet setBox">
-                        <el-divider content-position="left">Security Settings</el-divider>
-                        <div style="padding: 0 15px">
-                            <div class="policyBox">
-                                <span class="contentName">Security Policy </span>
-                                <el-select
-                                        v-model="securityPolicy"
-                                        @change="selectChangedPolicy"
-                                        placeholder="None"
-                                        style="margin-left: 22px"
-                                >
-                                    <el-option
-                                            v-for="item in securityPolicyList"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value"
-                                            :disabled="item.disabled"
-                                    >
-                                    </el-option>
-                                </el-select>
-                            </div>
-                            <div class="modeBox">
-                                <span class="contentName longContent">Message Security Mode</span>
-                                <el-select v-model="securityMode" placeholder="None" style="margin-left: 18px">
-                                    <el-option
-                                            v-for="item in securityModeList"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value"
-                                            :disabled="item.disabled"
-                                    >
-                                    </el-option>
-                                </el-select>
+                        <div class="securitySet setBox">
+                            <el-divider content-position="left">Security Settings</el-divider>
+                            <div style="padding: 0 15px">
+                                <div class="policyBox">
+                                    <span class="contentName">Security Policy </span>
+                                    <el-select v-model="securityPolicy" @change="selectChangedPolicy" placeholder="None"
+                                        style="margin-left: 22px">
+                                        <el-option v-for="item in securityPolicyList" :key="item.value"
+                                            :label="item.label" :value="item.value" :disabled="item.disabled">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                                <div class="modeBox">
+                                    <span class="contentName longContent">Message Security Mode</span>
+                                    <el-select v-model="securityMode" placeholder="None" style="margin-left: 18px">
+                                        <el-option v-for="item in securityModeList" :key="item.value"
+                                            :label="item.label" :value="item.value" :disabled="item.disabled">
+                                        </el-option>
+                                    </el-select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="authenticationSet setBox">
-                        <el-divider content-position="left">Authentication Settings</el-divider>
-                        <div style="padding: 0 15px">
-                            <div class="anonymousBox">
-                                <div class="radioDefined">
-                                    <div class="radioBox">
-                                        <input
-                                                type="radio"
-                                                v-model="advanceVerification"
-                                                @click="handleauthenticationSet"
-                                                label="1"
-                                                value="1"
-                                        />
-                                    </div>
-                                    <div class="radioContent">Anonymous</div>
-                                </div>
-                            </div>
-                            <div class="accountBox">
-                                <div class="radioDefined">
-                                    <div class="radioBox" style="line-height: 72px">
-                                        <input
-                                                type="radio"
-                                                v-model="advanceVerification"
-                                                @click="handleauthenticationSet"
-                                                label="2"
-                                                value="2"
-                                        />
-                                    </div>
-                                    <div class="radioContent">
-                                        <div class="radioContentTop">
-                                            <div class="item-input-suffix">
-                                                Username
-                                                <el-input
-                                                        v-model="advanceAuthentUsername"
-                                                        :disabled="accountFlag"
-                                                        style="margin-left: 18px"
-                                                >
-                                                </el-input>
-                                                <el-checkbox v-model="advanceAuthentStorechecked"
-                                                >Store
-                                                </el-checkbox
-                                                >
-                                            </div>
+                        <div class="authenticationSet setBox">
+                            <el-divider content-position="left">Authentication Settings</el-divider>
+                            <div style="padding: 0 15px">
+                                <div class="anonymousBox">
+                                    <div class="radioDefined">
+                                        <div class="radioBox">
+                                            <input type="radio" v-model="advanceVerification"
+                                                @click="handleauthenticationSet" label="1" value="1" />
                                         </div>
-                                        <div class="radioContentBottom">
-                                            <div class="item-input-suffix">
-                                                Password
-                                                <el-input
-                                                        v-model="advanceAuthentPassword"
-                                                        :disabled="accountFlag"
-                                                        style="margin-left: 22px"
-                                                >
-                                                </el-input>
+                                        <div class="radioContent">Anonymous</div>
+                                    </div>
+                                </div>
+                                <div class="accountBox">
+                                    <div class="radioDefined">
+                                        <div class="radioBox" style="line-height: 72px">
+                                            <input type="radio" v-model="advanceVerification"
+                                                @click="handleauthenticationSet" label="2" value="2" />
+                                        </div>
+                                        <div class="radioContent">
+                                            <div class="radioContentTop">
+                                                <div class="item-input-suffix">
+                                                    Username
+                                                    <el-input v-model="advanceAuthentUsername" :disabled="accountFlag"
+                                                        style="margin-left: 18px">
+                                                    </el-input>
+                                                    <el-checkbox v-model="advanceAuthentStorechecked">Store
+                                                    </el-checkbox>
+                                                </div>
+                                            </div>
+                                            <div class="radioContentBottom">
+                                                <div class="item-input-suffix">
+                                                    Password
+                                                    <el-input v-model="advanceAuthentPassword" :disabled="accountFlag"
+                                                        style="margin-left: 22px">
+                                                    </el-input>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="certificateBox">
-                                <div class="radioDefined">
-                                    <div class="radioBox" style="line-height: 72px">
-                                        <input
-                                                type="radio"
-                                                v-model="advanceVerification"
-                                                @click="handleauthenticationSet"
-                                                label="3"
-                                                value="3"
-                                        />
-                                    </div>
-                                    <div class="radioContent">
-                                        <div class="radioContentTop">
-                                            <div class="item-input-suffix">
-                                                Certificate
-                                                <el-input
-                                                        v-model="advanceAuthentCertificate"
-                                                        :disabled="certificateFlag"
-                                                        style="margin-left: 16px"
-                                                >
-                                                </el-input>
-                                                <button class="moreBtn">
-                                                    <i class="el-icon-more"></i>
-                                                </button>
-                                            </div>
+                                <div class="certificateBox">
+                                    <div class="radioDefined">
+                                        <div class="radioBox" style="line-height: 72px">
+                                            <input type="radio" v-model="advanceVerification"
+                                                @click="handleauthenticationSet" label="3" value="3" />
                                         </div>
-                                        <div class="radioContentBottom">
-                                            <div class="item-input-suffix">
-                                                Private Key
-                                                <el-input
-                                                        v-model="advanceAuthentKey"
-                                                        :disabled="certificateFlag"
-                                                        style="margin-left: 10px"
-                                                >
-                                                </el-input>
-                                                <button class="moreBtn">
-                                                    <i class="el-icon-more"></i>
-                                                </button>
+                                        <div class="radioContent">
+                                            <div class="radioContentTop">
+                                                <div class="item-input-suffix">
+                                                    Certificate
+                                                    <el-input v-model="advanceAuthentCertificate"
+                                                        :disabled="certificateFlag" style="margin-left: 16px">
+                                                    </el-input>
+                                                    <button class="moreBtn">
+                                                        <i class="el-icon-more"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="radioContentBottom">
+                                                <div class="item-input-suffix">
+                                                    Private Key
+                                                    <el-input v-model="advanceAuthentKey" :disabled="certificateFlag"
+                                                        style="margin-left: 10px">
+                                                    </el-input>
+                                                    <button class="moreBtn">
+                                                        <i class="el-icon-more"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="sessionSet setBox">
-                        <el-divider content-position="left">Session Settings</el-divider>
-                        <div style="padding: 0 15px">
-                            <div class="sessionName">
-                                <div class="item-input-suffix">
-                                    Session Name
-                                    <el-input v-model="sessionName" :disabled="false" style="margin-left: 20px">
-                                    </el-input>
+                        <div class="sessionSet setBox">
+                            <el-divider content-position="left">Session Settings</el-divider>
+                            <div style="padding: 0 15px">
+                                <div class="sessionName">
+                                    <div class="item-input-suffix">
+                                        Session Name
+                                        <el-input v-model="sessionName" :disabled="false" style="margin-left: 20px">
+                                        </el-input>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </el-tab-pane>
-        </el-tabs>
-        <div slot="footer" class="dialog-footer">
-            <el-checkbox v-model="isAutoConnect">Connect Automatically</el-checkbox>
-            <el-button @click="handleCancle">Cancle</el-button>
-            <el-button type="primary" @click="handleConnectServer">OK</el-button>
+                </el-tab-pane>
+            </el-tabs>
+            <div slot="footer" class="dialog-footer">
+                <el-checkbox v-model="isAutoConnect">Connect Automatically</el-checkbox>
+                <el-button @click="handleCancle">Cancle</el-button>
+                <el-button type="primary" @click="handleConnectServer">OK</el-button>
+            </div>
         </div>
+        <el-dialog class="record_dialog" title="记录保存" :visible.sync="dialogVisible" width="70%">
+            <li class="record_item" v-for="(item,index) in recordList" :key="index" @click="handleRestore">
+                {{item}}-----{{index}}
+            </li>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="dialogVisible = false">关 闭</el-button>
+            </span>
+        </el-dialog>
     </div>
-    <el-dialog class="record_dialog" title="记录保存" :visible.sync="dialogVisible" width="70%">
-        <li class="record_item" v-for="(item,index) in recordList" :key="index" @click="handleRestore">
-            {{item}}-----{{index}}
-        </li>
-        <span slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="dialogVisible = false">关 闭</el-button>
-                </span>
-    </el-dialog>
-</div>
 </body>
 <script src="../../../../workbench/vue/vue.js"></script>
 <script src="../../../../workbench/element-ui/index.js"></script>
@@ -221,7 +175,7 @@
         data: function () {
             return {
                 configurationName: '',
-                isAutoConnect: false,
+                isAutoConnect: true,
                 addserverVisible: false,
                 advanceVerification: '1',
                 endpointUrl: '',
@@ -278,8 +232,8 @@
                     },
                 ],
                 serverList: [
-                    {serverName: 'SimulationServer@DESKTOP-REOKHRI'},
-                    {serverName: 'SimulationServer@REOKHRI-DESKTOP'},
+                    { serverName: 'SimulationServer@DESKTOP-REOKHRI' },
+                    { serverName: 'SimulationServer@REOKHRI-DESKTOP' },
                 ],
                 dialogVisible: false,
                 recordList: ['default'],
@@ -305,7 +259,7 @@
                 return await clientApi.clientInit(param)
             },
             async clientConnect() {
-                const param = {endpointUrl: ''}
+                const param = { endpointUrl: '' }
                 param.endpointUrl = this.endpointUrl
                 return await clientApi.clientConnect(param)
             },
@@ -315,7 +269,7 @@
                     userName: 'uaclient',
                     password: 'uaclient',
                 }
-                if (obj !== {}) {
+                if (obj != {}) {
                     param = obj
                 }
                 console.log(param, 'session参数')
@@ -406,59 +360,62 @@
                 }
             },
             async handleConnectServer() {
-                // window.parent.ishow.windowEvent.emit(`opcua:session.init`, 200)
-                let securityMode = Number(this.securityMode) + 1
-                let securityPolicy = 'http://opcfoundation.org/UA/SecurityPolicy#' + this.securityPolicy
-                let sessionInitObj = {}
-                switch (Number(this.advanceVerification)) {
-                    case 1:
-                        sessionInitObj = {
-                            type: 0,
-                        }
-                        break
-                    case 2:
-                        sessionInitObj = {
-                            type: 1,
-                            userName: this.advanceAuthentUsername,
-                            password: this.advanceAuthentPassword,
-                        }
-                        break
-                    case 3:
-                        sessionInitObj = {
-                            type: 2,
-                            certificateData: this.advanceAuthentCertificate,
-                            privateKey: this.advanceAuthentKey,
-                        }
-                        break
-                    default:
-                        break
-                }
-                if (this.isAutoConnect) {
-                    let res = await this.clientInit(securityMode, securityPolicy)
-                    console.log(res)
-                    if (res.code === 200) {
-                        let res1 = await this.clientConnect()
-                        let res2 = await this.sessionInit(sessionInitObj)
-                        console.log(res1, res2)
-                        if (res2.code === 200) {
-                            window.parent.ishow.windowEvent.emit(`opcua:session.init`, res2.code)
-                        }
-                    }
-                } else {
-                    let res1 = await this.clientInit()
-                    if (res1.code === 200) {
-                        await this.clientConnect()
-                    }
-                }
-                this.clearEndpointUrl()
-                window.parent.ishow.windowEvent.emit(`ishow:dialog.cancle`)
+                window.parent.ishow.windowEvent.emit('main:notice.all', {
+                    type: 'success',
+                    message: 'client connection',
+                })
+                // let securityMode = Number(this.securityMode) + 1
+                // let securityPolicy = 'http://opcfoundation.org/UA/SecurityPolicy#' + this.securityPolicy
+                // let sessionInitObj = {}
+                // switch (Number(this.advanceVerification)) {
+                //     case 1:
+                //         sessionInitObj = {
+                //             type: 0,
+                //         }
+                //         break
+                //     case 2:
+                //         sessionInitObj = {
+                //             type: 1,
+                //             userName: this.advanceAuthentUsername,
+                //             password: this.advanceAuthentPassword,
+                //         }
+                //         break
+                //     case 3:
+                //         sessionInitObj = {
+                //             type: 2,
+                //             certificateData: this.advanceAuthentCertificate,
+                //             privateKey: this.advanceAuthentKey,
+                //         }
+                //         break
+                //     default:
+                //         break
+                // }
+                // if (this.isAutoConnect) {
+                //     let res = await this.clientInit(securityMode, securityPolicy)
+                //     console.log(res)
+                //     if (res.code === 200) {
+                //         let res1 = await this.clientConnect()
+                //         let res2 = await this.sessionInit(sessionInitObj)
+                //         console.log(res1, res2)
+                //         if (res2.code === 200) {
+                //             window.parent.ishow.windowEvent.emit(`opcua:session.init`, res2.code)
+                //         }
+                //     }
+                // } else {
+                //     let res1 = await this.clientInit()
+                //     if (res1.code === 200) {
+                //         await this.clientConnect()
+                //     }
+                // }
+                // this.clearEndpointUrl()
+                // window.parent.ishow.windowEvent.emit(`ishow:dialog.cancle`)
             },
             handleParentheight() {
                 parent.document.querySelector('#dialogIframe').style.height = 0
                 parent.document.querySelector('#dialogIframe').style.height = document.body.scrollHeight + 'px'
             },
             async handleRestore(e) {
-                let res = await clientApi.restore({recordName: e.target.innerText})
+                let res = await clientApi.restore({ recordName: e.target.innerText })
                 if (res.code === 200 && res.data !== undefined) {
                     let requestList = res.data
                     for (let api of requestList.keys()) {
@@ -544,6 +501,7 @@
         },
     })
 </script>
+
 </html>
 <style scoped>
     ::-webkit-scrollbar {
