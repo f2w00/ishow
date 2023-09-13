@@ -89,9 +89,9 @@
 }
 
 .logview .el-table .warning-row {
-    background: #c5a100;
+    color: #c5a100;
 }
 
 .logview .el-table .error-row {
-    background: #ff6b65;
+    color: #ff6b65;
 }

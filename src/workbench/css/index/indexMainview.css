@@ -14,7 +14,7 @@
 }
 
 .mainviewTop .el-tabs__item.is-active {
-    color: #ca532b !important;
+    color: #974f37 !important;
     filter: brightness(1);
     border-radius: 10px 10px 0 0;
 }

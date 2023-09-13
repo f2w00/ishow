@@ -249,7 +249,10 @@ body {
 
 .dbBox .card .fieldArea .fieldItemArea {
     max-height: 190px;
+    min-height: 25px;
     margin-bottom: 5px;
+    background-color: white;
+    border-radius: 5px;
     overflow-y: auto;
 }
 
