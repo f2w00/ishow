@@ -26,9 +26,11 @@
 }
 
 .menu_dialog {
+    width: calc(100% - 85px);
+    height: calc(100% - 75px);
+    padding: 36px 40px;
+    background-color: transparent;
     position: absolute;
-    top: 36px;
-    left: 40px;
     z-index: 999;
 }
 

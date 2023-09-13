@@ -382,7 +382,6 @@
                 showMenu(this)
             },
             handleMenuItemClick(item) {
-                console.log(item)
                 menuItemClick(this, item)
             },
             handleSubMenuItemClick(subItem) {
@@ -525,12 +524,11 @@
             },
             onNoticeFromAll() {
                 window.ishow.windowEvent.on('main:notice.all', (e) => {
-                    const h = this.$createElement
                     this.$notify({
                         title: e.type,
                         message: e.message,
                         type: e.type,
-                        duration: 2500,
+                        duration: 3500,
                     })
                 })
             },

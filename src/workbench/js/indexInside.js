@@ -162,6 +162,19 @@ function showMenu(that) {
             let arrowSize = that.ishowMenuConfig.menuItemCss.arrowSize.match(/\d+/)
             if (arrowSize) arrowSize = ~~arrowSize[0] || 10
             el.style.setProperty(`--menu-item-arrowRealSize`, arrowSize / 2 + 'px')
+            that.$refs.MenuWrapper.parentNode.onclick = (e) => {
+                var event = e
+                var target = event.target || event.srcElement;
+                if (!that.$refs.MenuWrapper.contains(target)) {
+                    console.log(e)
+                    that.ishowMenuConfig.showMenu = !that.ishowMenuConfig.showMenu
+                    if (e.clientX > 50 && e.clientY > 50) {
+                        setTimeout(() => {
+                            document.elementFromPoint(e.clientX, e.clientY).click();
+                        }, 150)
+                    }
+                }
+            }
         })
     }
 }
