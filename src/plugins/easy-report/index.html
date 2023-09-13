@@ -13,7 +13,7 @@
         window.onload = function () {
             window.parent.ishow.windowEvent.on('leftBar:created.easy-report', (data) => {
                 data.forEach((info) => {
-                    console.log(info)
+                    // console.log(info)
                     window.parent.ishow.windowEvent.emit(`mainTab:create`, info)
                     window.parent.ishow.windowEvent.emit(`leftBar:close`, info.name)
                 })

@@ -246,17 +246,19 @@
                 }
                 let tabsContent = document.querySelector('.subviewLeft-content .el-tabs__content')
                 let resizeItem = document.querySelector('.subviewLeft .resizeShow')
-                if (this.ishowActivate.leftTabActivate != tab._props.name) {
-                    this.ishowActivate.leftTabActivate = tab._props.name
-                    tabsContent.style.display = 'block'
-                    resizeItem.style.display = 'block'
-                } else {
-                    if (tabsContent.style.display == 'none') {
+                if (tab._props.name != 'esy-report') {
+                    if (this.ishowActivate.leftTabActivate != tab._props.name) {
+                        this.ishowActivate.leftTabActivate = tab._props.name
                         tabsContent.style.display = 'block'
                         resizeItem.style.display = 'block'
                     } else {
-                        tabsContent.style.display = 'none'
-                        resizeItem.style.display = 'none'
+                        if (tabsContent.style.display == 'none') {
+                            tabsContent.style.display = 'block'
+                            resizeItem.style.display = 'block'
+                        } else {
+                            tabsContent.style.display = 'none'
+                            resizeItem.style.display = 'none'
+                        }
                     }
                 }
             },
