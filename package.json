@@ -3,7 +3,7 @@
     "productName": "ishow",
     "version": "0.0.1",
     "description": "This client solve problems with plugins for you",
-    "main": "production/starter.js",
+    "main": "src/starter.js",
     "type": "commonjs",
     "scripts": {
         "dev": "nodemon -e js,html,cjs,css --exec electron src/starter.js --delay 2",
