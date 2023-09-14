@@ -63,6 +63,12 @@
                 console.log(obj)
                 let res = dbApi.init(obj)
                 console.log(res)
+                if (res.code == '200') {
+                    window.parent.ishow.windowEvent.emit('main:notice.all', {
+                        type: 'success',
+                        message: 'dbInit success',
+                    })
+                }
             },
             dataListener() {
                 window.parent.ishow.windowEvent.on(`opcua:attribute.push`, (e) => {
