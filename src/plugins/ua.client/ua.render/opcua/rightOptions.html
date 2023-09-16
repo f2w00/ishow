@@ -51,7 +51,7 @@
         },
         computed: {},
         methods: {
-            handleInitDb() {
+            async handleInitDb() {
                 let obj = {
                     createMode: 0,
                     tags: this.fieldsItemList ? this.fieldsItemList : null,
@@ -61,7 +61,7 @@
                     obj.createMode = 2
                 }
                 console.log(obj)
-                let res = dbApi.init(obj)
+                let res = await dbApi.init(obj)
                 console.log(res)
                 if (res.code == '200') {
                     window.parent.ishow.windowEvent.emit('main:notice.all', {
