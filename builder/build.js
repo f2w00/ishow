@@ -3,20 +3,20 @@ const config = {
     appId: 'ishow.everything', // 应用程序唯一标识
     publish: false, // 是否发布到 GitHub 上
     asar: false, // 是否将应用程序打包为asar文件
-    afterPack: async function delPacks(context) {
-        const fs = require('fs')
-        const localeDir = context.appOutDir + '/locales/'
-        fs.readdir(localeDir, function (err, files) {
-            if (!(files && files.length)) return
-            for (let i = 0, len = files.length; i < len; i++) {
-                const match = files[i].match(/zh-CN\.pak/) //只保留中文
-                const match2 = files[i].match(/en-US\.pak/)
-                if (match === null || match2 === null) {
-                    fs.unlinkSync(localeDir + files[i])
-                }
-            }
-        })
-    },
+    // afterPack: async function delPacks(context) {
+    //     const fs = require('fs')
+    //     const localeDir = context.appOutDir + '/locales/'
+    //     fs.readdir(localeDir, function (err, files) {
+    //         if (!(files && files.length)) return
+    //         for (let i = 0, len = files.length; i < len; i++) {
+    //             const match = files[i].match(/zh-CN\.pak/) //只保留中文
+    //             const match2 = files[i].match(/en-US\.pak/)
+    //             if (match === null || match2 === null) {
+    //                 fs.unlinkSync(localeDir + files[i])
+    //             }
+    //         }
+    //     })
+    // },
     files: ['production', 'node_modules'], // 将要打包的文件或目录
     directories: {
         output: 'release', // 打包输出目录

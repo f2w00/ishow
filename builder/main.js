@@ -2,7 +2,7 @@ const { config } = require('dotenv')
 config()
 require('v8-compile-cache')
 
-async function electronStart() {
+async function electronStart(preview) {
     const { app, Menu, protocol } = require('electron')
     app.setPath('appData', generateUserDataPath())
     Menu.setApplicationMenu(null)
@@ -21,9 +21,14 @@ async function electronStart() {
         )
         clientStart()
     })
+    if (preview) {
+        setTimeout(() => {
+            app.quit()
+        }, 1000 * 3600)
+    }
 }
 
-electronStart()
+electronStart(true)
 
 async function clientStart() {
     const { Client } = await require('./client/client.js')
@@ -251,13 +256,13 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
                             title: 'uaclient',
                             name: 'uaclient',
                             content: 'uaclient',
-                            src: './components/tutorial/ishow.html',
+                            src: './components/tutorial/uaclient.html',
                         },
                         {
-                            title: 'ok',
-                            name: 'ok',
-                            content: 'ok',
-                            src: './components/tutorial/ishow.html',
+                            title: 'easy-report',
+                            name: 'easy-report',
+                            content: 'easy-report',
+                            src: './components/tutorial/easy-report.html',
                         },
                     ],
                 },
@@ -269,15 +274,20 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             content: 'opcua',
             iconSrc: '.././plugins/ua.client/ua.render/opcua/assets/project.svg',
             viewPath: '.././plugins/ua.client/ua.render/opcua/leftOptions.html',
-            clickSendToWindow: [],
+            clickSendToWindow: [
+                {
+                    event: 'mainTab:change',
+                    params: ['dataView'],
+                },
+            ],
             clickCreateTab: [
                 {
                     event: 'leftBar:created.opcua',
                     params: [
                         {
-                            title: 'dataView',
+                            title: 'DataView',
                             name: 'dataView',
-                            content: 'dataView',
+                            content: 'DataView',
                             position: 'main',
                             src: '.././plugins/ua.client/ua.render/opcua/dataView.html',
                         },
@@ -294,12 +304,17 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             ],
         },
         {
-            title: 'easy-report',
+            title: 'Easy-Report',
             name: 'easy-report',
-            content: 'easy-report',
+            content: 'Easy-Report',
             iconSrc: '.././plugins/easy-report/assets/report.svg',
             viewPath: '.././plugins/easy-report/index.html',
-            clickSendToWindow: [],
+            clickSendToWindow: [
+                {
+                    event: 'mainTab:change',
+                    params: ['easy-report'],
+                },
+            ],
             clickCreateTab: [
                 {
                     event: 'leftBar:created.easy-report',

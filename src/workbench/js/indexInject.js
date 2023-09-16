@@ -1,5 +1,5 @@
 let subviewLeftTabsData = [
-    {title: 'mainMenu', name: 'mainMenu', iconSrc: './assets/icon/icon.svg', disabled: true},
+    { title: 'mainMenu', name: 'mainMenu', iconSrc: './assets/icon/icon.svg', disabled: true },
     {
         title: 'space',
         name: 'space',

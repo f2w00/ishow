@@ -3,16 +3,16 @@
     "productName": "ishow",
     "version": "0.0.1",
     "description": "This client solve problems with plugins for you",
-    "main": "src/starter.js",
+    "main": "production/starter.js",
     "type": "commonjs",
     "scripts": {
         "dev": "nodemon -e js,html,cjs,css --exec electron src/starter.js --delay 2",
-        "product": "nodemon -e js,html,cjs,css --exec electron production/starter.js --delay 2",
+        "run-product": "nodemon -e js,html,cjs,css --exec electron production/starter.js --delay 2",
         "compile": "nodemon -e ts --exec npx tsc",
         "encrypt": "electron ./builder/encrypt.js",
         "rebuild": "electron-rebuild",
         "build": "node builder/build.js",
-        "create-product": "node builder/product.js"
+        "product": "node builder/product.js"
     },
     "keywords": [
         "electron",
