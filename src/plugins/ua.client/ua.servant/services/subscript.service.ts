@@ -17,6 +17,7 @@ const { ClientError, ClientWarn } = require('ishow')
 
 export module SubscriptService {
     export let subscription!: ClientSubscription
+    export let staticValues: any[] = []
     let monitoredItems: Map<string, ItemAndName> = new Map()
     let subscriptionOption = Config.defaultSubscript
 
@@ -27,6 +28,13 @@ export module SubscriptService {
                 .on('changed', async (data) => {
                     let item = monitoredItems.get(itemId)
                     if (item) {
+                        if (!item.changed) {
+                            staticValues.push(
+                                new UaMessage(data, monitoredItem.itemToMonitor.nodeId.toString(), item.displayName)
+                            )
+                        } else {
+                            item.changed = true
+                        }
                         CommunicateUtil.emitToClient('Broker.receive', [
                             {
                                 pipeId: Config.defaultPipeName,

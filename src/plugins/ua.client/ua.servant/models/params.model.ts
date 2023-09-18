@@ -25,6 +25,7 @@ export interface SubscriptGroupParam {
 export interface ItemAndName {
     displayName: string
     monitoredItem: ClientMonitoredItem
+    changed?: boolean
 }
 
 export interface IFieldNames {

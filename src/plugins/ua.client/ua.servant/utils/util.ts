@@ -132,7 +132,9 @@ export class RecordUtil {
         if (recordName) {
             obj = StorePrivate.get(recordName)
             RecordUtil.using = recordName
-            RecordUtil.recordNames.push(recordName)
+            if (!RecordUtil.recordNames.includes(recordName)) {
+                RecordUtil.recordNames.push(recordName)
+            }
         } else {
             let name = StorePrivate.get('usingRecord')
             if (!name) {
