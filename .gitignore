@@ -105,6 +105,7 @@ src/plugins/ua.client/config/*.js
 production/
 !src/plugins/ua.client/extension.js
 !src/plugins/easy-report
+src/plugins/easy-report/dist
 !src/workbench/**/*.js
 *.zip
 *.idea
