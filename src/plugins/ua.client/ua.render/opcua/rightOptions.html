@@ -60,9 +60,9 @@
                 if (this.tableNameValue !== null && this.tableNameValue !== undefined && this.tableNameValue !== '') {
                     obj.createMode = 2
                 }
-                console.log(obj)
+                // console.log(obj)
                 let res = await dbApi.init(obj)
-                console.log(res)
+                // console.log(res)
                 if (res.code == '200') {
                     window.parent.ishow.windowEvent.emit('main:notice.all', {
                         type: 'success',
@@ -77,7 +77,7 @@
             },
             nodeIdListener() {
                 window.parent.ishow.windowEvent.on(`opcua:set.nodeId`, (e) => {
-                    console.log(e)
+                    // console.log(e)
                     this.fieldsItemList = e
                 })
             },

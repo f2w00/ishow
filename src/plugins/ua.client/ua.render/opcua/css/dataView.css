@@ -92,8 +92,7 @@ body {
     /* box-shadow: 0 0 10px 10px #eaeaeb; */
 }
 
-.el-table .cell::b
-.el-table .el-table__row--level-0 {
+.el-table .cell::b .el-table .el-table__row--level-0 {
     background-color: #73cbfa;
 }
 
@@ -126,9 +125,64 @@ body {
 .tableTooltip .tipBox {
     background-color: antiquewhite;
 }
+.contextmenu {
+    width: 140px;
+    margin: 5px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 12px;
+    background: #f0f0f0;
+    list-style-type: none;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+    position: absolute;
+    z-index: 3000;
+}
+.contextmenu li {
+    height: 20px;
+    line-height: 20px;
+    cursor: pointer;
+}
 
-/* .el-tabs__active-bar {
-    transition: none !important;
-    transition: none !important;
-    transition: none, none !important;
-} */
+.menu_dialog .el-dialog {
+    border-radius: 5px;
+}
+
+.menu_dialog .el-dialog__header {
+    padding: 10px 20px;
+}
+
+.menu_dialog .el-dialog__header .el-dialog__title {
+    font-size: 16px;
+}
+
+.menu_dialog .el-dialog__header .el-dialog__headerbtn {
+    top: 10px;
+}
+
+.menu_dialog .el-dialog__body {
+    padding: 10px 20px;
+}
+
+.menu_dialog .el-dialog__footer {
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.menu_dialog .dialog-footer .el-button {
+    width: 80px;
+    padding: 5px 20px;
+    font-weight: 200;
+}
+
+.menu_dialog .el-dialog__body .set_item {
+    margin: 10px 0;
+    position: relative;
+}
+.menu_dialog .el-dialog__body .set_item_input {
+    width: 120px;
+    position: absolute;
+    right: 0;
+}
+.menu_dialog .el-dialog__body .radio_item {
+    text-align: center;
+}

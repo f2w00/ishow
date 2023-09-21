@@ -166,13 +166,13 @@ function showMenu(that) {
                 var event = e
                 var target = event.target || event.srcElement;
                 if (!that.$refs.MenuWrapper.contains(target)) {
-                    console.log(e)
                     that.ishowMenuConfig.showMenu = !that.ishowMenuConfig.showMenu
                     if (e.clientX > 50 && e.clientY > 50) {
                         setTimeout(() => {
                             document.elementFromPoint(e.clientX, e.clientY).click();
                         }, 150)
                     }
+                    that.ishowMenuConfig.hoverFlag = false
                 }
             }
         })

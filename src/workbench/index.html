@@ -370,11 +370,13 @@
             async logErrorListener() {
                 window.ishow.onRender('main:log.error', (_, result) => {
                     this.logTableData.push(result)
+                    window.ishow.windowEvent.emit('main:notice.all', { type: 'error', message: result.Information })
                 })
             },
             async logWarnListener() {
                 window.ishow.onRender('main:log.warn', (_, result) => {
                     this.logTableData.push(result)
+                    window.ishow.windowEvent.emit('main:notice.all', { type: 'warning', message: result.Information })
                 })
             },
             async logInfoListener() {
@@ -531,10 +533,10 @@
             onNoticeFromAll() {
                 window.ishow.windowEvent.on('main:notice.all', (e) => {
                     this.$notify({
-                        title: e.type,
+                        title: e.type ? e.type : 'info',
                         message: e.message,
-                        type: e.type,
-                        duration: 3500,
+                        type: e.type ? e.type : 'info',
+                        duration: 3000,
                     })
                 })
             },
