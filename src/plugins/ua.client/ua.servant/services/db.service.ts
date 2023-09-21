@@ -6,7 +6,9 @@ import { CommunicateUtil, DbUtils } from '../utils/util'
 import { DbHead, IDbData, IFieldNames } from '../models/params.model'
 import { UaMessage } from '../models/message.model'
 import { ClientError } from '../middlewares/agent.middleware'
-// import { DataFrame, Series, concat, toJSON } from 'danfojs-node'
+import { SessionService } from './session.service'
+import { SubscriptService } from './subscript.service'
+import { commonEvent } from '../../event.bus'
 
 export module DbService {
     export let defaultTableName: string = Config.defaultTable
@@ -15,7 +17,6 @@ export module DbService {
     export let dbTemp: Map<string, any> = new Map()
     export let tags: DbHead[] = []
     export let mapCount = 0
-    // export let dbTempFrame: DataFrame = new DataFrame()
 
     /**
      * @description 用于初始化database,如果表名不存在则创建一个新表
@@ -79,8 +80,22 @@ export module DbService {
             CommunicateUtil.emitToClient('pipe:' + Config.defaultPipeName + '.registerIpc', [
                 { module: 'extensionProcess:uaclient' },
             ])
+            let stamp = new Date().toLocaleString()
+            let tempArray: any[] = []
+            SubscriptService.staticValues.forEach((data) => {
+                tempArray.push({
+                    value: data.value,
+                    sourceTimestamp: stamp,
+                    displayName: data.displayName,
+                    nodeId: data.nodeId,
+                })
+            })
+            storeTemp(tempArray)
             CommunicateUtil.events.on('pipe:' + Config.defaultPipeName + '.pushed', (data: UaMessage) => {
                 storeTemp(data)
+            })
+            commonEvent.on('main:uaclient.close', () => {
+                updateFrame()
             })
         } catch (e: any) {
             throw new ClientError(UaSources.dbService, UaErrors.errorCreateClient, e.message, e.stack)
@@ -171,39 +186,16 @@ export module DbService {
         }
     }
 
-    function updateFrame() {
+    async function updateFrame() {
         let tempArray = Array.from(DbService.dbTemp).sort()
         let result: any = []
-        // let pointer = 0
-        // let mode = true
-        // for (let i = 0; i < tempArray.length; i++) {
-        //     let tempLen = Object.keys(tempArray[i][1]).length
-        //     if (tempLen != DbService.tags.length) {
-        //         pointer = i
-        //     }
-        //     if (tempLen == DbService.tags.length || i == tempArray.length - 1) {
-        //         if (Object.keys(tempArray[pointer][1]).length != DbService.tags.length) {
-        //             while (pointer <= i) {
-        //                 DbService.tags.forEach((value) => {
-        //                     if (!tempArray[pointer][1][value.nodeid]) {
-        //                         tempArray[pointer][1][value.nodeid] = mode
-        //                             ? tempArray[i][1][value.nodeid]
-        //                             : tempArray[pointer - 1][1][value.nodeid]
-        //                     }
-        //                 })
-        //                 pointer++
-        //             }
-        //         }
-        //         mode = false
-        //     }
-        // }
         tempArray.forEach((value) => {
             if (Object.keys(value[1]).length == DbService.tags.length) {
                 result.push({ sourceTimestamp: value[0], ...value[1] })
             }
         })
         DbService.dbTemp.clear()
-        persist.insertMany(result)
+        await persist.insertMany(result)
     }
 }
 // DbService.tags = [

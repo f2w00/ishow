@@ -24,11 +24,11 @@ async function electronStart(preview) {
     if (preview) {
         setTimeout(() => {
             app.quit()
-        }, 1000 * 3600)
+        }, 1000 * 3600 * 2)
     }
 }
 
-electronStart(true)
+electronStart(false)
 
 async function clientStart() {
     const { Client } = await require('./client/client.js')

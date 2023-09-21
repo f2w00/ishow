@@ -1,4 +1,4 @@
-import {DataTypes as DT, FindOptions, ModelAttributes, ModelCtor, Options, Sequelize, WhereOptions} from 'sequelize'
+import { DataTypes as DT, FindOptions, ModelAttributes, ModelCtor, Options, Sequelize, WhereOptions } from 'sequelize'
 
 /**
  * @description 用来完成基础数据库的增删改查的功能,当初始化的时候必须指定modelAttributes即数据库模型数据,
@@ -23,15 +23,20 @@ export class Persistence {
      */
     async insert(record: any) {
         try {
-            await this.currentModel.create({...record})
+            await this.currentModel.create({ ...record })
         } catch (e: any) {
             throw e
         }
     }
 
-    async insertMany(records: any[]) {
+    async insertMany(records: any[], sync?: boolean) {
         try {
-            await this.currentModel.bulkCreate(records)
+            if (sync) {
+                await this.currentModel.bulkCreate(records)
+                this.currentModel.sync()
+            } else {
+                await this.currentModel.bulkCreate(records)
+            }
         } catch (e: any) {
             throw e
         }
@@ -90,7 +95,11 @@ export class Persistence {
                 }
             }
             this.sequelize.authenticate()
-            this.currentModel = this.sequelize.define(tableName, attributes, {timestamps: false})
+            this.currentModel = this.sequelize.define(tableName, attributes, {
+                timestamps: false,
+                tableName: tableName,
+                freezeTableName: true,
+            })
             await this.currentModel.sync()
         } catch (e: any) {
             throw e
