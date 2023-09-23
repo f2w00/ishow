@@ -32,7 +32,7 @@
                         <el-tabs :value="ishowActivate.leftTabActivate" tab-position="left" @tab-click="handleTableft">
                             <el-tab-pane v-for="(item, index) in subviewLeftTabs" :id="item.name" :name="item.name"
                                 :disabled="item.disabled">
-                                <span slot="label">
+                                <span slot="label" style="cursor: pointer;" :title="item.content">
                                     <img class="icon" :src="item.iconSrc" />
                                 </span>
                                 <div class="grid-box">
@@ -160,10 +160,10 @@
             return {
                 //主应用展开索引
                 ishowActivate: {
-                    leftTabActivate: 'space',
+                    leftTabActivate: '',
                     rightTabActivate: '',
-                    bottomTabActivate: 'problem',
-                    mainTabsActivate: 'welcome',
+                    bottomTabActivate: '',
+                    mainTabsActivate: '',
                 },
                 //弹出框
                 dialogVisible: false,
@@ -246,7 +246,7 @@
                 }
                 let tabsContent = document.querySelector('.subviewLeft-content .el-tabs__content')
                 let resizeItem = document.querySelector('.subviewLeft .resizeShow')
-                if (tab._props.name != 'easy-report') {
+                if (tab._props.name != 'Easy-report') {
                     // console.log('111')
                     if (this.ishowActivate.leftTabActivate != tab._props.name) {
                         this.ishowActivate.leftTabActivate = tab._props.name
@@ -342,24 +342,10 @@
             leftcloseListener() {
                 const _this = this
                 window.ishow.windowEvent.on(`leftBar:close`, (e) => {
-                    // console.log(e)
                     let tabsContent = document.querySelector('.subviewLeft-content .el-tabs__content')
                     let resizeItem = document.querySelector('.subviewLeft .resizeShow')
                     tabsContent.style.display = 'none'
                     resizeItem.style.display = 'none'
-                    // if (_this.ishowActivate.leftTabActivate != e) {
-                    //     _this.ishowActivate.leftTabActivate = e
-                    //     tabsContent.style.display = 'block'
-                    //     resizeItem.style.display = 'block'
-                    // } else {
-                    //     if (tabsContent.style.display == 'none') {
-                    //         tabsContent.style.display = 'block'
-                    //         resizeItem.style.display = 'block'
-                    //     } else {
-                    //         tabsContent.style.display = 'none'
-                    //         resizeItem.style.display = 'none'
-                    //     }
-                    // }
                 })
             },
             dialogListener() {
@@ -408,6 +394,7 @@
                         this.handleShowMenu()
                     }
                     window.benchConfigs = window.ishow.sharedData.get('workbenchConfig')
+                    console.log(window.benchConfigs)
                     // window.benchConfigs = await window.ishow.store('get', 'workbenchConfig')
                     let bottom = document.getElementById('main-bottom')
                     let tabsLeft = document.querySelector('.subviewLeft-content .el-tabs__content')
@@ -460,8 +447,8 @@
                         window.exsistTabs.set(attribute.name, attribute)
                         this.ishowActivate.mainTabsActivate = attribute.name
                         getTab(attribute)
-                        if (attribute.name != 'welcome') {
-                            window.ishow.windowEvent.emit('mainTab:remove', 'welcome')
+                        if (attribute.name != 'Welcome') {
+                            window.ishow.windowEvent.emit('mainTab:remove', 'Welcome')
                         }
                     }
                 })
@@ -486,14 +473,14 @@
                 })
                 if (this.mainTabs.length == 0) {
                     window.ishow.windowEvent.emit('mainTab:create', {
-                        title: 'welcome',
-                        name: 'welcome',
+                        title: 'Welcome',
+                        name: 'Welcome',
                         src: './components/welcome.html',
                     })
                     window.ishow.windowEvent.on('showWelcome', () => {
                         window.ishow.windowEvent.emit('mainTab:create', {
-                            title: 'welcome',
-                            name: 'welcome',
+                            title: 'Welcome',
+                            name: 'Welcome',
                             src: './components/welcome.html',
                         })
                     })
@@ -533,11 +520,14 @@
             onNoticeFromAll() {
                 window.ishow.windowEvent.on('main:notice.all', (e) => {
                     this.$notify({
+                        type: e.type ? e.type : 'info',
                         title: e.type ? e.type : 'info',
                         message: e.message,
-                        type: e.type ? e.type : 'info',
-                        duration: 3000,
-                    })
+                        customClass: 'my_notice',
+                        position: 'top-left',
+                        offset: 20,
+                        duration: 3000
+                    });
                 })
             },
         },

@@ -44,11 +44,14 @@
 }
 
 .subviewLeft-content .el-tabs__item {
-    height: 50px;
-    line-height: 50px;
-    padding: 0 14px 0 10px;
+    height: 55px;
+    line-height: 55px;
+    padding: 0 10px;
     font-size: 26px;
     -webkit-app-region: no-drag;
+}
+.subviewLeft-content .el-tabs--left .el-tabs__item.is-left {
+    text-align: center;
 }
 
 .subviewLeft-content .el-tabs__item span {

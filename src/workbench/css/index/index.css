@@ -11,7 +11,7 @@
     --log-view-height: 150px;
     --log-view-minheight: 120px;
     --sub-view-minheight: 50px;
-    --left-bar-width: 50px;
+    --left-bar-width: 70px;
     --right-bar-width: 26px;
 
     /* TODO 统一字体样式 */
@@ -241,6 +241,11 @@ iframe {
 
 .el-tree::-webkit-scrollbar-thumb:hover {
     background-color: rgba(144, 147, 153, 0.3);
+}
+
+.my_notice.el-notification.left {
+    transform: translateX(-50%);
+    left: 50%;
 }
 
 /* .el-tabs__active-bar {
