@@ -55,7 +55,8 @@
 
         <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
             <li @click="handleRemove">Remove Selected Node</li>
-            <li @click="handleAdd">Add Custom Node</li>
+            <!-- <li @click="handleAdd">Add Custom Node</li> -->
+            <li @click="handleToDb">Add Node To DataBase</li>
             <li @click="handleSubSet">Subscriiption Setings</li>
         </ul>
 
@@ -244,8 +245,17 @@
                 this.visible = false;
             },
             handleRemove() {
-                let res = this.subscriptModify(this.selectItem.nodeId)
+                let res = this.subscriptDelete(this.selectItem.nodeId)
                 console.log(res)
+            },
+            handleToDb() {
+                console.log(this.selectItem)
+                window.parent.ishow.windowEvent.emit(`opcua:set.nodeId`,
+                    {
+                        nodeId: this.selectItem.nodeId,
+                        displayName: this.selectItem.displayName
+                    }
+                )
             },
             handleAdd() {
                 this.addnodeVisible = true;
@@ -297,19 +307,6 @@
                     }
                 })
             },
-            nodeIdListener() {
-                const _this = this
-                window.parent.ishow.windowEvent.on(`opcua:get.nodeId`, () => {
-                    let nidList = []
-                    for (let i = 0; i < _this.dataviewData.length; i++) {
-                        nidList.push({
-                            nodeid: _this.dataviewData[i].nodeId,
-                            displayName: _this.dataviewData[i].displayName,
-                        })
-                    }
-                    window.parent.ishow.windowEvent.emit(`opcua:set.nodeId`, nidList)
-                })
-            },
             triggerSubscript() {
                 const _this = this
                 window.parent.ishow.windowEvent.on(`opcua:subscript.dragback`, async (e) => {
@@ -323,21 +320,11 @@
                     // }
                     if (data.nodeClass === 'Variable') {
                         let res1 = await _this.subscriptSingle(data.nodeId, data.displayName)
-                        if (res1.code == 200) {
-                            setTimeout(() => {
-                                window.parent.ishow.windowEvent.emit(`opcua:get.nodeId`)
-                            }, 1500)
-                        }
                     } else {
                         let reslist = await _this.getSessionGroup(data.nodeId, 0)
                         let nodeGroup = reslist.split('|')
                         let res2 = await _this.subscriptGroup(nodeGroup)
                         console.log(res2)
-                        if (res2.code == 200) {
-                            setTimeout(() => {
-                                window.parent.ishow.windowEvent.emit(`opcua:get.nodeId`)
-                            }, 1500)
-                        }
                     }
                 })
             },
@@ -410,7 +397,6 @@
             targetView(window, '.dataviewApp')
             this.triggerSubscript()
             this.dataListener()
-            this.nodeIdListener()
         },
     })
 </script>

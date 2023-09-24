@@ -519,15 +519,25 @@
             },
             onNoticeFromAll() {
                 window.ishow.windowEvent.on('main:notice.all', (e) => {
-                    this.$notify({
-                        type: e.type ? e.type : 'info',
-                        title: e.type ? e.type : 'info',
-                        message: e.message,
-                        customClass: 'my_notice',
-                        position: 'top-left',
-                        offset: 20,
-                        duration: 3000
-                    });
+                    if (e.position == undefined) {
+                        this.$notify({
+                            type: e.type ? e.type : 'info',
+                            title: e.type ? e.type : 'info',
+                            message: e.message,
+                            customClass: 'my_notice',
+                            position: 'top-left',
+                            offset: 20,
+                            duration: 3000
+                        });
+                    } else {
+                        this.$notify({
+                            type: e.type ? e.type : 'info',
+                            title: e.type ? e.type : 'info',
+                            message: e.message,
+                            position: e.position,
+                            duration: 2500
+                        });
+                    }
                 })
             },
         },

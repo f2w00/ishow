@@ -19,7 +19,22 @@
         <div class="subviewItemoptions dbBox">
             <div class="subviewItembtn right" @click="handleCloseDb">DataBase</div>
             <div class="card" style="display: block">
-                <el-input v-model="tableNameValue" placeholder="若需要自定义表名，请输入"></el-input>
+                <div style="text-align: left;">
+                    <span class="db_lable">
+                        创建模式:
+                    </span>
+                    <el-select class="tableMode" v-model="modeValue" @change="handleTableMode">
+                        <el-option v-for="item in tablemodeList" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
+                </div>
+                <div style="text-align: left;">
+                    <span class="db_lable">
+                        表名:
+                    </span>
+                    <el-input class="db_input" v-model="tableNameValue" placeholder="默认表名格式：w-yyyy_mm_d"
+                        :disabled="isDisabled"></el-input>
+                </div>
                 <div class="fieldArea">
                     <div class="fieldAreaName">
                         NodeId:
@@ -27,10 +42,12 @@
                     <div class="fieldItemArea">
                         <div class="fieldItem" v-for="(item,index) in fieldsItemList">
                             {{item.displayName}}
+                            <img class="fieldItem_del" src="./assets/Delete.svg" @click="handleDelete(item)" />
                         </div>
                     </div>
                 </div>
-                <button class="dbBtn" @click="handleInitDb">初始化</button>
+                <button class="dbBtn" @click="handleCreateDb">创建归档</button>
+                <button class="dbBtn" @click="handleInitDb">开始归档</button>
             </div>
         </div>
     </div>
@@ -45,28 +62,65 @@
         data: function () {
             return {
                 attributeTableData: [],
+                tablemodeList: [
+                    { label: 'default', value: '0' },
+                    { label: 'customTableName', value: '2' },
+                    { label: 'createPerYear', value: '4' },
+                    { label: 'createPerMonth', value: '5' },
+                    { label: 'createPerWeek', value: '6' },
+                    { label: 'createPerDay', value: '7' },
+                ],
+                modeValue: '',
                 tableNameValue: '',
-                fieldsItemList: []
+                fieldsItemList: [],
+                isDisabled: true,
+                dbConfig: null,
             }
         },
         computed: {},
         methods: {
-            async handleInitDb() {
-                let obj = {
-                    createMode: 0,
+            handleTableMode() {
+                switch (Number(this.modeValue)) {
+                    case 2:
+                        this.isDisabled = false
+                        // window.parent.ishow.windowEvent.emit(`opcua:get.nodeId`)
+                        break
+                    case 0:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                        this.isDisabled = true
+                        break
+                    default:
+                        this.isDisabled = false
+                        break
+                }
+            },
+            handleDelete(value) {
+                this.fieldsItemList.splice(this.fieldsItemList.indexOf(value), 1)
+            },
+            handleCreateDb() {
+                this.dbConfig = {
+                    createMode: Number(this.modeValue),
                     tags: this.fieldsItemList ? this.fieldsItemList : null,
                     tableName: this.tableNameValue ? this.tableNameValue : null,
                 }
-                if (this.tableNameValue !== null && this.tableNameValue !== undefined && this.tableNameValue !== '') {
-                    obj.createMode = 2
+            },
+            async handleInitDb() {
+                if (this.dbConfig == null) {
+                    this.dbConfig = {
+                        createMode: Number(this.modeValue),
+                        tags: this.fieldsItemList ? this.fieldsItemList : null,
+                        tableName: this.tableNameValue ? this.tableNameValue : null,
+                    }
                 }
-                // console.log(obj)
-                let res = await dbApi.init(obj)
-                // console.log(res)
+                let res = await dbApi.init(this.dbConfig)
                 if (res.code == '200') {
                     window.parent.ishow.windowEvent.emit('main:notice.all', {
                         type: 'success',
                         message: 'dbInit success',
+                        position: 'bottom-right'
                     })
                 }
             },
@@ -78,7 +132,16 @@
             nodeIdListener() {
                 window.parent.ishow.windowEvent.on(`opcua:set.nodeId`, (e) => {
                     // console.log(e)
-                    this.fieldsItemList = e
+                    let isIn = false
+                    for (let i = 0; i < this.fieldsItemList.length; i++) {
+                        if (this.fieldsItemList[i].nodeId == e.nodeId) {
+                            isIn = true
+                            break
+                        }
+                    }
+                    if (!isIn) {
+                        this.fieldsItemList.push(e)
+                    }
                 })
             },
             handleCloseAttr(e) {
