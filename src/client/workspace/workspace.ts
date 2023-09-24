@@ -107,8 +107,12 @@ export class WorkspaceManager implements IWorkspaceManager {
             }
         })
         let project: IProject = require(fileName + '/.project/project.json')
+        let project2 = sharedData.get('projectInfo')
         ProjectManagerFactory.produceProjectManager(project)
-        sharedData.set('projectInfo', project ? project : this.workspace.storagePath + '/your_project')
+        sharedData.set(
+            'projectInfo',
+            project ? project : project2 ? project2 : this.workspace.storagePath + '/your_project'
+        )
         return {
             project: ProjectManagerFactory.currentProject,
             subFiles: FileUtils.openFolder(fileName),
@@ -173,7 +177,7 @@ export class GlobalWorkspaceManager {
             if (current) {
                 GlobalWorkspaceManager.currentManager = new WorkspaceManager(current)
                 sharedData.set('currentWorkspace', current.workspace.storagePath)
-                sharedData.set('projectInfo', current.workspace.storagePath + '/your_project')
+                // sharedData.set('projectInfo', current.workspace.storagePath + '/your_project')
             }
             if (recent) {
                 recent.forEach((value) => {

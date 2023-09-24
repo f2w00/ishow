@@ -95,4 +95,13 @@ export module ClientController {
     export async function pkiReady(ctx: ParameterizedContext<any, IRouterParamContext<any, {}>, any>, next: Next) {
         ctx.body = new ResponseModel(StorePrivate.get('pkiReady'))
     }
+
+    export async function createProject(ctx: ParameterizedContext<any, IRouterParamContext<any, {}>, any>, next: Next) {
+        let param = ctx.request.body
+        let ws = sharedData.get('currentWorkspace')
+        if (param['name']) {
+            sharedData.set('projectInfo', ws + '/' + param['name'])
+        }
+        ctx.body = new ResponseModel(ws + '/' + param['name'])
+    }
 }
