@@ -91,6 +91,7 @@ export module DbService {
                 })
             })
             storeTemp(tempArray)
+            //TODO on 'pipe....',在那个接口上把CommunicateUtil.events removelistner
             CommunicateUtil.events.on('pipe:' + Config.defaultPipeName + '.pushed', (data: UaMessage) => {
                 storeTemp(data)
             })
@@ -103,6 +104,7 @@ export module DbService {
     }
 
     export function storeTemp(data: any) {
+        //TODO 周期写入,
         let messages = []
         messages = data instanceof Array ? data : (messages = [data])
         messages.forEach((message: IDbData) => {
@@ -119,6 +121,7 @@ export module DbService {
         DbService.dbTemp.forEach((value) => {
             Object.keys(value).length == DbService.tags.length ? DbService.mapCount++ : undefined
         })
+        //TODO 在这里修改为到时间改动
         if (DbService.mapCount > 20) {
             updateFrame()
         }
@@ -187,9 +190,11 @@ export module DbService {
     }
 
     async function updateFrame() {
+        //TODO 在这里取DbService.dbTemp的第一个
         let tempArray = Array.from(DbService.dbTemp).sort()
         let result: any = []
         tempArray.forEach((value) => {
+            //TODO 只取所有数据都发过来的情况
             if (Object.keys(value[1]).length == DbService.tags.length) {
                 result.push({ sourceTimestamp: value[0], ...value[1] })
             }
