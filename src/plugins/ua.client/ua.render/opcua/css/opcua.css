@@ -155,6 +155,20 @@ body {
     cursor: pointer;
 }
 
+.projectArea {
+    font-size: calc(var(--font-size-level3) - 1px);
+    padding:  5px 0;
+}
+
+.projectArea .projectItem {
+    height: 25px;
+    line-height: 25px;
+    padding-left: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+
 .attributeBox {
     width: 100%;
 }
@@ -273,11 +287,11 @@ body {
     border-radius: 5px;
     background-color: #ffffff;
 }
-.dbBox .card .fieldArea .fieldItem .fieldItem_del{
-        float: right;
-        position: relative;
-        top: 7px;
-        right: 10px;
+.dbBox .card .fieldArea .fieldItem .fieldItem_del {
+    float: right;
+    position: relative;
+    top: 7px;
+    right: 10px;
 }
 
 .dbBox .card .dbBtn {

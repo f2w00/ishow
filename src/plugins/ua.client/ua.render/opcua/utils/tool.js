@@ -14,7 +14,7 @@ function subviewItemOperate(win, doc, btn) {
     const optionsNode = btn.nextElementSibling
     const unfold = btn.attributes[1]
     // const realHeight = optionsNode.getAttribute("real-height");
-    const realHeight = subviewHeight - 40
+    const realHeight = subviewHeight / 2
     if (unfold.nodeValue && unfold.nodeValue === '1') {
         optionsNode.style.height = realHeight
     } else {

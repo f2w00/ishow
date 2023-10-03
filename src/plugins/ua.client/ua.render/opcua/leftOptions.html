@@ -14,8 +14,11 @@
                 :class="itemlist.name==='1'?'subviewItem subviewItem-1':'subviewItem'">
                 <div class="subviewItembtn left">{{itemlist.title}}</div>
                 <div class="subviewItemoptions">
-                    <el-tree v-if="itemlist.title === 'Project'" :data="projectTreeData"
-                        :props="subviewItemProjectProps" @node-click="handleNodeClick"></el-tree>
+                    <div class="projectArea" v-if="itemlist.title === 'Project'">
+                        <div class="projectItem" v-for="(item,index) in projectTreeData">
+                            {{item}}
+                        </div>
+                    </div>
                     <el-tree v-else-if="itemlist.title === 'Address'" :data="addressTreeData" :indent="15"
                         node-key="nodeId" :props="subviewItemAddressProps" @node-click="handleAddressNodeClick"
                         :load="loadAddressNode" lazy @node-drag-start="handleDragStart" @node-drag-end="handleDragEnd"
@@ -81,8 +84,11 @@
         computed: {},
         methods: {
             /* 接口类函数 */
-            projectInfoInitialize() {
-                this.projectTreeData = clientApi.project_info()
+            async projectInfoInitialize() {
+                console.log('projectInfoInitialize')
+                let records = await clientApi.record_names()
+                console.log(records)
+                this.projectTreeData = records ? records.data : ['default']
                 console.log(this.projectTreeData)
             },
             async sessionBrowseroot() {
@@ -200,8 +206,64 @@
                 return true
             },
 
+            async handleRestore(e) {
+                // console.log(e)
+                let res = await clientApi.restore({ recordName: e })
+                if (res.code === 200 && res.data !== undefined) {
+                    let requestList = res.data
+                    for (let api of requestList.keys()) {
+                        console.log(i)
+                        switch (api) {
+                            case 'client:init':
+                                await clientApi.clientInit(requestList[api])
+                                break
+                            case 'client:connect':
+                                await clientApi.clientConnect(requestList[api])
+                                break
+                            case 'client:endpoints':
+                                await clientApi.clientEndpoint(requestList[api])
+                                break
+                            case 'session:init':
+                                let res = await sessionApi.sessionInit(requestList[api])
+                                if (res.code === 200) {
+                                    window.parent.ishow.windowEvent.emit(`opcua:session.init`, res.code)
+                                }
+                                break
+                            case 'session:browse.root':
+                                await sessionApi.sessionBrowseroot(requestList[api])
+                                break
+                            case 'session:read':
+                                await sessionApi.sessionRead(requestList[api])
+                                break
+                            case 'session:browse':
+                                await sessionApi.sessionBrowse(requestList[api])
+                                break
+                            case 'subscript:init':
+                                await subscriptApi.subscriptInit(requestList[api])
+                                break
+                            case 'subscript:modify':
+                                await subscriptApi.subscriptModify(requestList[api])
+                                break
+                            case 'subscript:item.group':
+                                await subscriptApi.subscriptGroup(requestList[api])
+                                break
+                            case 'subscript:item.single':
+                                await subscriptApi.subscriptSingle(requestList[api])
+                                break
+                            case 'subscript:item.delete':
+                                await subscriptApi.subscriptDelete(requestList[api])
+                                break
+                            default:
+                                break
+                        }
+                    }
+                }
+            },
+
+
             createDataview(info) {
                 if (info.position === 'main') {
+                    this.projectInfoInitialize()
                     window.parent.ishow.windowEvent.emit(`mainTab:create`, info)
                 } else {
                     window.parent.ishow.windowEvent.emit(`mainTab:create.${info.position}`, info)
@@ -209,7 +271,6 @@
             },
         },
         mounted() {
-            this.projectInfoInitialize()
             subviewItemInit(window, document)
             this.connectServerListener()
             window.parent.ishow.windowEvent.on('leftBar:created.opcua', (dataView) => {
