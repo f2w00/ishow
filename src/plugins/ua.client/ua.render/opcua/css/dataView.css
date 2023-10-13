@@ -186,3 +186,6 @@ body {
 .menu_dialog .el-dialog__body .radio_item {
     text-align: center;
 }
+[v-cloak] {
+    display:none;
+}

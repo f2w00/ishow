@@ -70,11 +70,12 @@
                     { label: 'createPerWeek', value: '6' },
                     { label: 'createPerDay', value: '7' },
                 ],
-                modeValue: '',
+                modeValue: '0',
                 tableNameValue: '',
                 fieldsItemList: [],
                 isDisabled: true,
                 dbConfig: null,
+                isStop: true,
             }
         },
         computed: {},
@@ -100,7 +101,45 @@
             handleDelete(value) {
                 this.fieldsItemList.splice(this.fieldsItemList.indexOf(value), 1)
             },
-            handleCreateDb() {
+            async handleCreateDb() {
+                this.dbConfig = {
+                    createMode: Number(this.modeValue),
+                    tags: this.fieldsItemList ? this.fieldsItemList : null,
+                    tableName: this.tableNameValue ? this.tableNameValue : null,
+                }
+                console.log(this.dbConfig)
+                let res = await dbApi.init(this.dbConfig)
+                if (res.code == '200') {
+                    window.parent.ishow.windowEvent.emit('main:notice.all', {
+                        type: 'success',
+                        message: 'dbInit success',
+                        position: 'bottom-right'
+                    })
+                }
+            },
+            async handleInitDb() {
+                if (this.isStop) {
+                    let res = await dbApi.resume()
+                    if (res.code == '200') {
+                        window.parent.ishow.windowEvent.emit('main:notice.all', {
+                            type: 'success',
+                            message: '开始归档',
+                            position: 'bottom-right'
+                        })
+                    }
+                } else {
+                    let res = await dbApi.stop()
+                    if (res.code == '200') {
+                        window.parent.ishow.windowEvent.emit('main:notice.all', {
+                            type: 'success',
+                            message: '停止归档',
+                            position: 'bottom-right'
+                        })
+                    }
+                }
+                this.isStop = !this.isStop
+            },
+            /* handleCreateDb() {
                 this.dbConfig = {
                     createMode: Number(this.modeValue),
                     tags: this.fieldsItemList ? this.fieldsItemList : null,
@@ -123,7 +162,7 @@
                         position: 'bottom-right'
                     })
                 }
-            },
+            }, */
             dataListener() {
                 window.parent.ishow.windowEvent.on(`opcua:attribute.push`, (e) => {
                     this.attributeTableData = e
@@ -134,7 +173,7 @@
                     // console.log(e)
                     let isIn = false
                     for (let i = 0; i < this.fieldsItemList.length; i++) {
-                        if (this.fieldsItemList[i].nodeId == e.nodeId) {
+                        if (this.fieldsItemList[i].nodeid == e.nodeid) {
                             isIn = true
                             break
                         }

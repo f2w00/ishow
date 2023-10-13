@@ -14,6 +14,8 @@ let dbApi = {
     insert: (p) => post('/db/insert', p),
     insert_many: (p) => post('/db/insert_many', p),
     create_table: (p) => post('/db/create_table', p),
+    stop: (p) => post('/db/stop', p),
+    resume: (p) => post('/db/resume', p),
 }
 
 export default dbApi

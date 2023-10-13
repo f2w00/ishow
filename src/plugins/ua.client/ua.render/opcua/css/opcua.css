@@ -13,10 +13,12 @@
     --font-size-level1: 16px;
     --font-size-level2: 14px;
     --font-size-level3: 12px;
+    --font-family: "Times New Roman", Times, serif;
 }
 
 /* 鼠标事件开启和关闭 */
 body {
+    font-family: var(--font-family);
     margin: 0;
 }
 
@@ -53,7 +55,7 @@ body {
 .subview-content .el-tabs__header,
 .subview-content .subviewItembtn,
 .subview-content .subviewItemoptions {
-    font-family: "Times New Roman", Times, serif;
+    font-family: var(--font-family);
     pointer-events: auto;
 }
 
@@ -157,7 +159,7 @@ body {
 
 .projectArea {
     font-size: calc(var(--font-size-level3) - 1px);
-    padding:  5px 0;
+    padding: 5px 0;
 }
 
 .projectArea .projectItem {
@@ -196,6 +198,7 @@ body {
 .dbBox {
     width: 100%;
     flex: 1;
+    margin-bottom: 40px;
 }
 
 .dbBox .card {
@@ -239,7 +242,7 @@ body {
     line-height: 25px;
     margin: 5px;
     font-size: 12px;
-    font-family: "Times New Roman", Times, serif;
+    font-family: var(--font-family);
 }
 
 .dbBox .card .field .el-tag--small {
@@ -300,7 +303,7 @@ body {
     line-height: 25px;
     margin: 5px;
     font-size: var(--font-size-level3);
-    font-family: "Times New Roman", Times, serif;
+    font-family: var(--font-family);
     background-color: #ffffff;
     border: none;
     border-radius: 5px;

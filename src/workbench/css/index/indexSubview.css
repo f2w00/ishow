@@ -77,6 +77,7 @@
 .subviewLeft .subviewLeft-bottom .icon {
     /* height: 50px; */
     line-height: 50px;
+    cursor: pointer;
 }
 
 .subviewLeft .subviewLeft-bottom {

@@ -53,7 +53,7 @@
             </el-table-column>
         </el-table> -->
 
-        <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
+        <ul v-if="visible" v-cloak :style="{left:left+'px',top:top+'px'}" class="contextmenu">
             <li @click="handleRemove">Remove Selected Node</li>
             <!-- <li @click="handleAdd">Add Custom Node</li> -->
             <li @click="handleToDb">Add Node To DataBase</li>
@@ -67,7 +67,7 @@
             </span>
         </el-dialog> -->
 
-        <el-dialog class="menu_dialog" title="Subscriiption Setings" :visible.sync="subsetVisible" width="380px">
+        <el-dialog class="menu_dialog" title="Subscriiption Setings" :visible.sync="subsetVisible"  v-cloak  width="380px">
             <div class="set_card">
                 <div class="set_item">
                     Publishing Interval:
@@ -249,10 +249,10 @@
                 console.log(res)
             },
             handleToDb() {
-                console.log(this.selectItem)
+                // console.log(this.selectItem)
                 window.parent.ishow.windowEvent.emit(`opcua:set.nodeId`,
                     {
-                        nodeId: this.selectItem.nodeId,
+                        nodeid: this.selectItem.nodeId,
                         displayName: this.selectItem.displayName
                     }
                 )

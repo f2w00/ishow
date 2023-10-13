@@ -18,9 +18,9 @@
         <div class="container">
             <div class="main-container">
                 <div class="operationBox">
-                    <i class="el-icon-minus minimize-btn" @click="handleMin"></i>
+                    <i class="el-icon-minus minimize-btn" title="最小化" @click="handleMin"></i>
                     <i class="el-icon-copy-document max-unmax-btn" @click="handleMax"></i>
-                    <i class="el-icon-close close-btn" @click="handleClose"></i>
+                    <i class="el-icon-close close-btn" title="退出" @click="handleClose"></i>
                 </div>
                 <div class="subview subviewLeft">
                     <div class="resizeShow">
@@ -44,7 +44,7 @@
                         </el-tabs>
                     </div>
                     <div class="subviewLeft-bottom">
-                        <img class="icon" src="./assets/icon/log-management.svg" @click="handleTabbottom" />
+                        <img class="icon" src="./assets/icon/log-management.svg" title="日志" @click="handleTabbottom" />
                     </div>
                 </div>
                 <main class="main content-box" id="main-content-box">
@@ -91,7 +91,7 @@
                             @tab-click="handleTabright">
                             <el-tab-pane v-for="(item, index) in subviewRightTabs" label="" :name="item.name">
                                 <span slot="label">
-                                    <img class="icon" :src="item.iconSrc" />
+                                    <img class="icon" :src="item.iconSrc" :title="item.content"/>
                                 </span>
                                 <div class="grid-box">
                                     <div class="titleBox">{{item.content}}</div>
