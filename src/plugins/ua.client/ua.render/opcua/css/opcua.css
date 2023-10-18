@@ -158,6 +158,7 @@ body {
 }
 
 .projectArea {
+    height: 100%;
     font-size: calc(var(--font-size-level3) - 1px);
     padding: 5px 0;
 }
@@ -169,6 +170,51 @@ body {
     margin-bottom: 5px;
     border-radius: 5px;
     background-color: #ffffff;
+    cursor: pointer;
+}
+
+.contextmenu {
+    width: 80px;
+    margin: 5px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 12px;
+    background: #f0f0f0;
+    list-style-type: none;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+    position: absolute;
+    z-index: 3000;
+}
+.contextmenu li {
+    height: 20px;
+    line-height: 20px;
+    cursor: pointer;
+}
+.no-header-dialog .el-dialog__header {
+    display: none;
+}
+.no-header-dialog .el-dialog__body {
+    padding: 15px 10px 5px;
+    font-size: 12px;
+}
+.no-header-dialog .el-dialog__footer{
+    padding: 0 10px 10px;
+}
+.no-header-dialog .el-form-item{
+    margin-bottom: 0;
+}
+.no-header-dialog .el-form-item__label {
+    font-size: 12px;
+    line-height: 20px;
+}
+.no-header-dialog .el-input__inner{
+    height: 20px;
+    line-height: 20px;
+    padding: 0 5px;
+}
+.no-header-dialog .el-button{
+    padding: 5px 10px;
+    font-size: 12px;
 }
 
 .attributeBox {

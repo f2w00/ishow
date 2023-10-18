@@ -14,10 +14,25 @@
                 :class="itemlist.name==='1'?'subviewItem subviewItem-1':'subviewItem'">
                 <div class="subviewItembtn left">{{itemlist.title}}</div>
                 <div class="subviewItemoptions">
-                    <div class="projectArea" v-if="itemlist.title === 'Project'">
+                    <div class="projectArea" v-if="itemlist.title === 'Project'" @contextmenu.prevent="handleOpenMenu">
                         <div class="projectItem" v-for="(item,index) in projectTreeData">
                             {{item}}
                         </div>
+                        <ul v-if="visible" v-cloak :style="{left:left+'px',top:top+'px'}" class="contextmenu">
+                            <li @click="handleAdd">Add Project</li>
+                            <!-- <li @click="handleDelete">Delete Project</li> -->
+                        </ul>
+                        <el-dialog custom-class="no-header-dialog" :visible.sync="dialogFormVisible" width="80%">
+                            <el-form :model="form">
+                                <el-form-item label="项目名称" :label-width="formWidth">
+                                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                                </el-form-item>
+                            </el-form>
+                            <div slot="footer" class="dialog-footer">
+                                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                                <el-button type="primary" @click="handleConfirm">确 定</el-button>
+                            </div>
+                        </el-dialog>
                     </div>
                     <el-tree v-else-if="itemlist.title === 'Address'" :data="addressTreeData" :indent="15"
                         node-key="nodeId" :props="subviewItemAddressProps" @node-click="handleAddressNodeClick"
@@ -49,6 +64,14 @@
         el: '#app',
         data: function () {
             return {
+                visible: false, // 是否展示右键菜单
+                dialogFormVisible: false,
+                form: {
+                    name: ''
+                },
+                formWidth: '60px',
+                top: 0,
+                left: 0,
                 addressList: [
                     {
                         title: 'Project',
@@ -89,7 +112,6 @@
                 let records = await clientApi.record_names()
                 console.log(records)
                 this.projectTreeData = records ? records.data : ['default']
-                console.log(this.projectTreeData)
             },
             async sessionBrowseroot() {
                 const param = {}
@@ -107,6 +129,38 @@
             },
             handleNodeClick(data) {
                 console.log(data)
+            },
+            handleOpenMenu(event) {
+                console.log("ahahahahahahah")
+                this.visible = true;
+                if (event.pageX + 120 > window.innerWidth) {
+                    this.left = event.pageX - 120;
+                } else {
+                    this.left = event.pageX;
+                }
+                this.top = event.pageY;
+            },
+            closeMenu() {
+                this.visible = false;
+            },
+            handleAdd() {
+                console.log("Add")
+                this.dialogFormVisible = true
+            },
+            handleDelete() {
+                console.log("delete")
+            },
+            async handleConfirm() {
+                console.log(this.form.name)
+                let res = await clientApi.restore({ recordName: this.form.name })
+                if (res.code === 200) {
+                    window.parent.ishow.windowEvent.emit('main:notice.all', {
+                        type: 'success',
+                        message: 'Project Success',
+                    })
+                    this.projectInfoInitialize()
+                }
+                this.dialogFormVisible = false
             },
             async handleAddressNodeClick(data) {
                 //TODO MyObject收到两个相同的结果
@@ -269,6 +323,16 @@
                     window.parent.ishow.windowEvent.emit(`mainTab:create.${info.position}`, info)
                 }
             },
+        },
+        watch: {
+            // 监听 visible，来触发关闭右键菜单，调用关闭菜单的方法
+            visible(value) {
+                if (value) {
+                    document.body.addEventListener('click', this.closeMenu)
+                } else {
+                    document.body.removeEventListener('click', this.closeMenu)
+                }
+            }
         },
         mounted() {
             subviewItemInit(window, document)
