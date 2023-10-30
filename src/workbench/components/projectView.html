@@ -14,6 +14,7 @@
                     <span class="custom-tree-node" slot-scope="{node,data}">
                         <span>
                             <img class="iconTree" v-if="data.isDir" src="../assets/icon/Object.svg"/>
+                            <img class="iconTree" v-else src="../assets/icon/fileicon.svg"/>
                             {{data.name}}
                         </span>
                     </span>
@@ -75,7 +76,7 @@
                 }
             },
             handleNodeClick(data, node, el) {
-                console.log('node+', node)
+                // console.log('node+', node)
                 // console.log(el.expanded)
                 // el.expanded = !el.expanded
             },

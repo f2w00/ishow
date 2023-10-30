@@ -67,7 +67,8 @@
             </span>
         </el-dialog> -->
 
-        <el-dialog class="menu_dialog" title="Subscriiption Setings" :visible.sync="subsetVisible"  v-cloak  width="380px">
+        <el-dialog class="menu_dialog" title="Subscriiption Setings" :visible.sync="subsetVisible" v-cloak
+            width="380px">
             <div class="set_card">
                 <div class="set_item">
                     Publishing Interval:
@@ -245,8 +246,22 @@
                 this.visible = false;
             },
             handleRemove() {
-                let res = this.subscriptDelete(this.selectItem.nodeId)
-                console.log(res)
+                let _this = this
+                this.subscriptDelete(this.selectItem.nodeId)
+                    .then((res) => {
+                        if (res.code == 200) {
+                            let index = dataMap.get(_this.selectItem.nodeId)
+                            console.log(index)
+                            dataMap.delete(_this.selectItem.nodeId)
+                            dataMap.forEach((value, key) => {
+                                console.log(key, value);
+                                if (value > index) {
+                                    dataMap.set(key, value - 1)
+                                }
+                            })
+                            _this.dataviewData.splice(index, 1)
+                        }
+                    })
             },
             handleToDb() {
                 // console.log(this.selectItem)
@@ -296,6 +311,7 @@
                 const _this = this
                 window.parent.ishow.onRender('pipe:uaclient.pushed', (event, result) => {
                     let index = dataMap.get(result.nodeId)
+                    // console.log(index, result.nodeId, result.value)
                     if (index || index === 0) {
                         // _this.dataviewData[index] = result
                         _this.$set(_this.dataviewData, index, result)
@@ -303,8 +319,8 @@
                         this.dataviewData.push(result)
                         dataMap.set(result.nodeId, _this.dataviewData.length - 1)
                         // _this.handleflexColumnWidth(result)
-                        _this.handleColumnWidth(result)
                     }
+                    _this.handleColumnWidth(result)
                 })
             },
             triggerSubscript() {

@@ -117,7 +117,7 @@
                     })
                 }
             },
-            async handleInitDb() {
+            async handleInitDb(ev) {
                 if (this.isStop) {
                     let res = await dbApi.resume()
                     if (res.code == '200') {
@@ -126,6 +126,7 @@
                             message: '开始归档',
                             position: 'bottom-right'
                         })
+                        ev.target.innerText = "停止归档"
                     }
                 } else {
                     let res = await dbApi.stop()
@@ -135,6 +136,7 @@
                             message: '停止归档',
                             position: 'bottom-right'
                         })
+                        ev.target.innerText = "开始归档"
                     }
                 }
                 this.isStop = !this.isStop

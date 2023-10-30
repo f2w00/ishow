@@ -92,9 +92,9 @@ export module DbService {
             })
             storeTemp(tempArray)
             //TODO on 'pipe....',在那个接口上把CommunicateUtil.events removelistner
-            CommunicateUtil.events.on('pipe:' + Config.defaultPipeName + '.pushed', (data: UaMessage) => {
-                storeTemp(data)
-            })
+            // CommunicateUtil.events.on('pipe:' + Config.defaultPipeName + '.pushed', (data: UaMessage) => {
+            //     storeTemp(data)
+            // })
             commonEvent.on('main:uaclient.close', () => {
                 updateFrame()
             })
