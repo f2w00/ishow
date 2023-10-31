@@ -179,6 +179,9 @@ export module DbService {
             let table = tableName ? tableName : defaultTableName
             let attribute = attributes ? attributes : defaultAttributes
             let projectPath = sharedData.get('projectInfo')
+            // console.log(table)
+            // console.log(attribute)
+            // console.log(projectPath)
             persist = new Persistence(
                 attribute,
                 { dialect: 'sqlite', storage: projectPath + '/database/data.db', logging: false },

@@ -15,7 +15,7 @@
                 <div class="subviewItembtn left">{{itemlist.title}}</div>
                 <div class="subviewItemoptions">
                     <div class="projectArea" v-if="itemlist.title === 'Project'" @contextmenu.prevent="handleOpenMenu">
-                        <div class="projectItem" v-for="(item,index) in projectTreeData">
+                        <div class="projectItem" v-for="(item,index) in projectTreeData" @click="handleRestore">
                             {{item}}
                         </div>
                         <ul v-if="visible" v-cloak :style="{left:left+'px',top:top+'px'}" class="contextmenu">
@@ -261,12 +261,10 @@
             },
 
             async handleRestore(e) {
-                // console.log(e)
-                let res = await clientApi.restore({ recordName: e })
+                let res = await clientApi.restore({ recordName: e.target.innerText })
                 if (res.code === 200 && res.data !== undefined) {
                     let requestList = res.data
-                    for (let api of requestList.keys()) {
-                        console.log(i)
+                    for (let api in requestList) {
                         switch (api) {
                             case 'client:init':
                                 await clientApi.clientInit(requestList[api])

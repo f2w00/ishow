@@ -100,7 +100,7 @@ export class Persistence {
                 tableName: tableName,
                 freezeTableName: true,
             })
-            await this.currentModel.sync()
+            await this.currentModel.sync({force: true})
         } catch (e: any) {
             throw e
         }
