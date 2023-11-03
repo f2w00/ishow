@@ -179,7 +179,7 @@ export module AgentMiddleware {
         ctx: ParameterizedContext<any, IRouterParamContext<any, {}>, any>,
         next: Next
     ) {
-        switch (ctx.request.body) {
+        switch (ctx.request.path) {
             case '/session/init': {
                 if (is<UserIdentityInfo | undefined>(ctx.request.body)) {
                     RecordUtil.recordParams('session:init', ctx.request.body)
@@ -364,7 +364,7 @@ export module AgentMiddleware {
     }
 
     export async function certValidator(ctx: ParameterizedContext<any, IRouterParamContext<any, {}>, any>, next: Next) {
-        switch (ctx.request.body) {
+        switch (ctx.request.path) {
             case '/cert/create': {
                 if (is<CreateSelfSignCertificateParam1>(ctx.request.body)) {
                     if (CertUtils.validateCertOptions(ctx.request.body)) {
@@ -400,7 +400,7 @@ export module AgentMiddleware {
              * @description 此处绑定了pipe的事件,并且当
              */
             case '/db/init': {
-                if (is<{ createMode: TableCreateModes; tags?: DbHead[]; tableName?: string }>(ctx.request.body)) {
+                if (is<{ createMode?: TableCreateModes; tags?: DbHead[]; tableName?: string }>(ctx.request.body)) { 
                     DbUtils.validateDbName(ctx.request.body['tableName'])
                     RecordUtil.recordParams('db:init', ctx.request.body)
                     await next()

@@ -59,6 +59,7 @@
     import clientApi from './api/clientApi.js'
     import sessionApi from './api/sessionApi.js'
     import subscriptApi from './api/subscriptApi.js'
+    import dbApi from './api/dbApi.js'
 
     new Vue({
         el: '#app',
@@ -264,50 +265,44 @@
                 let res = await clientApi.restore({ recordName: e.target.innerText })
                 if (res.code === 200 && res.data !== undefined) {
                     let requestList = res.data
+                    let cnt = 0
                     for (let api in requestList) {
-                        switch (api) {
-                            case 'client:init':
-                                await clientApi.clientInit(requestList[api])
-                                break
-                            case 'client:connect':
-                                await clientApi.clientConnect(requestList[api])
-                                break
-                            case 'client:endpoints':
-                                await clientApi.clientEndpoint(requestList[api])
-                                break
-                            case 'session:init':
-                                let res = await sessionApi.sessionInit(requestList[api])
-                                if (res.code === 200) {
-                                    window.parent.ishow.windowEvent.emit(`opcua:session.init`, res.code)
-                                }
-                                break
-                            case 'session:browse.root':
-                                await sessionApi.sessionBrowseroot(requestList[api])
-                                break
-                            case 'session:read':
-                                await sessionApi.sessionRead(requestList[api])
-                                break
-                            case 'session:browse':
-                                await sessionApi.sessionBrowse(requestList[api])
-                                break
-                            case 'subscript:init':
-                                await subscriptApi.subscriptInit(requestList[api])
-                                break
-                            case 'subscript:modify':
-                                await subscriptApi.subscriptModify(requestList[api])
-                                break
-                            case 'subscript:item.group':
-                                await subscriptApi.subscriptGroup(requestList[api])
-                                break
-                            case 'subscript:item.single':
-                                await subscriptApi.subscriptSingle(requestList[api])
-                                break
-                            case 'subscript:item.delete':
-                                await subscriptApi.subscriptDelete(requestList[api])
-                                break
-                            default:
-                                break
-                        }
+                        console.log(api, requestList[api])
+                        setTimeout(async () => {
+                            switch (api) {
+                                case 'client:init':
+                                    await clientApi.clientInit(requestList[api])
+                                    break
+                                case 'client:connect':
+                                    await clientApi.clientConnect(requestList[api])
+
+                                    break
+                                case 'client:endpoints':
+                                    await clientApi.clientEndpoint(requestList[api])
+                                    break
+                                case 'session:init':
+                                    let res = await sessionApi.sessionInit(requestList[api])
+                                    if (res.code === 200) {
+                                        window.parent.ishow.windowEvent.emit(`opcua:session.init`, res.code)
+                                        window.parent.ishow.windowEvent.emit('main:notice.all', {
+                                            type: 'success',
+                                            message: 'client connection',
+                                        })
+                                    }
+                                    break
+                                case 'subscript:init':
+                                    await subscriptApi.subscriptInit(requestList[api])
+                                    break
+                                case 'db:init':
+                                    await dbApi.init(requestList[api])
+                                    break
+                                case 'db:resume':
+                                    await dbApi.resume(requestList[api])
+                                    break
+                                default:
+                                    break
+                            }
+                        }, 200 * cnt++)
                     }
                 }
             },
