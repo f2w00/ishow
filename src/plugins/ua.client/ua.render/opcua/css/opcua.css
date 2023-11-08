@@ -262,6 +262,26 @@ body {
 .dbBox .card .db_input {
     width: calc(100% - 90px);
 }
+.dbBox .card .db_cycle {
+    width: calc(100% - 90px);
+    display: inline-block;
+}
+.dbBox .db_cycle .db_cycle_i{
+    height: 22px;
+    line-height: 22px;
+    width: 34%;
+    margin-right: -5px;
+    padding-left: 5px;
+    border: 1px solid #cfcfcf;
+    appearance: none;
+}
+.dbBox .db_cycle .db_cycle_h{
+    margin-left: 5px;
+    border-radius: 3px 0 0 3px;
+}
+.dbBox .db_cycle .db_cycle_s{
+    border-radius: 0 3px 3px 0;
+}
 
 .dbBox .card .el-select {
     width: calc(100% - 90px);

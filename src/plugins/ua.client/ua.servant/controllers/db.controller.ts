@@ -48,9 +48,16 @@ export module DbController {
 
     export async function resume(ctx: ParameterizedContext<any, IRouterParamContext<any, {}>, any>, next: Next) {
         try {
+            let { memoryCycle } = ctx.request.body
             //TODO 重启事件监听
+            let startTime = Date.now()
             CommunicateUtil.events.on('pipe:' + Config.defaultPipeName + '.pushed', (data: UaMessage) => {
-                DbService.storeTemp(data)
+                if (Date.now() - startTime >= memoryCycle){
+                    startTime = Date.now()
+                    DbService.storeTemp(data,true)
+                } else {
+                    DbService.storeTemp(data,false)
+                }
             })
             ctx.body = new ResponseModel()
         } catch (e: any) {

@@ -48,15 +48,6 @@ export module DbService {
                     if (tableName) defaultTableName = tableName
                     break
                 }
-                // case TableCreateModes.customTableName:
-                // case TableCreateModes.customField:
-                // case TableCreateModes.customBoth: {
-                //     if (tableName) defaultTableName = tableName
-                //     if (fields) {
-                //         defaultAttributes = Config.defaultAttributes
-                //     }
-                //     break
-                // }
                 default:
                     throw new ClientError(UaSources.dbService, UaErrors.errorTableMode)
             }
@@ -103,7 +94,7 @@ export module DbService {
         }
     }
 
-    export function storeTemp(data: any) {
+    export function storeTemp(data: any, isStore: boolean = false) {
         //TODO 周期写入,
         let messages = []
         messages = data instanceof Array ? data : (messages = [data])
@@ -122,7 +113,10 @@ export module DbService {
             Object.keys(value).length == DbService.tags.length ? DbService.mapCount++ : undefined
         })
         //TODO 在这里修改为到时间改动
-        if (DbService.mapCount > 20) {
+        // if (DbService.mapCount > 20) {
+        //     updateFrame()
+        // }
+        if (isStore) {
             updateFrame()
         }
     }
@@ -179,9 +173,6 @@ export module DbService {
             let table = tableName ? tableName : defaultTableName
             let attribute = attributes ? attributes : defaultAttributes
             let projectPath = sharedData.get('projectInfo')
-            // console.log(table)
-            // console.log(attribute)
-            // console.log(projectPath)
             persist = new Persistence(
                 attribute,
                 { dialect: 'sqlite', storage: projectPath + '/database/data.db', logging: false },
@@ -194,14 +185,18 @@ export module DbService {
 
     async function updateFrame() {
         //TODO 在这里取DbService.dbTemp的第一个
-        let tempArray = Array.from(DbService.dbTemp).sort()
+        // let tempArray = Array.from(DbService.dbTemp).sort()
+        let tempArray = Array.from(DbService.dbTemp)
         let result: any = []
-        tempArray.forEach((value) => {
-            //TODO 只取所有数据都发过来的情况
-            if (Object.keys(value[1]).length == DbService.tags.length) {
-                result.push({ sourceTimestamp: value[0], ...value[1] })
-            }
-        })
+        try {
+            tempArray.forEach((value) => {
+                //TODO 只取所有数据都发过来的情况
+                if (Object.keys(value[1]).length == DbService.tags.length) {
+                    result.push({ sourceTimestamp: value[0], ...value[1] })
+                    throw new Error("exit foreach");
+                }
+            })
+        } catch (e) { }
         DbService.dbTemp.clear()
         await persist.insertMany(result)
     }

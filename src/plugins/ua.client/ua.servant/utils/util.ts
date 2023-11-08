@@ -120,9 +120,6 @@ export class RecordUtil {
     }
 
     static recordParams(module: string, param: any) {
-        console.log("----------------------------")
-        console.log(module)
-        console.log({ ...param })
         RecordUtil.paramsToRecord.set(module, { ...param })
     }
 

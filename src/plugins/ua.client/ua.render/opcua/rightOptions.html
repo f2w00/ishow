@@ -35,6 +35,28 @@
                     <el-input class="db_input" v-model="tableNameValue" placeholder="默认表名格式：w-yyyy_mm_d"
                         :disabled="isDisabled"></el-input>
                 </div>
+                <div style="text-align: left;">
+                    <span class="db_lable">
+                        存储周期:
+                    </span>
+                    <div class="db_cycle">
+                        <select class="db_cycle_i db_cycle_h" v-model="cyclehourValue">
+                            <option v-for="(index) in 24" :key="index-1" :value="index-1">
+                                {{index-1}}
+                            </option>
+                        </select>
+                        <select class="db_cycle_i" v-model="cycleminuteValue">
+                            <option v-for="(index) in 60" :key="index-1" :value="index-1">
+                                {{index-1}}
+                            </option>
+                        </select>
+                        <select class="db_cycle_i db_cycle_s" v-model="cyclesecondValue">
+                            <option v-for="(index) in 60" :key="index-1" :value="index-1">
+                                {{index-1}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
                 <div class="fieldArea">
                     <div class="fieldAreaName">
                         NodeId:
@@ -72,6 +94,9 @@
                 ],
                 modeValue: '0',
                 tableNameValue: '',
+                cyclehourValue: 0,
+                cycleminuteValue: 0,
+                cyclesecondValue: 10,
                 fieldsItemList: [],
                 isDisabled: true,
                 dbConfig: null,
@@ -119,7 +144,8 @@
             },
             async handleInitDb(ev) {
                 if (this.isStop) {
-                    let res = await dbApi.resume()
+                    let cycleValue = parseInt(this.cyclehourValue) * 3600 + parseInt(this.cycleminuteValue) * 60 + parseInt(this.cyclesecondValue)
+                    let res = await dbApi.resume({ memoryCycle: cycleValue * 1000 })
                     if (res.code == '200') {
                         window.parent.ishow.windowEvent.emit('main:notice.all', {
                             type: 'success',

@@ -395,18 +395,21 @@ export module AgentMiddleware {
     }
 
     export async function dbValidator(ctx: ParameterizedContext<any, IRouterParamContext<any, {}>, any>, next: Next) {
-        switch (ctx.request.body) {
+        switch (ctx.request.path) {
             /**
              * @description 此处绑定了pipe的事件,并且当
              */
             case '/db/init': {
-                if (is<{ createMode?: TableCreateModes; tags?: DbHead[]; tableName?: string }>(ctx.request.body)) { 
-                    DbUtils.validateDbName(ctx.request.body['tableName'])
-                    RecordUtil.recordParams('db:init', ctx.request.body)
-                    await next()
-                } else {
-                    throw validateError('{createMode:TableCreateModes, tableName?:string, fields:IFieldNames}')
-                }
+                DbUtils.validateDbName(ctx.request.body['tableName'])
+                RecordUtil.recordParams('db:init', ctx.request.body)
+                await next()
+                /*  if (is<{ createMode: TableCreateModes; tags?: DbHead[]; tableName?: string }>(ctx.request.body)) {
+                     DbUtils.validateDbName(ctx.request.body['tableName'])
+                     RecordUtil.recordParams('db:init', ctx.request.body)
+                     await next()
+                 } else {
+                     throw validateError('{createMode:TableCreateModes, tableName?:string, fields:IFieldNames}')
+                 } */
                 break
             }
             case '/db/insert': {
@@ -434,7 +437,7 @@ export module AgentMiddleware {
                                     UaSources.paramValidator,
                                     UaErrors.unFormatDbName,
                                     'It cannot start with a number. The name can only contain: ' +
-                                        'Chinese characters, numbers, lowercase letters, underscores, and the length is within 2-15 characters'
+                                    'Chinese characters, numbers, lowercase letters, underscores, and the length is within 2-15 characters'
                                 )
                             }
                         }
@@ -446,7 +449,7 @@ export module AgentMiddleware {
                                         UaSources.paramValidator,
                                         UaErrors.unFormatDbName,
                                         'It cannot start with a number. The name can only contain: ' +
-                                            'Chinese characters, numbers, lowercase letters, underscores, and the length is within 2-15 characters'
+                                        'Chinese characters, numbers, lowercase letters, underscores, and the length is within 2-15 characters'
                                     )
                                 }
                             }
