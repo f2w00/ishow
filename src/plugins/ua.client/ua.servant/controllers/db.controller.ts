@@ -9,6 +9,14 @@ import { Config } from '../../config/config.default'
 import { UaMessage } from '../models/message.model'
 
 export module DbController {
+    export async function connectDb(ctx: ParameterizedContext<any, IRouterParamContext<any, {}>, any>, next: Next) {
+        try {
+            let tableList = await DbService.connectDb()
+            ctx.body = new ResponseModel(tableList)
+        } catch (e: any) {
+            throw e
+        }
+    }
     export async function init(ctx: ParameterizedContext<any, IRouterParamContext<any, {}>, any>, next: Next) {
         try {
             let { createMode, tags, tableName } = ctx.request.body
@@ -52,11 +60,11 @@ export module DbController {
             //TODO 重启事件监听
             let startTime = Date.now()
             CommunicateUtil.events.on('pipe:' + Config.defaultPipeName + '.pushed', (data: UaMessage) => {
-                if (Date.now() - startTime >= memoryCycle){
+                if (Date.now() - startTime >= memoryCycle) {
                     startTime = Date.now()
-                    DbService.storeTemp(data,true)
+                    DbService.storeTemp(data, true)
                 } else {
-                    DbService.storeTemp(data,false)
+                    DbService.storeTemp(data, false)
                 }
             })
             ctx.body = new ResponseModel()

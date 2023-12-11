@@ -13,10 +13,27 @@ import { commonEvent } from '../../event.bus'
 export module DbService {
     export let defaultTableName: string = Config.defaultTable
     export let defaultAttributes: any = Config.defaultAttributes
+    export let attributes: any
     export let persist!: any
     export let dbTemp: Map<string, any> = new Map()
     export let tags: DbHead[] = []
     export let mapCount = 0
+
+    /**
+     * @description 用于连接db
+     */
+    export async function connectDb() {
+        try {
+            let projectPath = sharedData.get('projectInfo')
+            persist = new Persistence(
+                { dialect: 'sqlite', storage: projectPath + '/database/data.db', logging: false }
+            )
+            let tableList = persist.getAlltable()
+            return tableList
+        } catch (e: any) {
+            throw new ClientError(UaSources.dbService, UaErrors.errorCreateClient, e.message, e.stack)
+        }
+    }
 
     /**
      * @description 用于初始化database,如果表名不存在则创建一个新表
@@ -172,12 +189,7 @@ export module DbService {
         try {
             let table = tableName ? tableName : defaultTableName
             let attribute = attributes ? attributes : defaultAttributes
-            let projectPath = sharedData.get('projectInfo')
-            persist = new Persistence(
-                attribute,
-                { dialect: 'sqlite', storage: projectPath + '/database/data.db', logging: false },
-                table
-            )
+            persist.initDataModel(attribute, table)
         } catch (e: any) {
             throw new ClientError(UaSources.dbService, UaErrors.errorCreatTable, e.message, e.stack)
         }

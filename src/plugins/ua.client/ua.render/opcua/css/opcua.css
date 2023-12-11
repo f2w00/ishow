@@ -269,7 +269,7 @@ body {
 .dbBox .db_cycle .db_cycle_i{
     height: 22px;
     line-height: 22px;
-    width: 34%;
+    width: 33%;
     margin-right: -5px;
     padding-left: 5px;
     border: 1px solid #cfcfcf;
@@ -280,6 +280,7 @@ body {
     border-radius: 3px 0 0 3px;
 }
 .dbBox .db_cycle .db_cycle_s{
+    width: 34%;
     border-radius: 0 3px 3px 0;
 }
 
@@ -328,23 +329,27 @@ body {
 .dbBox .card .fieldArea {
     width: calc(100% - 20px);
     max-height: 220px;
-    margin: 0 auto;
+    margin: 5px auto;
     font-size: 12px;
     text-align: left;
+    position: relative;
 }
 
 .dbBox .card .fieldArea .fieldAreaName {
-    height: 25px;
-    line-height: 25px;
-    font-size: 14px;
+    width: 60px;
+    font-size: 13px;
+    position: absolute;
+    top: 5px;
 }
 
 .dbBox .card .fieldArea .fieldItemArea {
+    width: calc(100% - 72px);
     max-height: 190px;
     min-height: 25px;
-    margin-bottom: 5px;
+    margin-left: 69px;
     background-color: white;
     border-radius: 5px;
+    display: inline-block;
     overflow-y: auto;
 }
 
@@ -364,7 +369,7 @@ body {
 }
 
 .dbBox .card .dbBtn {
-    width: 70px;
+    width: calc(100% - 26px);
     height: 25px;
     line-height: 25px;
     margin: 5px;

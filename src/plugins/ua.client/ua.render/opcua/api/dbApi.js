@@ -10,6 +10,7 @@ import {
  * @params p 参数
  */
 let dbApi = {
+    connectDb: (p) => get('/db/connectDb', p),
     init: (p) => post('/db/init', p),
     insert: (p) => post('/db/insert', p),
     insert_many: (p) => post('/db/insert_many', p),

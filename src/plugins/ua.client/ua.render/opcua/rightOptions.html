@@ -58,9 +58,9 @@
                     </div>
                 </div>
                 <div class="fieldArea">
-                    <div class="fieldAreaName">
-                        NodeId:
-                    </div>
+                    <span class="fieldAreaName">
+                        归档节点:
+                    </span>
                     <div class="fieldItemArea">
                         <div class="fieldItem" v-for="(item,index) in fieldsItemList">
                             {{item.displayName}}
@@ -69,6 +69,15 @@
                     </div>
                 </div>
                 <button class="dbBtn" @click="handleCreateDb">创建归档</button>
+                <div style="text-align: left;">
+                    <span class="db_lable">
+                        历史表单:
+                    </span>
+                    <el-select class="tableMode" v-model="tableValue" @change="handleTable">
+                        <el-option v-for="(item,index) in tableList" :key="index" :label="item.name"
+                            :value="item.name" />
+                    </el-select>
+                </div>
                 <button class="dbBtn" @click="handleInitDb">开始归档</button>
             </div>
         </div>
@@ -84,6 +93,7 @@
         data: function () {
             return {
                 attributeTableData: [],
+                tableList: [],
                 tablemodeList: [
                     { label: 'default', value: '0' },
                     { label: 'customTableName', value: '2' },
@@ -93,6 +103,7 @@
                     { label: 'createPerDay', value: '7' },
                 ],
                 modeValue: '0',
+                tableValue: 'default',
                 tableNameValue: '',
                 cyclehourValue: 0,
                 cycleminuteValue: 0,
@@ -105,6 +116,10 @@
         },
         computed: {},
         methods: {
+            async connectDb() {
+                const param = {}
+                return await dbApi.connectDb(param)
+            },
             handleTableMode() {
                 switch (Number(this.modeValue)) {
                     case 2:
@@ -127,18 +142,22 @@
                 this.fieldsItemList.splice(this.fieldsItemList.indexOf(value), 1)
             },
             async handleCreateDb() {
+                let _this = this
                 this.dbConfig = {
                     createMode: Number(this.modeValue),
                     tags: this.fieldsItemList ? this.fieldsItemList : null,
                     tableName: this.tableNameValue ? this.tableNameValue : null,
                 }
-                console.log(this.dbConfig)
                 let res = await dbApi.init(this.dbConfig)
                 if (res.code == '200') {
                     window.parent.ishow.windowEvent.emit('main:notice.all', {
                         type: 'success',
                         message: 'dbInit success',
                         position: 'bottom-right'
+                    })
+                    this.connectDb().then((res) => {
+                        _this.tableList = res.data.tables
+                        _this.tableValue = _this.tableList[_this.tableList.length - 1].name
                     })
                 }
             },
@@ -167,30 +186,9 @@
                 }
                 this.isStop = !this.isStop
             },
-            /* handleCreateDb() {
-                this.dbConfig = {
-                    createMode: Number(this.modeValue),
-                    tags: this.fieldsItemList ? this.fieldsItemList : null,
-                    tableName: this.tableNameValue ? this.tableNameValue : null,
-                }
+            handleTable(e) {
+                console.log(e)
             },
-            async handleInitDb() {
-                if (this.dbConfig == null) {
-                    this.dbConfig = {
-                        createMode: Number(this.modeValue),
-                        tags: this.fieldsItemList ? this.fieldsItemList : null,
-                        tableName: this.tableNameValue ? this.tableNameValue : null,
-                    }
-                }
-                let res = await dbApi.init(this.dbConfig)
-                if (res.code == '200') {
-                    window.parent.ishow.windowEvent.emit('main:notice.all', {
-                        type: 'success',
-                        message: 'dbInit success',
-                        position: 'bottom-right'
-                    })
-                }
-            }, */
             dataListener() {
                 window.parent.ishow.windowEvent.on(`opcua:attribute.push`, (e) => {
                     this.attributeTableData = e
@@ -229,6 +227,10 @@
             },
         },
         mounted() {
+            let _this = this
+            this.connectDb().then((res) => {
+                _this.tableList = res.data.tables
+            })
             this.dataListener()
             this.nodeIdListener()
         },

@@ -8,13 +8,26 @@ export class Persistence {
     private sequelize: Sequelize
     private currentModel!: ModelCtor<any>
 
-    constructor(attributes: ModelAttributes, options: Options, tableName?: string) {
+    // constructor(attributes: ModelAttributes, options: Options, tableName?: string) {
+    //     try {
+    //         this.sequelize = new Sequelize(options)
+    //         this.initDataModel(attributes, tableName)
+    //     } catch (e: any) {
+    //         throw e
+    //     }
+    // }
+    constructor(options: Options) {
         try {
             this.sequelize = new Sequelize(options)
-            this.initDataModel(attributes, tableName)
         } catch (e: any) {
             throw e
         }
+    }
+
+    async getAlltable() {
+        let alltable = await this.sequelize.showAllSchemas({});
+        // console.log(alltable)
+        return { tables: alltable }
     }
 
     /**
@@ -100,7 +113,8 @@ export class Persistence {
                 tableName: tableName,
                 freezeTableName: true,
             })
-            await this.currentModel.sync({force: true})
+            // await this.currentModel.sync({ force: true })
+            await this.currentModel.sync()
         } catch (e: any) {
             throw e
         }

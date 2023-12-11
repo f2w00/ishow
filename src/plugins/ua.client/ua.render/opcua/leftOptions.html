@@ -132,7 +132,6 @@
                 console.log(data)
             },
             handleOpenMenu(event) {
-                console.log("ahahahahahahah")
                 this.visible = true;
                 if (event.pageX + 120 > window.innerWidth) {
                     this.left = event.pageX - 120;
@@ -145,7 +144,6 @@
                 this.visible = false;
             },
             handleAdd() {
-                console.log("Add")
                 this.dialogFormVisible = true
             },
             handleDelete() {
@@ -306,7 +304,6 @@
                     }
                 }
             },
-
 
             createDataview(info) {
                 if (info.position === 'main') {
