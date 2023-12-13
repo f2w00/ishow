@@ -27,6 +27,17 @@ export module DbController {
         }
     }
 
+    export async function changeModle(ctx: ParameterizedContext<any, IRouterParamContext<any, {}>, any>, next: Next) {
+        try {
+            CommunicateUtil.events.removeAllListeners('pipe:' + Config.defaultPipeName + '.pushed')
+            let { tableName } = ctx.request.body
+            DbService.changeModle(tableName)
+            ctx.body = new ResponseModel()
+        } catch (e: any) {
+            throw e
+        }
+    }
+
     export async function insert(ctx: ParameterizedContext<any, IRouterParamContext<any, {}>, any>, next: Next) {
         try {
             DbService.insert(ctx.request.body)

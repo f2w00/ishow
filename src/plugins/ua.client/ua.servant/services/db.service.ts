@@ -99,10 +99,45 @@ export module DbService {
                 })
             })
             storeTemp(tempArray)
-            //TODO on 'pipe....',在那个接口上把CommunicateUtil.events removelistner
-            // CommunicateUtil.events.on('pipe:' + Config.defaultPipeName + '.pushed', (data: UaMessage) => {
-            //     storeTemp(data)
-            // })
+            commonEvent.on('main:uaclient.close', () => {
+                updateFrame()
+            })
+        } catch (e: any) {
+            throw new ClientError(UaSources.dbService, UaErrors.errorCreateClient, e.message, e.stack)
+        }
+    }
+
+    /**
+     * @description 用于切换表模型
+     * @param tableName
+     */
+    export async function changeModle(tableName?: string) {
+        try {
+            let fieldSet = await persist.changeDataModel(tableName)
+            let newTags: any = []
+            for (let key in fieldSet) {
+                let temp = key.split('##')
+                newTags.push({
+                    nodeid: temp[0],
+                    displayName: temp[1]
+                })
+            }
+            DbService.tags = newTags
+            CommunicateUtil.emitToClient('Broker.create', [{ name: Config.defaultPipeName }])
+            CommunicateUtil.emitToClient('pipe:' + Config.defaultPipeName + '.registerIpc', [
+                { module: 'extensionProcess:uaclient' },
+            ])
+            let stamp = new Date().toLocaleString()
+            let tempArray: any[] = []
+            SubscriptService.staticValues.forEach((data) => {
+                tempArray.push({
+                    value: data.value,
+                    sourceTimestamp: stamp,
+                    displayName: data.displayName,
+                    nodeId: data.nodeId,
+                })
+            })
+            storeTemp(tempArray)
             commonEvent.on('main:uaclient.close', () => {
                 updateFrame()
             })
@@ -125,14 +160,10 @@ export module DbService {
                 DbService.dbTemp.set(nowTime, JSON.parse(tempString))
             }
         })
-        DbService.mapCount = 0
-        DbService.dbTemp.forEach((value) => {
-            Object.keys(value).length == DbService.tags.length ? DbService.mapCount++ : undefined
-        })
-        //TODO 在这里修改为到时间改动
-        // if (DbService.mapCount > 20) {
-        //     updateFrame()
-        // }
+        // DbService.mapCount = 0
+        // DbService.dbTemp.forEach((value) => {
+        //     Object.keys(value).length == DbService.tags.length ? DbService.mapCount++ : undefined
+        // })
         if (isStore) {
             updateFrame()
         }
@@ -213,36 +244,3 @@ export module DbService {
         await persist.insertMany(result)
     }
 }
-// DbService.tags = [
-//     { displayName: 'nice', nodeid: 'yes' },
-//     { displayName: 'nice', nodeid: 'ye' },
-// ]
-// DbService.storeTemp([
-//     {
-//         nodeId: 'yes',
-//         value: 'ok',
-//         sourceTimestamp: '2023/12/29',
-//         server: 'string',
-//         displayName: 'string',
-//         dataType: 'string',
-//         statusCode: 'string',
-//     },
-//     {
-//         nodeId: 'ye',
-//         value: 'o',
-//         sourceTimestamp: '2023/12/29',
-//         server: 'string',
-//         displayName: 'string',
-//         dataType: 'string',
-//         statusCode: 'string',
-//     },
-//     {
-//         nodeId: 'yes',
-//         value: '2',
-//         sourceTimestamp: '2023/12/30',
-//         server: 'string',
-//         displayName: 'string',
-//         dataType: 'string',
-//         statusCode: 'string',
-//     },
-// ])

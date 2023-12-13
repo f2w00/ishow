@@ -25,8 +25,7 @@ export class Persistence {
     }
 
     async getAlltable() {
-        let alltable = await this.sequelize.showAllSchemas({});
-        // console.log(alltable)
+        let alltable = await this.sequelize.showAllSchemas({ logging: false });
         return { tables: alltable }
     }
 
@@ -96,7 +95,7 @@ export class Persistence {
      * @param {string} tableName
      * @returns {Promise<void>}
      */
-    async initDataModel(attributes: ModelAttributes, tableName?: string) {
+    async initDataModel(attributes: ModelAttributes, tableName: string) {
         try {
             tableName = tableName ? tableName : 'ishow'
             const DataTypes = DT
@@ -119,4 +118,44 @@ export class Persistence {
             throw e
         }
     }
+
+    async changeDataModel(tableName: string) {
+        try {
+            let attributes: any = {}
+            const [results] = await this.sequelize.query(`PRAGMA table_info(${tableName})`)
+            results.forEach((value: any) => {
+                if (value.name != 'id' && value.name != 'sourceTimestamp') {
+                    attributes[value.name] = {
+                        type: 'DataTypes.STRING',
+                        allowNull: true,
+                        field: value.name,
+                    }
+                }
+            })
+            const DataTypes = DT
+            for (let key in attributes) {
+                // @ts-ignore
+                if (typeof attributes[key].type == 'string') {
+                    // @ts-ignore
+                    attributes[key].type = eval(attributes[key].type)
+                }
+            }
+            this.currentModel = this.sequelize.define(tableName, attributes, {
+                timestamps: false,
+                tableName: tableName,
+                freezeTableName: true,
+            })
+            await this.currentModel.sync()
+            return attributes
+        } catch (e: any) {
+            throw e
+        }
+    }
+    // getInfo() {
+    //     try {
+    //         return { sequelize: this.sequelize }
+    //     } catch (e: any) {
+    //         throw e
+    //     }
+    // }
 }

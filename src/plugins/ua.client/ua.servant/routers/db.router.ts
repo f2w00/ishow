@@ -8,8 +8,9 @@ export module DbRouter {
     })
     router.use(AgentMiddleware.dbValidator)
 
-    router.get('/connectDb', DbController.connectDb)
+    router.get('/connect_db', DbController.connectDb)
     router.post('/init', DbController.init)
+    router.post('/change_modle', DbController.changeModle)
     router.post('/insert', DbController.insert)
     router.post('/insert_many', DbController.insertMany)
     router.post('/create_table', DbController.createTable)

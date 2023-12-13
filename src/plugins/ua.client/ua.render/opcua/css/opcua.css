@@ -197,22 +197,22 @@ body {
     padding: 15px 10px 5px;
     font-size: 12px;
 }
-.no-header-dialog .el-dialog__footer{
+.no-header-dialog .el-dialog__footer {
     padding: 0 10px 10px;
 }
-.no-header-dialog .el-form-item{
+.no-header-dialog .el-form-item {
     margin-bottom: 0;
 }
 .no-header-dialog .el-form-item__label {
     font-size: 12px;
     line-height: 20px;
 }
-.no-header-dialog .el-input__inner{
+.no-header-dialog .el-input__inner {
     height: 20px;
     line-height: 20px;
     padding: 0 5px;
 }
-.no-header-dialog .el-button{
+.no-header-dialog .el-button {
     padding: 5px 10px;
     font-size: 12px;
 }
@@ -266,7 +266,7 @@ body {
     width: calc(100% - 90px);
     display: inline-block;
 }
-.dbBox .db_cycle .db_cycle_i{
+.dbBox .db_cycle .db_cycle_i {
     height: 22px;
     line-height: 22px;
     width: 33%;
@@ -275,11 +275,11 @@ body {
     border: 1px solid #cfcfcf;
     appearance: none;
 }
-.dbBox .db_cycle .db_cycle_h{
+.dbBox .db_cycle .db_cycle_h {
     margin-left: 5px;
     border-radius: 3px 0 0 3px;
 }
-.dbBox .db_cycle .db_cycle_s{
+.dbBox .db_cycle .db_cycle_s {
     width: 34%;
     border-radius: 0 3px 3px 0;
 }
@@ -378,4 +378,11 @@ body {
     background-color: #ffffff;
     border: none;
     border-radius: 5px;
+}
+.dbBox .card .btnTip {
+    margin: -2px 0px 0px 12px;
+    text-align: left;
+    font-size: calc(var(--font-size-level3) - 2px);
+    font-family: var(--font-family);
+    color: red;
 }

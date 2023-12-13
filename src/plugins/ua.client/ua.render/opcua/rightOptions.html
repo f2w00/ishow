@@ -69,6 +69,7 @@
                     </div>
                 </div>
                 <button class="dbBtn" @click="handleCreateDb">创建归档</button>
+                <div class="btnTip" v-if="isCreat">归档已创建</div>
                 <div style="text-align: left;">
                     <span class="db_lable">
                         历史表单:
@@ -78,7 +79,7 @@
                             :value="item.name" />
                     </el-select>
                 </div>
-                <button class="dbBtn" @click="handleInitDb">开始归档</button>
+                <button class="dbBtn" @click="handleloadDb">开始归档</button>
             </div>
         </div>
     </div>
@@ -112,13 +113,19 @@
                 isDisabled: true,
                 dbConfig: null,
                 isStop: true,
+                isCreat: false,
             }
         },
         computed: {},
         methods: {
             async connectDb() {
                 const param = {}
-                return await dbApi.connectDb(param)
+                return await dbApi.connect_db(param)
+            },
+            async changeModle(name) {
+                const param = {}
+                param.tableName = name
+                return await dbApi.change_modle(param)
             },
             handleTableMode() {
                 switch (Number(this.modeValue)) {
@@ -155,13 +162,14 @@
                         message: 'dbInit success',
                         position: 'bottom-right'
                     })
+                    this.isCreat = true
                     this.connectDb().then((res) => {
                         _this.tableList = res.data.tables
                         _this.tableValue = _this.tableList[_this.tableList.length - 1].name
                     })
                 }
             },
-            async handleInitDb(ev) {
+            async handleloadDb(ev) {
                 if (this.isStop) {
                     let cycleValue = parseInt(this.cyclehourValue) * 3600 + parseInt(this.cycleminuteValue) * 60 + parseInt(this.cyclesecondValue)
                     let res = await dbApi.resume({ memoryCycle: cycleValue * 1000 })
@@ -187,7 +195,19 @@
                 this.isStop = !this.isStop
             },
             handleTable(e) {
-                console.log(e)
+                let _this = this
+                this.changeModle(e).then(async (data) => {
+                    let res = await dbApi.stop()
+                    if (res.code == '200') {
+                        window.parent.ishow.windowEvent.emit('main:notice.all', {
+                            type: 'success',
+                            message: '切换归档',
+                            position: 'bottom-right'
+                        })
+                        ev.target.innerText = "开始归档"
+                        _this.isStop = true
+                    }
+                })
             },
             dataListener() {
                 window.parent.ishow.windowEvent.on(`opcua:attribute.push`, (e) => {
@@ -196,7 +216,6 @@
             },
             nodeIdListener() {
                 window.parent.ishow.windowEvent.on(`opcua:set.nodeId`, (e) => {
-                    // console.log(e)
                     let isIn = false
                     for (let i = 0; i < this.fieldsItemList.length; i++) {
                         if (this.fieldsItemList[i].nodeid == e.nodeid) {
