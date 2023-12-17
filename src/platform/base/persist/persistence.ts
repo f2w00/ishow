@@ -6,7 +6,7 @@ import { DataTypes as DT, FindOptions, ModelAttributes, ModelCtor, Options, Sequ
  */
 export class Persistence {
     private sequelize: Sequelize
-    private currentModel!: ModelCtor<any>
+    private currentModel: any
 
     // constructor(attributes: ModelAttributes, options: Options, tableName?: string) {
     //     try {
@@ -112,7 +112,6 @@ export class Persistence {
                 tableName: tableName,
                 freezeTableName: true,
             })
-            // await this.currentModel.sync({ force: true })
             await this.currentModel.sync()
         } catch (e: any) {
             throw e

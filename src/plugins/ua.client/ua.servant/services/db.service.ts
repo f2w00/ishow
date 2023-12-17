@@ -25,9 +25,11 @@ export module DbService {
     export async function connectDb() {
         try {
             let projectPath = sharedData.get('projectInfo')
-            persist = new Persistence(
-                { dialect: 'sqlite', storage: projectPath + '/database/data.db', logging: false }
-            )
+            if (!persist) {
+                persist = new Persistence(
+                    { dialect: 'sqlite', storage: projectPath + '/database/data.db', logging: false }
+                )
+            }
             let tableList = persist.getAlltable()
             return tableList
         } catch (e: any) {
