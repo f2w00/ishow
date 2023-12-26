@@ -1,3 +1,12 @@
+/*
+ * @Author: wangqi2002 1722009706@qq.com
+ * @Date: 2023-09-03 23:12:17
+ * @LastEditors: wangqi2002 1722009706@qq.com
+ * @LastEditTime: 2023-12-26 09:56:32
+ * @FilePath: \ishow\src\plugins\ua.client\ua.servant\controllers\db.controller.ts
+ * @Description: 
+ * 
+ */
 import { IRouterParamContext } from 'koa-router'
 import { Next, ParameterizedContext } from 'koa'
 import { DbService } from '../services/db.service'

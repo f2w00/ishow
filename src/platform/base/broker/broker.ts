@@ -43,7 +43,7 @@ export class MessagePipe {
         }
         ipcClient.emitClient('sendToIpc', this.ipcToNotice, {
             event: 'pipe:' + this.pipeId + '.pushed',
-            message: data,
+            message: message,
         })
         // this.emit('pushed', message)
         ipcClient.emitToRender('pipe:' + this.pipeId + '.pushed', message)

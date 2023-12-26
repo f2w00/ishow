@@ -17,6 +17,7 @@ export module DbService {
     export let persist!: any
     export let dbTemp: Map<string, any> = new Map()
     export let tags: DbHead[] = []
+    export let tagList: any = []
     export let mapCount = 0
 
     /**
@@ -82,6 +83,7 @@ export module DbService {
                     allowNull: true,
                     field: (value.nodeid + '##' + value.displayName).toLowerCase(),
                 }
+                DbService.tagList.push((value.nodeid + '##' + value.displayName).toLowerCase())
             })
             DbService.tags = tags
             DbService.createTable(defaultTableName, fieldSet)
@@ -116,8 +118,10 @@ export module DbService {
     export async function changeModle(tableName?: string) {
         try {
             let fieldSet = await persist.changeDataModel(tableName)
+            DbService.tagList.length = 0
             let newTags: any = []
             for (let key in fieldSet) {
+                DbService.tagList.push(key)
                 let temp = key.split('##')
                 newTags.push({
                     nodeid: temp[0],
@@ -230,16 +234,26 @@ export module DbService {
 
     async function updateFrame() {
         //TODO 在这里取DbService.dbTemp的第一个
-        // let tempArray = Array.from(DbService.dbTemp).sort()
-        let tempArray = Array.from(DbService.dbTemp)
+        let tempArray = Array.from(DbService.dbTemp).sort()
+        // let tempArray = Array.from(DbService.dbTemp)
         let result: any = []
         try {
             tempArray.forEach((value) => {
-                //TODO 只取所有数据都发过来的情况
-                if (Object.keys(value[1]).length == DbService.tags.length) {
-                    result.push({ sourceTimestamp: value[0], ...value[1] })
+                let temp: any = {}
+                for (let i = 0; i < DbService.tagList.length; i++) {
+                    if (DbService.tagList[i] in value[1]) {
+                        temp[DbService.tagList[i]] = value[1][DbService.tagList[i]]
+                    }
+                }
+                if (Object.keys(temp).length == DbService.tagList.length) {
+                    result.push({ sourceTimestamp: value[0], ...temp })
                     throw new Error("exit foreach");
                 }
+                //TODO 只取所有数据都发过来的情况
+                // if (Object.keys(value[1]).length == DbService.tags.length) {
+                //     result.push({ sourceTimestamp: value[0], ...value[1] })
+                //     throw new Error("exit foreach");
+                // }
             })
         } catch (e) { }
         DbService.dbTemp.clear()

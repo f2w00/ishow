@@ -310,6 +310,7 @@
             dataListener() {
                 const _this = this
                 window.parent.ishow.onRender('pipe:uaclient.pushed', (event, result) => {
+                    console.log(result)
                     let index = dataMap.get(result.nodeId)
                     // console.log(index, result.nodeId, result.value)
                     if (index || index === 0) {

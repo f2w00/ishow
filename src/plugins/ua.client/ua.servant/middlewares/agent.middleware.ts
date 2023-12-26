@@ -400,16 +400,16 @@ export module AgentMiddleware {
              * @description 此处绑定了pipe的事件,并且当
              */
             case '/db/init': {
-                DbUtils.validateDbName(ctx.request.body['tableName'])
-                RecordUtil.recordParams('db:init', ctx.request.body)
-                await next()
-                /*  if (is<{ createMode: TableCreateModes; tags?: DbHead[]; tableName?: string }>(ctx.request.body)) {
-                     DbUtils.validateDbName(ctx.request.body['tableName'])
-                     RecordUtil.recordParams('db:init', ctx.request.body)
-                     await next()
-                 } else {
-                     throw validateError('{createMode:TableCreateModes, tableName?:string, fields:IFieldNames}')
-                 } */
+                // DbUtils.validateDbName(ctx.request.body['tableName'])
+                // RecordUtil.recordParams('db:init', ctx.request.body)
+                // await next()
+                if (is<{ createMode: TableCreateModes; tags?: DbHead[]; tableName?: string }>(ctx.request.body)) {
+                    DbUtils.validateDbName(ctx.request.body['tableName'])
+                    RecordUtil.recordParams('db:init', ctx.request.body)
+                    await next()
+                } else {
+                    throw validateError('{createMode:TableCreateModes, tableName?:string, fields:IFieldNames}')
+                }
                 break
             }
             case '/db/insert': {

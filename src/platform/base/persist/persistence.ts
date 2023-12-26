@@ -43,6 +43,7 @@ export class Persistence {
 
     async insertMany(records: any[], sync?: boolean) {
         try {
+            console.log('per', records)
             if (sync) {
                 await this.currentModel.bulkCreate(records)
                 this.currentModel.sync()
