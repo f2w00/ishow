@@ -251,10 +251,8 @@
                     .then((res) => {
                         if (res.code == 200) {
                             let index = dataMap.get(_this.selectItem.nodeId)
-                            console.log(index)
                             dataMap.delete(_this.selectItem.nodeId)
                             dataMap.forEach((value, key) => {
-                                console.log(key, value);
                                 if (value > index) {
                                     dataMap.set(key, value - 1)
                                 }
@@ -310,7 +308,6 @@
             dataListener() {
                 const _this = this
                 window.parent.ishow.onRender('pipe:uaclient.pushed', (event, result) => {
-                    console.log(result)
                     let index = dataMap.get(result.nodeId)
                     // console.log(index, result.nodeId, result.value)
                     if (index || index === 0) {
@@ -330,7 +327,6 @@
                     if (!_this.subFlag) {
                         let res = await _this.subscriptInit()
                         _this.subFlag = true
-                        console.log(res)
                     }
                     let data = e.detail.data
                     // if (res.code === 200) {
@@ -341,7 +337,6 @@
                         let reslist = await _this.getSessionGroup(data.nodeId, 0)
                         let nodeGroup = reslist.split('|')
                         let res2 = await _this.subscriptGroup(nodeGroup)
-                        console.log(res2)
                     }
                 })
             },
