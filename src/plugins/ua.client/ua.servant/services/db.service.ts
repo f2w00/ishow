@@ -77,6 +77,7 @@ export module DbService {
                 allowNull: false,
                 field: 'sourceTimestamp',
             }
+            DbService.tagList.length = 0
             tags.forEach((value) => {
                 fieldSet[(value.nodeid + '##' + value.displayName).toLowerCase()] = {
                     type: 'DataTypes.STRING',
@@ -121,12 +122,14 @@ export module DbService {
             DbService.tagList.length = 0
             let newTags: any = []
             for (let key in fieldSet) {
-                DbService.tagList.push(key)
-                let temp = key.split('##')
-                newTags.push({
-                    nodeid: temp[0],
-                    displayName: temp[1]
-                })
+                if (key != 'sourceTimestamp') {
+                    DbService.tagList.push(key)
+                    let temp = key.split('##')
+                    newTags.push({
+                        nodeid: temp[0],
+                        displayName: temp[1]
+                    })
+                }
             }
             DbService.tags = newTags
             CommunicateUtil.emitToClient('Broker.create', [{ name: Config.defaultPipeName }])

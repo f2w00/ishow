@@ -130,6 +130,12 @@ export class Persistence {
                         allowNull: true,
                         field: value.name,
                     }
+                } else if (value.name == 'sourceTimestamp') {
+                    attributes[value.name] = {
+                        type: 'DataTypes.STRING',
+                        allowNull: false,
+                        field: value.name,
+                    }
                 }
             })
             const DataTypes = DT
