@@ -223041,7 +223041,6 @@ var DbService;
                     }
                     if (Object.keys(temp).length == DbService.tagList.length) {
                         storeTime = storeTime ? storeTime : value[0];
-                        console.log("-----+", storeTime);
                         result.push(Object.assign({ sourceTimestamp: storeTime }, temp));
                         throw new Error("exit foreach");
                     }
