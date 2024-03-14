@@ -12,7 +12,8 @@
         "encrypt": "electron ./builder/encrypt.js",
         "rebuild": "electron-rebuild",
         "build": "node builder/build.js",
-        "product": "node builder/product.js"
+        "product": "node builder/product.js",
+        "postinstall": "electron-builder install-app-deps"
     },
     "keywords": [
         "electron",

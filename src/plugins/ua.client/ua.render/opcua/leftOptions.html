@@ -230,17 +230,20 @@
             connectServerListener() {
                 window.parent.ishow.windowEvent.on(`opcua:session.init`, (e) => {
                     if (e === 200) {
-                        this.addressTreeData.push({
-                            nodeId: 'i=84[RootFolder]',
-                            browseName: {
-                                namespaceIndex: 0,
-                                name: 'Root',
-                            },
-                            displayName: {
-                                text: 'Root',
-                            },
-                            nodeClass: 'Object',
-                        })
+                        //TODO: 只能添加一个服务，且目前服务首节点固定
+                        if (!this.addressTreeData.length) {
+                            this.addressTreeData.push({
+                                nodeId: 'i=84[RootFolder]',
+                                browseName: {
+                                    namespaceIndex: 0,
+                                    name: 'Root',
+                                },
+                                displayName: {
+                                    text: 'Root',
+                                },
+                                nodeClass: 'Object',
+                            })
+                        }
                     }
                 })
             },

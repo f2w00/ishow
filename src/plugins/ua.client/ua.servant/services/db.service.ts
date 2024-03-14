@@ -155,7 +155,7 @@ export module DbService {
         }
     }
 
-    export function storeTemp(data: any, isStore: boolean = false) {
+    export function storeTemp(data: any, isStore: boolean = false, storeTime?: string) {
         //TODO 周期写入,
         let messages = []
         messages = data instanceof Array ? data : (messages = [data])
@@ -174,7 +174,7 @@ export module DbService {
         //     Object.keys(value).length == DbService.tags.length ? DbService.mapCount++ : undefined
         // })
         if (isStore) {
-            updateFrame()
+            updateFrame(storeTime)
         }
     }
 
@@ -235,7 +235,7 @@ export module DbService {
         }
     }
 
-    async function updateFrame() {
+    async function updateFrame(storeTime?: string) {
         //TODO 在这里取DbService.dbTemp的第一个
         let tempArray = Array.from(DbService.dbTemp).sort()
         // let tempArray = Array.from(DbService.dbTemp)
@@ -249,14 +249,10 @@ export module DbService {
                     }
                 }
                 if (Object.keys(temp).length == DbService.tagList.length) {
-                    result.push({ sourceTimestamp: value[0], ...temp })
+                    storeTime = storeTime ? storeTime : value[0]
+                    result.push({ sourceTimestamp: storeTime, ...temp })
                     throw new Error("exit foreach");
                 }
-                //TODO 只取所有数据都发过来的情况
-                // if (Object.keys(value[1]).length == DbService.tags.length) {
-                //     result.push({ sourceTimestamp: value[0], ...value[1] })
-                //     throw new Error("exit foreach");
-                // }
             })
         } catch (e) { }
         DbService.dbTemp.clear()

@@ -2,7 +2,7 @@
  * @Author: wangqi2002 1722009706@qq.com
  * @Date: 2023-09-03 23:12:17
  * @LastEditors: wangqi2002 1722009706@qq.com
- * @LastEditTime: 2023-12-26 17:24:40
+ * @LastEditTime: 2024-03-13 21:45:02
  * @FilePath: \ishow\src\plugins\ua.client\ua.servant\controllers\db.controller.ts
  * @Description: 
  * 
@@ -80,10 +80,9 @@ export module DbController {
             //TODO 重启事件监听
             let startTime = Date.now()
             CommunicateUtil.events.on('pipe:' + Config.defaultPipeName + '.pushed', (data: UaMessage) => {
-                // console.log('++++++',data)
                 if (Date.now() - startTime >= memoryCycle) {
-                    startTime = Date.now()
-                    DbService.storeTemp(data, true)
+                    startTime = startTime + memoryCycle
+                    DbService.storeTemp(data, true, new Date(startTime).toISOString())
                 } else {
                     DbService.storeTemp(data, false)
                 }

@@ -221337,8 +221337,8 @@ var DbController;
                 let startTime = Date.now();
                 util_1.CommunicateUtil.events.on('pipe:' + config_default_1.Config.defaultPipeName + '.pushed', (data) => {
                     if (Date.now() - startTime >= memoryCycle) {
-                        startTime = Date.now();
-                        db_service_1.DbService.storeTemp(data, true);
+                        startTime = startTime + memoryCycle;
+                        db_service_1.DbService.storeTemp(data, true, new Date(startTime).toISOString());
                     }
                     else {
                         db_service_1.DbService.storeTemp(data, false);
@@ -222959,7 +222959,7 @@ var DbService;
         });
     }
     DbService.changeModle = changeModle;
-    function storeTemp(data, isStore = false) {
+    function storeTemp(data, isStore = false, storeTime) {
         let messages = [];
         messages = data instanceof Array ? data : (messages = [data]);
         messages.forEach((message) => {
@@ -222974,7 +222974,7 @@ var DbService;
             }
         });
         if (isStore) {
-            updateFrame();
+            updateFrame(storeTime);
         }
     }
     DbService.storeTemp = storeTemp;
@@ -223027,7 +223027,7 @@ var DbService;
         }
     }
     DbService.createTable = createTable;
-    function updateFrame() {
+    function updateFrame(storeTime) {
         return __awaiter(this, void 0, void 0, function* () {
             let tempArray = Array.from(DbService.dbTemp).sort();
             let result = [];
@@ -223040,13 +223040,14 @@ var DbService;
                         }
                     }
                     if (Object.keys(temp).length == DbService.tagList.length) {
-                        result.push(Object.assign({ sourceTimestamp: value[0] }, temp));
+                        storeTime = storeTime ? storeTime : value[0];
+                        console.log("-----+", storeTime);
+                        result.push(Object.assign({ sourceTimestamp: storeTime }, temp));
                         throw new Error("exit foreach");
                     }
                 });
             }
             catch (e) { }
-            console.log('=======', result);
             DbService.dbTemp.clear();
             yield DbService.persist.insertMany(result);
         });
