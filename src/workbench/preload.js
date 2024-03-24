@@ -1,3 +1,12 @@
+/*
+ * @Author: wangqi2002 1722009706@qq.com
+ * @Date: 2023-09-03 23:12:17
+ * @LastEditors: wangqi2002 1722009706@qq.com
+ * @LastEditTime: 2024-03-20 12:49:16
+ * @FilePath: \ishow\src\workbench\preload.js
+ * @Description: 
+ * 
+ */
 const { ipcRenderer } = require('electron')
 const { rendererEvents } = require('../platform/ipc/events/ipc.events')
 const { EventEmitter } = require('events')

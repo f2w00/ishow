@@ -1,59 +1,62 @@
+<!--
+ * @Author: wangqi2002 1722009706@qq.com
+ * @Date: 2023-09-03 23:12:17
+ * @LastEditors: wangqi2002 1722009706@qq.com
+ * @LastEditTime: 2024-03-20 23:03:36
+ * @FilePath: \ishow\src\workbench\components\pluginView.html
+ * @Description: 
+ * 
+-->
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="../element-ui/css/index.css"/>
-    <link rel="stylesheet" href="../css/components/pluginView.css"/>
-    <link rel="stylesheet" href="../css/common.css"/>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../element-ui/css/index.css" />
+    <link rel="stylesheet" href="../css/components/pluginView.css" />
+    <link rel="stylesheet" href="../css/common.css" />
 </head>
 
 <body>
-<div id="app">
-    <div style="width: 100%; height: 100%">
-        <div class="plugin_installed">
-            <div class="plugin_title_btn" @click="handleInstalled">
-                已安装
-                <img class="open_close" src="../assets/icon/arrow-bottom.svg"/>
-            </div>
-            <div
-                    class="plugin_card"
-                    style="position: relative"
-                    v-for="(item,index) in installedData"
-                    v-show="installedShow"
-            >
-                <div class="plugin_icon_box">
-                    <img class="plugin_icon" :src="item.iconUrl"/>
+    <div id="app">
+        <div style="width: 100%; height: 100%">
+            <div class="plugin_installed">
+                <div class="plugin_title_btn" @click="handleInstalled">
+                    已安装
+                    <img class="open_close" src="../assets/icon/arrow-bottom.svg" />
                 </div>
-                <div class="plugin_information">
-                    <div class="plugin_title">{{item.title}}</div>
-                    <div class="plugin_content">{{item.content}}</div>
-                    <div class="plugin_author">{{item.author}}</div>
+                <button @click="handleCS">测试</button>
+                <div class="plugin_card" style="position: relative" v-for="(item,index) in installedData"
+                    v-show="installedShow">
+                    <div class="plugin_icon_box">
+                        <img class="plugin_icon" :src="item.iconUrl" />
+                    </div>
+                    <div class="plugin_information">
+                        <div class="plugin_title">{{item.title}}</div>
+                        <div class="plugin_content">{{item.content}}</div>
+                        <div class="plugin_author">{{item.author}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="plugin_uninstalled">
-            <div class="plugin_title_btn" @click="handleUninstalled">
-                推荐安装
-                <img class="open_close" src="../assets/icon/arrow-bottom.svg"/>
-            </div>
-            <div
-                    class="plugin_card"
-                    style="position: relative"
-                    v-for="(item,index) in uninstalledData"
-                    v-show="uninstalledShow"
-            >
-                <div class="plugin_icon_box">
-                    <img class="plugin_icon" :src="item.iconUrl"/>
+            <div class="plugin_uninstalled">
+                <div class="plugin_title_btn" @click="handleUninstalled">
+                    推荐安装
+                    <img class="open_close" src="../assets/icon/arrow-bottom.svg" />
                 </div>
-                <div class="plugin_information">
-                    <div class="plugin_title">{{item.title}}</div>
-                    <div class="plugin_content">{{item.content}}</div>
-                    <div class="plugin_author">{{item.author}}</div>
+                <div class="plugin_card" style="position: relative" v-for="(item,index) in uninstalledData"
+                    v-show="uninstalledShow">
+                    <div class="plugin_icon_box">
+                        <img class="plugin_icon" :src="item.iconUrl" />
+                    </div>
+                    <div class="plugin_information">
+                        <div class="plugin_title">{{item.title}}</div>
+                        <div class="plugin_content">{{item.content}}</div>
+                        <div class="plugin_author">{{item.author}}</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 <script src="../vue/vue.js"></script>
 <script src="../element-ui/index.js"></script>
@@ -90,12 +93,20 @@
                     e.target.children[0].classList.add('animation')
                 }
             },
+            handleCS() {
+                console.log('CS')
+                window.parent.ishow.send('selectFile-host')
+            }
         },
         mounted() {
+            window.parent.ishow.onRender('selectFile-render', (event, res) => {
+                console.log(res)
+            })
         },
         created() {
             this.getPlugin()
         },
     })
 </script>
+
 </html>
