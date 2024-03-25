@@ -109,7 +109,7 @@ export class Client {
                 this.mainWindow.webContents.send(event, ...args)
             })
         })
-        ipcClient.onFileDialog()
+        // ipcClient.onFileDialog()
         this.registerShortCut()
     }
 

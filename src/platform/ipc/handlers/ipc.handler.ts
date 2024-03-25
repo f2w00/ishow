@@ -2,7 +2,7 @@
  * @Author: wangqi2002 1722009706@qq.com
  * @Date: 2023-09-03 23:12:16
  * @LastEditors: wangqi2002 1722009706@qq.com
- * @LastEditTime: 2024-03-24 12:40:47
+ * @LastEditTime: 2024-03-25 19:51:51
  * @FilePath: \ishow\src\platform\ipc\handlers\ipc.handler.ts
  * @Description: 
  * 
@@ -27,12 +27,12 @@ export class ipcClient {
         ipcMain.handle(event, eventHandler)
     }
 
+    // todo: 文件默认路径选择
     static onFileDialog(options?: any) {
-        console.log('[cs]')
         ipcMain.on('selectFile-host', (event) => {
             dialog.showOpenDialog({
                 title: "测试",
-                defaultPath: "D:/Code",
+                defaultPath: "D:/",
                 properties: ['openFile', 'dontAddToRecent']
             }).then(result => {
                 fs.readFile(result.filePaths[0], { encoding: 'utf-8' }, (err: any, res: any) => {

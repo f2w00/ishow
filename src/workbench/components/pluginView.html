@@ -2,7 +2,7 @@
  * @Author: wangqi2002 1722009706@qq.com
  * @Date: 2023-09-03 23:12:17
  * @LastEditors: wangqi2002 1722009706@qq.com
- * @LastEditTime: 2024-03-20 23:03:36
+ * @LastEditTime: 2024-03-25 20:02:09
  * @FilePath: \ishow\src\workbench\components\pluginView.html
  * @Description: 
  * 
@@ -25,7 +25,7 @@
                     已安装
                     <img class="open_close" src="../assets/icon/arrow-bottom.svg" />
                 </div>
-                <button @click="handleCS">测试</button>
+                <!-- <button @click="handleCS">测试</button> -->
                 <div class="plugin_card" style="position: relative" v-for="(item,index) in installedData"
                     v-show="installedShow">
                     <div class="plugin_icon_box">
@@ -93,15 +93,12 @@
                     e.target.children[0].classList.add('animation')
                 }
             },
-            handleCS() {
-                console.log('CS')
-                window.parent.ishow.send('selectFile-host')
-            }
+            // handleCS() {
+            //     console.log('CS')
+            //     window.parent.ishow.send('selectFile-host')
+            // }
         },
         mounted() {
-            window.parent.ishow.onRender('selectFile-render', (event, res) => {
-                console.log(res)
-            })
         },
         created() {
             this.getPlugin()
