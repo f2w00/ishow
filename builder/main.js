@@ -230,45 +230,6 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             viewPath: './components/projectView.html',
         },
         {
-            title: 'plugin',
-            name: 'plugin',
-            content: '插件',
-            iconSrc: './assets/icon/plugin.svg',
-            viewPath: './components/pluginView.html',
-        },
-        {
-            title: 'tutorial',
-            name: 'tutorial',
-            content: '用户手册',
-            iconSrc: './assets/icon/tutorial.svg',
-            viewPath: './components/tutorial/tutorial.html',
-            clickSendToWindow: [
-                {
-                    event: 'leftBar:click.tutorial',
-                    params: [
-                        {
-                            title: 'tutorial',
-                            name: 'tutorial',
-                            content: 'Tab 1 content',
-                            src: './components/tutorial/ishow.html',
-                        },
-                        {
-                            title: 'uaclient',
-                            name: 'uaclient',
-                            content: 'uaclient',
-                            src: './components/tutorial/uaclient.html',
-                        },
-                        {
-                            title: 'easy-report',
-                            name: 'easy-report',
-                            content: 'easy-report',
-                            src: './components/tutorial/easy-report.html',
-                        },
-                    ],
-                },
-            ],
-        },
-        {
             title: 'opcua',
             name: 'opcua',
             content: 'opcua',
@@ -305,14 +266,14 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
         },
         {
             title: 'Easy-Report',
-            name: 'easy-report',
-            content: 'Easy-Report',
+            name: 'Easy-report',
+            content: '报表',
             iconSrc: '.././plugins/easy-report/assets/report.svg',
             viewPath: '.././plugins/easy-report/index.html',
             clickSendToWindow: [
                 {
                     event: 'mainTab:change',
-                    params: ['easy-report'],
+                    params: ['Easy-report'],
                 },
             ],
             clickCreateTab: [
@@ -320,11 +281,50 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
                     event: 'leftBar:created.easy-report',
                     params: [
                         {
+                            title: 'Easy-report',
+                            name: 'easy-report',
+                            content: '报表',
+                            position: 'main',
+                            src: '.././plugins/easy-report/dist/index.html',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            title: 'plugin',
+            name: 'plugin',
+            content: '插件',
+            iconSrc: './assets/icon/plugin.svg',
+            viewPath: './components/pluginView.html',
+        },
+        {
+            title: 'tutorial',
+            name: 'tutorial',
+            content: '用户手册',
+            iconSrc: './assets/icon/tutorial.svg',
+            viewPath: './components/tutorial/tutorial.html',
+            clickSendToWindow: [
+                {
+                    event: 'leftBar:click.tutorial',
+                    params: [
+                        {
+                            title: 'tutorial',
+                            name: 'tutorial',
+                            content: 'Tab 1 content',
+                            src: './components/tutorial/ishow.html',
+                        },
+                        {
+                            title: 'uaclient',
+                            name: 'uaclient',
+                            content: 'uaclient',
+                            src: './components/tutorial/uaclient.html',
+                        },
+                        {
                             title: 'easy-report',
                             name: 'easy-report',
                             content: 'easy-report',
-                            position: 'main',
-                            src: '.././plugins/easy-report/dist/index.html',
+                            src: './components/tutorial/easy-report.html',
                         },
                     ],
                 },

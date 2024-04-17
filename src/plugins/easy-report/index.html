@@ -1,3 +1,12 @@
+<!--
+ * @Author: wangqi2002 1722009706@qq.com
+ * @Date: 2023-09-03 23:12:17
+ * @LastEditors: wangqi2002 1722009706@qq.com
+ * @LastEditTime: 2024-03-27 16:24:35
+ * @FilePath: \ishow\src\plugins\easy-report\index.html
+ * @Description: 
+ * 
+-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,13 +17,12 @@
 </head>
 
 <body>
-    <div></div>
+    <div>123</div>
     <script>
         window.onload = function () {
             try {
                 window.parent.ishow.windowEvent.on('leftBar:created.easy-report', (data) => {
                     data.forEach((info) => {
-                        console.log(info)
                         window.parent.ishow.windowEvent.emit(`mainTab:create`, info)
                         window.parent.ishow.windowEvent.emit(`leftBar:close`, info.name)
                     })

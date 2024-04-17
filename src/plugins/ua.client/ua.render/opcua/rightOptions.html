@@ -153,8 +153,9 @@
                 this.dbConfig = {
                     createMode: Number(this.modeValue),
                     tags: this.fieldsItemList ? this.fieldsItemList : null,
-                    tableName: this.tableNameValue ? this.tableNameValue : null,
+                    tableName: this.tableNameValue ? this.tableNameValue : 'default',
                 }
+                console.log(this.dbConfig)
                 let res = await dbApi.init(this.dbConfig)
                 if (res.code == '200') {
                     window.parent.ishow.windowEvent.emit('main:notice.all', {

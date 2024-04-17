@@ -2,7 +2,7 @@
  * @Author: wangqi2002 1722009706@qq.com
  * @Date: 2023-09-03 23:12:17
  * @LastEditors: wangqi2002 1722009706@qq.com
- * @LastEditTime: 2024-03-13 21:45:02
+ * @LastEditTime: 2024-03-27 16:48:04
  * @FilePath: \ishow\src\plugins\ua.client\ua.servant\controllers\db.controller.ts
  * @Description: 
  * 
@@ -82,7 +82,7 @@ export module DbController {
             CommunicateUtil.events.on('pipe:' + Config.defaultPipeName + '.pushed', (data: UaMessage) => {
                 if (Date.now() - startTime >= memoryCycle) {
                     startTime = startTime + memoryCycle
-                    DbService.storeTemp(data, true, new Date(startTime).toISOString())
+                    DbService.storeTemp(data, true, new Date(startTime + 28800000).toISOString())
                 } else {
                     DbService.storeTemp(data, false)
                 }

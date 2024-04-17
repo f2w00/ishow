@@ -221338,7 +221338,7 @@ var DbController;
                 util_1.CommunicateUtil.events.on('pipe:' + config_default_1.Config.defaultPipeName + '.pushed', (data) => {
                     if (Date.now() - startTime >= memoryCycle) {
                         startTime = startTime + memoryCycle;
-                        db_service_1.DbService.storeTemp(data, true, new Date(startTime).toISOString());
+                        db_service_1.DbService.storeTemp(data, true, new Date(startTime + 28800000).toISOString());
                     }
                     else {
                         db_service_1.DbService.storeTemp(data, false);
@@ -222846,7 +222846,7 @@ var DbService;
         });
     }
     DbService.connectDb = connectDb;
-    function init(createMode, tags, tableName, fields) {
+    function init(createMode, tags, tableName) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 switch (createMode) {
@@ -222907,9 +222907,6 @@ var DbService;
                     });
                 });
                 storeTemp(tempArray);
-                event_bus_1.commonEvent.on('main:uaclient.close', () => {
-                    updateFrame();
-                });
             }
             catch (e) {
                 throw new agent_middleware_1.ClientError(ua_enums_1.UaSources.dbService, ua_enums_1.UaErrors.errorCreateClient, e.message, e.stack);

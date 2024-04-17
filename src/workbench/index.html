@@ -36,7 +36,6 @@
                                     <img class="icon" :src="item.iconSrc" />
                                 </span>
                                 <div class="grid-box">
-                                    <!-- TODO titleBox高度会被顶的变小 -->
                                     <div class="titleBox">{{item.content}}</div>
                                     <iframe :src="item.viewPath" class="left-iframe"></iframe>
                                 </div>
@@ -91,7 +90,7 @@
                             @tab-click="handleTabright">
                             <el-tab-pane v-for="(item, index) in subviewRightTabs" label="" :name="item.name">
                                 <span slot="label">
-                                    <img class="icon" :src="item.iconSrc" :title="item.content"/>
+                                    <img class="icon" :src="item.iconSrc" :title="item.content" />
                                 </span>
                                 <div class="grid-box">
                                     <div class="titleBox">{{item.content}}</div>
@@ -247,7 +246,6 @@
                 let tabsContent = document.querySelector('.subviewLeft-content .el-tabs__content')
                 let resizeItem = document.querySelector('.subviewLeft .resizeShow')
                 if (tab._props.name != 'Easy-report') {
-                    // console.log('111')
                     if (this.ishowActivate.leftTabActivate != tab._props.name) {
                         this.ishowActivate.leftTabActivate = tab._props.name
                         tabsContent.style.display = 'block'
@@ -508,7 +506,6 @@
             },
             onNoticeFromMain() {
                 window.ishow.mainNotice((message) => {
-                    console.log(message)
                     const h = this.$createElement
                     this.$notify({
                         title: message.title,
@@ -555,21 +552,6 @@
             this.onNoticeFromAll()
         },
         created() {
-            // -----------存
-            // window.ishow.sharedData.set('currentWorkspace', "D:\\Code\\Vscode\\ishow\\default")
-            // window.ishow.sharedData.set('workbenchConfig', {
-            //     "rightSide": {
-            //         "display": true
-            //     },
-            //     "leftSide": {
-            //         "display": true
-            //     },
-            //     "bottomSide": {
-            //         "display": true
-            //     }
-            // })
-
-            // console.log(window.ishow.sharedData.get('currentWorkspace'))
             this.ishowActivateInitialize()
             this.ishowMenuConfigInitialize()
             this.subviewLeftTabs = window.ishow.sharedData.get('subviewLeftTabsData')

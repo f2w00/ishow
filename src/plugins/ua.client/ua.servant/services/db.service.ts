@@ -44,7 +44,7 @@ export module DbService {
      * @param tableName
      * @param fields
      */
-    export async function init(createMode: TableCreateModes, tags: DbHead[], tableName?: string, fields?: IFieldNames) {
+    export async function init(createMode: TableCreateModes, tags: DbHead[], tableName?: string) {
         try {
             switch (createMode) {
                 case TableCreateModes.default:
@@ -104,9 +104,9 @@ export module DbService {
                 })
             })
             storeTemp(tempArray)
-            commonEvent.on('main:uaclient.close', () => {
-                updateFrame()
-            })
+            // commonEvent.on('main:uaclient.close', () => {
+            //     updateFrame()
+            // })
         } catch (e: any) {
             throw new ClientError(UaSources.dbService, UaErrors.errorCreateClient, e.message, e.stack)
         }
