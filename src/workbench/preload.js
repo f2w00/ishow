@@ -55,6 +55,16 @@ function exposeInMain() {
                 callback(message)
             })
         },
+        getPreCode: async (callback) => {
+            ipcRenderer.on('main:notice', (_, message) => {
+                callback(message)
+            })
+        },
+        mainNotice: async (callback) => {
+            ipcRenderer.on('main:notice', (_, message) => {
+                callback(message)
+            })
+        },
         rendererEvents: rendererEvents,
         windowEvent: new EventEmitter(),
         sharedData: sharedData,

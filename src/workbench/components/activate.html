@@ -1,0 +1,113 @@
+<!--
+ * @Author: wangqi2002 1722009706@qq.com
+ * @Date: 2023-09-03 23:12:17
+ * @LastEditors: wangqi2002 1722009706@qq.com
+ * @LastEditTime: 2024-03-25 20:02:09
+ * @FilePath: \ishow\src\workbench\components\pluginView.html
+ * @Description: 
+ * 
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../element-ui/css/index.css" />
+    <link rel="stylesheet" href="../css/components/pluginView.css" />
+    <link rel="stylesheet" href="../css/common.css" />
+</head>
+
+<body>
+    <div id="app">
+        <div style="width: calc(100% - 20px); height: calc(100% - 20px); margin: 10px;">
+            <div style="height: 40%;">
+                <button @click="handleGetPreCode"
+                    style="background-color: #409EFF; color: white; border: none; margin: 5px 10px; border-radius: 5px; min-width: 100px;">获取预激活码</button>
+                <textarea v-model="preactivationCode" placeholder="点击获取预激活码"
+                    style="width: 220px;height: 40px; border: none;border-radius: 5px; padding: 0 5px; position: relative; top: 13px;">
+                    </textarea>
+            </div>
+            <hr>
+            <div style="height: 40%;">
+                <button @click="handleActivate"
+                    style="background-color: #409EFF; color: white;border: none; margin: 5px 10px; border-radius: 5px; min-width: 100px;">激活</button>
+                <textarea v-model="activationCode" placeholder="请输入激活码"
+                    style="width: 220px;height: 40px; border: none;border-radius: 5px; padding: 0 5px; position: relative; top: 13px;">
+                        </textarea>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../vue/vue.js"></script>
+<script src="../element-ui/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                preactivationCode: '',
+                activationCode: '',
+            }
+        },
+        computed: {},
+        methods: {
+            codePreListen() {
+                const that = this
+                window.parent.ishow.onRender('get_pre_code_result', (event, data) => {
+                    that.preactivationCode = data
+                })
+            },
+            activatieSucListen() {
+                const that = this
+                window.parent.ishow.onRender('activation_result', (event, data) => {
+                    console.log(data)
+                    if (data) {
+                        that.$notify({
+                            type: 'success',
+                            title: 'success',
+                            message: "激活成功",
+                            customClass: 'my_notice',
+                            position: 'top-left',
+                            offset: 10,
+                            duration: 3000
+                        });
+                        window.parent.ishow.sharedData.set('isActivate', [data])
+                        setTimeout(() => {
+                            window.parent.ishow.windowEvent.emit('ishow:dialog.act.cancle')
+                        }, 2000)
+                    }
+                })
+            },
+            activatieErrListen() {
+                const that = this
+                window.parent.ishow.onRender('error_msg', (event, data) => {
+                    console.log(data)
+                    this.$notify({
+                        type: 'error',
+                        title: 'error',
+                        message: data,
+                        customClass: 'my_notice',
+                        position: 'top-left',
+                        offset: 10,
+                        duration: 3000
+                    });
+                })
+            },
+            handleGetPreCode() {
+                window.parent.ishow.send('get-pre-code')
+            },
+            handleActivate() {
+                window.parent.ishow.send('activation-code', this.activationCode)
+            },
+        },
+        mounted() {
+            this.codePreListen()
+            this.activatieSucListen()
+            this.activatieErrListen()
+        },
+        created() {
+        },
+    })
+</script>
+
+</html>

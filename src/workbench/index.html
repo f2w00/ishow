@@ -101,14 +101,19 @@
                         </el-tabs>
                     </div>
                 </div>
-                <!-- TODO 右侧边栏顶部图层 -->
-                <!-- <span class="rightBarTopmark"></span> -->
             </div>
             <el-dialog class="addDialog" :visible.sync="dialogVisible" top="50px" :close-on-click-modal="false"
                 @close="handleCancledialog">
                 <iframe name="dialogIframe" id="dialogIframe" :src="iframeUrl" framebordering="0" scrolling="no"
                     style="width: 100%"></iframe>
             </el-dialog>
+            <!-- TODO 激活蒙层 -->
+            <el-dialog class="activateDialog" :visible.sync="activatedialogVisible" top="-50px" title="应用未激活"
+                :close-on-click-modal="false" @close="handleCancleActivatedialog" :show-close="false">
+                <iframe name="activatedialogIframe" id="activatedialogIframe" src="./components/activate.html"
+                    framebordering="0" scrolling="no" style="width: 100%"></iframe>
+            </el-dialog>
+
             <div class="menu_dialog" v-if="ishowMenuConfig.showMenu">
                 <div class="__menu__wrapper" ref="MenuWrapper">
                     <template v-for="(item, index) in ishowMenuConfig.menuList">
@@ -166,6 +171,7 @@
                 },
                 //弹出框
                 dialogVisible: false,
+                activatedialogVisible: false,
                 iframeUrl: '',
                 //tab页数据
                 mainTabs: [],
@@ -211,6 +217,9 @@
             /* 元素调用类函数 */
             handleCancledialog() {
                 this.dialogVisible = false
+            },
+            handleCancleActivatedialog() {
+                this.activatedialogVisible = false
             },
             handleAddserver(value) {
                 this.iframeUrl = value.viewPath
@@ -311,6 +320,13 @@
             },
 
             /* 初始化类函数 */
+            ishowIsActivate() {
+                let res = window.ishow.sharedData.get('isActivate')
+                if (!res[0]) {
+                    console.log("未激活")
+                    this.activatedialogVisible = true
+                }
+            },
             attributeObserver() {
                 var resizeDom = document.querySelectorAll('.container .resize')
                 resizeDom.forEach((item) => {
@@ -349,6 +365,9 @@
             dialogListener() {
                 window.ishow.windowEvent.on(`ishow:dialog.cancle`, (e) => {
                     this.handleCancledialog()
+                })
+                window.ishow.windowEvent.on(`ishow:dialog.act.cancle`, (e) => {
+                    this.handleCancleActivatedialog()
                 })
             },
             async logErrorListener() {
@@ -555,6 +574,8 @@
             this.ishowActivateInitialize()
             this.ishowMenuConfigInitialize()
             this.subviewLeftTabs = window.ishow.sharedData.get('subviewLeftTabsData')
+            // 激活检测
+            this.ishowIsActivate()
         },
     })
 </script>

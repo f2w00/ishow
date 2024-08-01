@@ -10,6 +10,9 @@
 import { ipcMain, IpcMainEvent, IpcMainInvokeEvent, dialog } from 'electron'
 import EventEmitter from 'events'
 import fs from 'fs'
+import { encStr, decryptStr, getMac } from '../../base/utils/aes_ecb.js'
+import { get } from 'http'
+import { Json } from 'sequelize/types/utils.js'
 
 export class ipcClient {
     static localEvents: EventEmitter = new EventEmitter()
@@ -45,6 +48,35 @@ export class ipcClient {
             }).catch(err => {
                 console.log(err)
             })
+        })
+    }
+
+
+    // 预激活码获取
+    static getPreCode(options?: any) {
+        ipcMain.on('get-pre-code', (event) => {
+            let clientId = getMac();
+            let str_enc = encStr(JSON.stringify(clientId));
+            event.reply("get_pre_code_result", str_enc);
+            // ipcClient.clientEvents.emit("get_pre_code_result", str_enc)
+        })
+    }
+
+    // 激活
+    static activateRender(options?: any) {
+        ipcMain.on('activation-code', (event, arg) => {
+            try {
+                let str_dec = decryptStr(arg);
+                let obj = JSON.parse(str_dec)
+                if (obj.isActivate) {
+                    event.reply("activation_result", true);
+                } else {
+                    event.reply("error_msg", "激活码无效！");
+                }
+                // event.reply("activation_result", true);
+            } catch (e) {
+                event.reply("error_msg", "激活码无效！");
+            }
         })
     }
 

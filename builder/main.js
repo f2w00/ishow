@@ -331,7 +331,7 @@ function generateConfigs(dataPath, join, existsSync, mkdirSync) {
             ],
         },
     ])
-
+    sharedData.set('isActivate', [false])
     ClientStore.set('workspace', 'recentManagers', [])
     ClientStore.set('workspace', 'projectExtend', pluginsInfo.infos.projectExtend)
     let defaultPath = join(__dirname, '../default')

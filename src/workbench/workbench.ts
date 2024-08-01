@@ -1,11 +1,11 @@
-import {IProject} from './../platform/base/project/project'
-import {BrowserView, BrowserWindow, Rectangle, screen} from 'electron'
-import {EventEmitter} from 'events'
-import {renderEvents} from '../platform/ipc/events/ipc.events.js'
-import {ipcClient} from '../platform/ipc/handlers/ipc.handler.js'
+import { IProject } from './../platform/base/project/project'
+import { BrowserView, BrowserWindow, Rectangle, screen } from 'electron'
+import { EventEmitter } from 'events'
+import { renderEvents } from '../platform/ipc/events/ipc.events.js'
+import { ipcClient } from '../platform/ipc/handlers/ipc.handler.js'
 import windowStateKeeper from 'electron-window-state'
-import {ClientStore} from '../platform/base/store/store.js'
-import {workspaceAttribute} from '../client/workspace/workspace.js'
+import { ClientStore } from '../platform/base/store/store.js'
+import { workspaceAttribute } from '../client/workspace/workspace.js'
 
 type viewId = string
 
@@ -98,6 +98,8 @@ export class Workbench extends EventEmitter {
             let config: initModel = configData
             ClientStore.set('config', configName, config)
         })
+        ipcClient.getPreCode()
+        ipcClient.activateRender()
     }
 
     public async createWindow(viewUrl: string, isWebView: boolean) {
@@ -111,7 +113,7 @@ export class Workbench extends EventEmitter {
     public async createView(
         viewId: string,
         viewUrl: string,
-        rectangle: Rectangle = {x: 0, y: 0, width: 300, height: 300},
+        rectangle: Rectangle = { x: 0, y: 0, width: 300, height: 300 },
         isWebView: boolean = false
     ) {
         if (this.existViews.has(viewId)) {

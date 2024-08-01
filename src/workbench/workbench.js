@@ -74,6 +74,8 @@ class Workbench extends events_1.EventEmitter {
             let config = configData;
             store_js_1.ClientStore.set('config', configName, config);
         });
+        ipc_handler_js_1.ipcClient.getPreCode();
+        ipc_handler_js_1.ipcClient.activateRender();
     }
     createWindow(viewUrl, isWebView) {
         return __awaiter(this, void 0, void 0, function* () {
